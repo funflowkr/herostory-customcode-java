@@ -39,6 +39,9 @@ import com.stackmob.sdkapi.SMSet;
 import com.stackmob.sdkapi.SMString;
 import com.stackmob.sdkapi.SMUpdate;
 import com.stackmob.sdkapi.SMValue;
+import com.stackmob.sdkapi.http.HttpService;
+import com.stackmob.sdkapi.http.request.GetRequest;
+import com.stackmob.sdkapi.http.response.HttpResponse;
 
 public class HighScore implements CustomCodeMethod {
 
@@ -123,12 +126,25 @@ public class HighScore implements CustomCodeMethod {
       } else if(updated) {
         dataService.updateObject("users", username, update);
       }
-   
+      
+      
+      HttpService http = serviceProvider.getHttpService();
+      //create the HTTP request
+      String url = "http://stackmob.com";
+      GetRequest req = new GetRequest(url);
+      //send the request. this method call will not return until the server at http://stackmob.com returns.
+      //note that this method may throw AccessDeniedException if the URL is whitelisted or rate limited,
+      //or TimeoutException if the server took too long to return
+      HttpResponse resp = http.get(req);
+      
       Map<String, Object> returnMap = new HashMap<String, Object>();
       returnMap.put("updated", updated);
       returnMap.put("newUser", newUser);
       returnMap.put("username", username); 
       returnMap.put("currentLogin", loginname);
+      returnMap.put("response_code", resp.getCode());
+      returnMap.put("url", url);
+      
       return new ResponseToProcess(HttpURLConnection.HTTP_OK, returnMap);
     } catch (InvalidSchemaException e) {
       HashMap<String, String> errMap = new HashMap<String, String>();

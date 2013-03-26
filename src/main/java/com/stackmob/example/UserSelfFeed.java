@@ -57,26 +57,47 @@ public class UserSelfFeed implements CustomCodeMethod {
 
   @Override
   public ResponseToProcess execute(ProcessedAPIRequest request, SDKServiceProvider serviceProvider) {
-    
+	
+	LoggerService logger = serviceProvider.getLoggerService(UserSelfFeed.class);
+	//Log the JSON object passed to the StackMob Logs
+	logger.debug(request.getBody());
+	    
+	    
     String loginname = request.getLoggedInUser();
-    Integer page = Integer.parseInt(request.getParams().get("page")); 
-    Integer limit = Integer.parseInt(request.getParams().get("limit")); 
+    int page = 0 ;
+    int limit = 0 ;  
+    
+    String strPage = request.getParams().get("page");
+    String strLimit = request.getParams().get("limit");
+
+    if ( Util.strCheck(strPage) ) {
+      strPage = "0";
+    }
+    if ( Util.strCheck(strLimit) ) {
+	  strLimit = "0";
+	}
+
+    try {
+    	page = Integer.parseInt(strPage);
+    } catch (NumberFormatException e) {
+      HashMap<String, String> errParams = new HashMap<String, String>();
+      errParams.put("error", "page - number format exception");
+      return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, errParams); // http 400 - bad request
+    }
+    try {
+    	limit = Integer.parseInt(strLimit);
+    } catch (NumberFormatException e) {
+      HashMap<String, String> errParams = new HashMap<String, String>();
+      errParams.put("error", "limit - number format exception");
+      return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, errParams); // http 400 - bad request
+    }
+
     
     if (loginname == null || loginname.isEmpty()) {
         HashMap<String, String> errParams = new HashMap<String, String>();
         errParams.put("error", "no user is logged in!!");
         return new ResponseToProcess(HttpURLConnection.HTTP_UNAUTHORIZED, errParams); // http 401 - unauthorized
       }
-    
-    LoggerService logger = serviceProvider.getLoggerService(UserSelfFeed.class);
-    //Log the JSON object passed to the StackMob Logs
-    logger.debug(request.getBody());
-    
-    if (page == null || limit == null) {
-      HashMap<String, String> errParams = new HashMap<String, String>();
-      errParams.put("error", "one or both the page or limit was empty or null");
-      return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, errParams); // http 400 - bad request
-    }
     
     // get the datastore service and assemble the query
     DataService dataService = serviceProvider.getDataService();

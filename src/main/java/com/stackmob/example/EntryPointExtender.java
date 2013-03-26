@@ -37,6 +37,7 @@ public class EntryPointExtender extends JarEntryObject {
     
     // custom code test 
     list.add(new HighScore());
+    list.add(new SetHighScore());
     
     return list;
   }

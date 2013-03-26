@@ -25,7 +25,7 @@ public class SetHighScore implements CustomCodeMethod {
    */
   @Override
   public String getMethodName() {
-    return "set_high_score";
+    return "set_high_score2";
   }
  
   /**

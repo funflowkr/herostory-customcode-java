@@ -38,7 +38,7 @@ import com.stackmob.sdkapi.SMString;
 import com.stackmob.sdkapi.SMUpdate;
 import com.stackmob.sdkapi.SMValue;
 
-public class HelloWorld implements CustomCodeMethod {
+public class HighScore implements CustomCodeMethod {
 
   @Override
   public String getMethodName() {

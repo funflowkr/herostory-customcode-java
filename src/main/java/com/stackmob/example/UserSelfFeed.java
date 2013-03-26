@@ -117,9 +117,9 @@ public class UserSelfFeed implements CustomCodeMethod {
       boolean newUser = false;
       boolean updated = false;
    
-      result = dataService.readObjects("posts", query,2);
-   
-      SMObject postObject;
+      result = dataService.readObjects("posts",query);
+
+   	  SMObject postObject;
    
       // user was in the datastore, so check the score and update if necessary
       if (result != null && result.size() == 1) {

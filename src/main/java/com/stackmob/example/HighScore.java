@@ -54,6 +54,15 @@ public class HighScore implements CustomCodeMethod {
   @Override
   public ResponseToProcess execute(ProcessedAPIRequest request, SDKServiceProvider serviceProvider) {
     String username = request.getParams().get("username");
+    String loginname = request.getLoggedInUser();
+    
+    if (loginname == null || loginname.isEmpty()) {
+        HashMap<String, String> errParams = new HashMap<String, String>();
+        errParams.put("error", "no user is logged in");
+        return new ResponseToProcess(HttpURLConnection.HTTP_UNAUTHORIZED, errParams); // http 401 - unauthorized
+      }
+    
+    
     Long score = Long.parseLong(request.getParams().get("score"));
    
     if (username == null || username.isEmpty() || score == null) {
@@ -109,6 +118,7 @@ public class HighScore implements CustomCodeMethod {
       returnMap.put("updated", updated);
       returnMap.put("newUser", newUser);
       returnMap.put("username", username); 
+      returnMap.put("currentLogin", loginname);
       return new ResponseToProcess(HttpURLConnection.HTTP_OK, returnMap);
     } catch (InvalidSchemaException e) {
       HashMap<String, String> errMap = new HashMap<String, String>();

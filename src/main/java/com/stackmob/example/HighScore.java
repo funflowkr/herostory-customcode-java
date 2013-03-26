@@ -137,6 +137,7 @@ public class HighScore implements CustomCodeMethod {
       //or TimeoutException if the server took too long to return
       HttpResponse resp = http.get(req);
       
+      
       Map<String, Object> returnMap = new HashMap<String, Object>();
       returnMap.put("updated", updated);
       returnMap.put("newUser", newUser);

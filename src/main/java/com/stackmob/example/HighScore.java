@@ -79,7 +79,6 @@ public class HighScore implements CustomCodeMethod {
    
     
     logger.debug(username);
-    logger.debug(score);
     
     
     // get the datastore service and assemble the query

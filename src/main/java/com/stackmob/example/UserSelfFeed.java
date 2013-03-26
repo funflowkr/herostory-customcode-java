@@ -109,7 +109,7 @@ public class UserSelfFeed implements CustomCodeMethod {
     
     // build a query
     List<SMCondition> query = new ArrayList<SMCondition>();
-    query.add(new SMEquals("character", new SMString("8442544a42394cc3b4a800599ff964a3")));
+ //   query.add(new SMEquals("character", new SMString("8442544a42394cc3b4a800599ff964a3")));
     
     // execute the query
     List<SMObject> result;

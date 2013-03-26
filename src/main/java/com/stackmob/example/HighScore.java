@@ -18,6 +18,7 @@ package com.stackmob.example;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +48,7 @@ public class HighScore implements CustomCodeMethod {
 
   @Override
   public List<String> getParams() {
-    return new ArrayList<String>();
+	  return Arrays.asList("username","score");
   }
 
   @Override

@@ -70,10 +70,10 @@ public class UserSelfFeed implements CustomCodeMethod {
     String strPage = request.getParams().get("page");
     String strLimit = request.getParams().get("limit");
 
-    if ( Util.strCheck(strPage) ) {
+    if ( !Util.strCheck(strPage) ) {
       strPage = "0";
     }
-    if ( Util.strCheck(strLimit) ) {
+    if ( !Util.strCheck(strLimit) ) {
 	  strLimit = "0";
 	}
 
@@ -136,6 +136,7 @@ public class UserSelfFeed implements CustomCodeMethod {
    
       
       Map<String, Object> returnMap = new HashMap<String, Object>();
+      returnMap.put("response_body", postObject);
       
       return new ResponseToProcess(HttpURLConnection.HTTP_OK, returnMap);
     } catch (InvalidSchemaException e) {

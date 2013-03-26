@@ -42,7 +42,7 @@ public class HighScore implements CustomCodeMethod {
 
   @Override
   public String getMethodName() {
-    return "hello_world_25";
+    return "set_high_score";
   }
 
   @Override

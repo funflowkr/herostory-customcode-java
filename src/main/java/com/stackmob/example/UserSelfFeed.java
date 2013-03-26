@@ -124,12 +124,14 @@ public class UserSelfFeed implements CustomCodeMethod {
       // user was in the datastore, so check the score and update if necessary
       if (result != null && result.size() == 1) {
     	  postObject = result.get(0);
+    	  logger.debug("result=="+result);
       } else {
       //  Map<String, SMValue> userMap = new HashMap<String, SMValue>();
       //  userMap.put("username", new SMString(username));
       //  userMap.put("score", new SMInt(0L));
       //  newUser = true;
         postObject = null ; // new SMObject(userMap);
+        logger.debug("result==nothing");
       }
    
       // SMValue oldScore = postObject.getValue().get("score");

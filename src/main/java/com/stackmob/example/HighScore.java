@@ -102,8 +102,7 @@ public class HighScore implements CustomCodeMethod {
       SMObject userObject;
    
       // user was in the datastore, so check the score and update if necessary
-      if (result != null && result.size() == 1) {
-        userObject = result.get(0);
+      if (result != null && result.size() == 1) {      userObject = result.get(0);
       } else {
         Map<String, SMValue> userMap = new HashMap<String, SMValue>();
         userMap.put("username", new SMString(username));

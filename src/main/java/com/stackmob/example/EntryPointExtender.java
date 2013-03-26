@@ -34,6 +34,7 @@ public class EntryPointExtender extends JarEntryObject {
     list.add(new Increment());
     list.add(new SMPushRegisterDevice());
     
+    
     // custom code test 
     list.add(new HighScore());
     

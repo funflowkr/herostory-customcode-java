@@ -55,8 +55,8 @@ public class SetHighScore implements CustomCodeMethod {
       if (!request.getBody().isEmpty()) {
         try {
           JSONObject jsonObj = new JSONObject(request.getBody());
-          if (!jsonObj.isNull("username")) sb.append(" --username: " + jsonObj.getString("username"));
-          if (!jsonObj.isNull("score")) sb.append(" --score: " + jsonObj.getString("score"));
+          if (!jsonObj.isNull("username")) sb.append(" --> username: " + jsonObj.getString("username"));
+          if (!jsonObj.isNull("score")) sb.append(" --> score: " + jsonObj.getString("score"));
         } catch (JSONException e) {
           sb.append("Caught JSON Exception");
           e.printStackTrace();

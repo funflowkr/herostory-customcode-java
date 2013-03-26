@@ -29,6 +29,7 @@ import com.stackmob.core.customcode.CustomCodeMethod;
 import com.stackmob.core.rest.ProcessedAPIRequest;
 import com.stackmob.core.rest.ResponseToProcess;
 import com.stackmob.sdkapi.DataService;
+import com.stackmob.sdkapi.LoggerService;
 import com.stackmob.sdkapi.SDKServiceProvider;
 import com.stackmob.sdkapi.SMCondition;
 import com.stackmob.sdkapi.SMEquals;
@@ -62,6 +63,11 @@ public class HighScore implements CustomCodeMethod {
         return new ResponseToProcess(HttpURLConnection.HTTP_UNAUTHORIZED, errParams); // http 401 - unauthorized
       }
     
+    LoggerService logger = serviceProvider.getLoggerService(HighScore.class);
+    //Log the JSON object passed to the StackMob Logs
+    logger.debug(request.getBody());
+    
+    
     
     Long score = Long.parseLong(request.getParams().get("score"));
    
@@ -71,6 +77,11 @@ public class HighScore implements CustomCodeMethod {
       return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, errParams); // http 400 - bad request
     }
    
+    
+    logger.debug(username);
+    logger.debug(score);
+    
+    
     // get the datastore service and assemble the query
     DataService dataService = serviceProvider.getDataService();
    

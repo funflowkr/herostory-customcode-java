@@ -59,7 +59,7 @@ public class HighScore implements CustomCodeMethod {
     
     if (loginname == null || loginname.isEmpty()) {
         HashMap<String, String> errParams = new HashMap<String, String>();
-        errParams.put("error", "no user is logged in");
+        errParams.put("error", "no user is logged in!!");
         return new ResponseToProcess(HttpURLConnection.HTTP_UNAUTHORIZED, errParams); // http 401 - unauthorized
       }
     

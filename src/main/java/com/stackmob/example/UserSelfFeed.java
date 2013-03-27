@@ -111,7 +111,6 @@ public class UserSelfFeed implements CustomCodeMethod {
     List<SMCondition> query = new ArrayList<SMCondition>();
     // query.add(new SMEquals("character", new SMString("8442544a42394cc3b4a800599ff964a3")));
     
-    
     // execute the query
     List<SMObject> result;
     try {
@@ -119,7 +118,7 @@ public class UserSelfFeed implements CustomCodeMethod {
       boolean updated = false;
    
       result = dataService.readObjects("comments",query,2);
-
+      logger.debug("result=" + result);
    	  SMObject postObject;
    
       // user was in the datastore, so check the score and update if necessary
@@ -132,7 +131,7 @@ public class UserSelfFeed implements CustomCodeMethod {
       //  userMap.put("score", new SMInt(0L));
       //  newUser = true;
         postObject = null ; // new SMObject(userMap);
-        logger.debug("result==nothing");
+        logger.debug("result size=" + result.size());
       }
    
       // SMValue oldScore = postObject.getValue().get("score");

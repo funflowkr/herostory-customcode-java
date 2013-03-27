@@ -119,14 +119,16 @@ public class UserSelfFeed implements CustomCodeMethod {
    
       result = dataService.readObjects("comments",query,2);
       SMObject postObject;
-   	  
-   	  
-      // user was in the datastore, so check the score and update if necessary
+      
+      Map<String, Object> returnMap = new HashMap<String, Object>();
+      
+   	  // user was in the datastore, so check the score and update if necessary
       if (result != null && result.size() == 1) {
     	  postObject = result.get(0);
+    	  returnMap.put("response_body", postObject);
       //  logger.debug("result=="+result);
       } else if (result.size() > 1 ){
-    	  postObject = (SMObject) result;
+    	  returnMap.put("response_body", result);
       } else {
       //  Map<String, SMValue> userMap = new HashMap<String, SMValue>();
       //  userMap.put("username", new SMString(username));
@@ -136,12 +138,7 @@ public class UserSelfFeed implements CustomCodeMethod {
         logger.debug("result size=" + result.size());
       }
    
-      // SMValue oldScore = postObject.getValue().get("score");
    
-      
-      Map<String, Object> returnMap = new HashMap<String, Object>();
-      returnMap.put("response_body", postObject);
-      
       return new ResponseToProcess(HttpURLConnection.HTTP_OK, returnMap);
     } catch (InvalidSchemaException e) {
       HashMap<String, String> errMap = new HashMap<String, String>();

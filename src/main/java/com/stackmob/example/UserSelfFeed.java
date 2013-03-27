@@ -33,6 +33,7 @@ import com.stackmob.sdkapi.LoggerService;
 import com.stackmob.sdkapi.SDKServiceProvider;
 import com.stackmob.sdkapi.SMCondition;
 import com.stackmob.sdkapi.SMEquals;
+import com.stackmob.sdkapi.SMIn;
 import com.stackmob.sdkapi.SMInt;
 import com.stackmob.sdkapi.SMObject;
 import com.stackmob.sdkapi.SMSet;
@@ -109,19 +110,22 @@ public class UserSelfFeed implements CustomCodeMethod {
     
     userQuery.add(new SMEquals("username", new SMString(loginname)));
     
+    SMObject userObject;
+    List<SMValue> followers = new ArrayList<SMValue>();
+    
     try {
     	   
     	userResult = dataService.readObjects("user",userQuery);
         
-    	logger.debug("user result size=" + userResult);
+    	// logger.debug("user result size=" + userResult);
     	
-    	SMObject userObject;
-        
+    	
         
      	  // user was in the datastore, so check the score and update if necessary
         if (userResult != null && userResult.size() == 1) {
         	userObject = userResult.get(0);
-        	logger.debug("user followers==" + userObject.getValue().get("follows"));
+        	followers = new ArrayList<SMValue>(Arrays.asList(userObject.getValue().get("follows")));
+        	logger.debug("user followers==" + followers);
         } else {
         //  Map<String, SMValue> userMap = new HashMap<String, SMValue>();
         //  userMap.put("username", new SMString(username));
@@ -149,7 +153,7 @@ public class UserSelfFeed implements CustomCodeMethod {
     
     // build a query
     List<SMCondition> query = new ArrayList<SMCondition>();
-    // query.add(new SMEquals("character", new SMString("8442544a42394cc3b4a800599ff964a3")));
+    query.add(new SMIn("character",followers));
     
     // execute the query
     List<SMObject> result;

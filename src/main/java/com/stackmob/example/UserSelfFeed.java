@@ -118,13 +118,15 @@ public class UserSelfFeed implements CustomCodeMethod {
       boolean updated = false;
    
       result = dataService.readObjects("comments",query,2);
-      logger.debug("result=" + result);
-   	  SMObject postObject;
-   
+      SMObject postObject;
+   	  
+   	  
       // user was in the datastore, so check the score and update if necessary
       if (result != null && result.size() == 1) {
     	  postObject = result.get(0);
-    	  logger.debug("result=="+result);
+      //  logger.debug("result=="+result);
+      } else if (result.size() > 1 ){
+    	  postObject = (SMObject) result;
       } else {
       //  Map<String, SMValue> userMap = new HashMap<String, SMValue>();
       //  userMap.put("username", new SMString(username));

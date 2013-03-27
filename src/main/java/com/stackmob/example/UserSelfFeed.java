@@ -104,8 +104,48 @@ public class UserSelfFeed implements CustomCodeMethod {
    
     // user 가 가지고 있는 팔로워들의 character 들을 찾아낸다음. 그 팔로워들의 character 로 글을 가져온다. 
     
+    List<SMCondition> userQuery = new ArrayList<SMCondition>();
+    List<SMObject> userResult;
     
+    userQuery.add(new SMEquals("username", new SMString(loginname)));
     
+    try {
+    	   
+    	userResult = dataService.readObjects("users",userQuery);
+        
+    	logger.debug("user result size=" + userResult);
+    	
+    	SMObject userObject;
+        
+        
+     	  // user was in the datastore, so check the score and update if necessary
+        if (userResult != null && userResult.size() == 1) {
+        	userObject = userResult.get(0);
+        	logger.debug("user followers==" + userObject.getValue().get("follows"));
+        } else {
+        //  Map<String, SMValue> userMap = new HashMap<String, SMValue>();
+        //  userMap.put("username", new SMString(username));
+        //  userMap.put("score", new SMInt(0L));
+        //  newUser = true;
+        }
+     
+      } catch (InvalidSchemaException e) {
+        HashMap<String, String> errMap = new HashMap<String, String>();
+        errMap.put("error", "invalid_schema");
+        errMap.put("detail", e.toString());
+        return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errMap); // http 500 - internal server error
+      } catch (DatastoreException e) {
+        HashMap<String, String> errMap = new HashMap<String, String>();
+        errMap.put("error", "datastore_exception");
+        errMap.put("detail", e.toString());
+        return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errMap); // http 500 - internal server error
+      } catch(Exception e) {
+        HashMap<String, String> errMap = new HashMap<String, String>();
+        errMap.put("error", "unknown");
+        errMap.put("detail", e.toString());
+        return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errMap); // http 500 - internal server error
+      }
+     
     
     // build a query
     List<SMCondition> query = new ArrayList<SMCondition>();
@@ -114,10 +154,8 @@ public class UserSelfFeed implements CustomCodeMethod {
     // execute the query
     List<SMObject> result;
     try {
-      boolean newUser = false;
-      boolean updated = false;
    
-      result = dataService.readObjects("comments",query,2);
+      result = dataService.readObjects("posts",query,1);
       SMObject postObject;
       
       Map<String, Object> returnMap = new HashMap<String, Object>();

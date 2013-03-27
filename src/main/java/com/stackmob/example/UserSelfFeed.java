@@ -111,7 +111,7 @@ public class UserSelfFeed implements CustomCodeMethod {
     
     try {
     	   
-    	userResult = dataService.readObjects("users",userQuery);
+    	userResult = dataService.readObjects("user",userQuery);
         
     	logger.debug("user result size=" + userResult);
     	

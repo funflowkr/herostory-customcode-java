@@ -22,6 +22,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.stackmob.core.DatastoreException;
 import com.stackmob.core.InvalidSchemaException;
@@ -35,6 +39,7 @@ import com.stackmob.sdkapi.SMCondition;
 import com.stackmob.sdkapi.SMEquals;
 import com.stackmob.sdkapi.SMIn;
 import com.stackmob.sdkapi.SMInt;
+import com.stackmob.sdkapi.SMList;
 import com.stackmob.sdkapi.SMObject;
 import com.stackmob.sdkapi.SMSet;
 import com.stackmob.sdkapi.SMString;
@@ -124,7 +129,11 @@ public class UserSelfFeed implements CustomCodeMethod {
      	  // user was in the datastore, so check the score and update if necessary
         if (userResult != null && userResult.size() == 1) {
         	userObject = userResult.get(0);
-        	followers = new ArrayList<SMValue>(Arrays.asList(userObject.getValue().get("follows")));
+
+        	followers.add(new SMString("8d6116b56fc34ee69132a493fb81a2fd"));
+        	followers.add(new SMString("4c3ac97db716474aa66118854e2f9b96"));
+
+        	
         	logger.debug("user followers==" + followers);
         } else {
         //  Map<String, SMValue> userMap = new HashMap<String, SMValue>();
@@ -132,6 +141,7 @@ public class UserSelfFeed implements CustomCodeMethod {
         //  userMap.put("score", new SMInt(0L));
         //  newUser = true;
         }
+        
      
       } catch (InvalidSchemaException e) {
         HashMap<String, String> errMap = new HashMap<String, String>();

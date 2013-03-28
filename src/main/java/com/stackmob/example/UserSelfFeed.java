@@ -133,8 +133,10 @@ public class UserSelfFeed implements CustomCodeMethod {
         	followers.add(new SMString("8d6116b56fc34ee69132a493fb81a2fd"));
         	followers.add(new SMString("4c3ac97db716474aa66118854e2f9b96"));
 
-        	
+        	  
         	logger.debug("user followers==" + followers);
+        	//logger.debug("user followers==" + followers);
+        	
         } else {
         //  Map<String, SMValue> userMap = new HashMap<String, SMValue>();
         //  userMap.put("username", new SMString(username));

@@ -84,6 +84,16 @@ public class RecommendFollower implements CustomCodeMethod {
       }
     **/
     
+    /**
+     * recommend follower 
+     * 
+     * 1. top 10 heropoint characters.
+     * 2. 카테고리별로 나눠서 추천한다.  
+     * 3. 팔로우 한 사람을 기반으로 추천.
+     * 
+     */
+    
+    
     // get the datastore service and assemble the query
     DataService dataService = serviceProvider.getDataService();
    
@@ -99,7 +109,7 @@ public class RecommendFollower implements CustomCodeMethod {
 	);
     
     // com.stackmob.sdkapi.ResultFilters.ResultFilters(long start, long end, List<SMOrdering> orderings, List<String> fields)
-	ResultFilters filters = new ResultFilters(0, 10 , orderings, null);
+	ResultFilters filters = new ResultFilters(0, 10 , orderings, Arrays.asList("characters_id", "charactername","level","avatarimageurl","heropoint"));
 	
 	// cQuery.add(new SMEquals("username", new SMString(loginname)));
     

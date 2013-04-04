@@ -73,9 +73,24 @@ public class RecommendFollower implements CustomCodeMethod {
       strPage = "0";
     }
     if ( !Util.strCheck(strLimit) ) {
-	  strLimit = "0";
+	  strLimit = "5";
 	}
-
+    
+    try {
+    	page = Integer.parseInt(strPage);
+    } catch (NumberFormatException e) {
+      HashMap<String, String> errParams = new HashMap<String, String>();
+      errParams.put("error", "page - number format exception");
+      return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, errParams); // http 400 - bad request
+    }
+    try {
+    	limit = Integer.parseInt(strLimit);
+    } catch (NumberFormatException e) {
+      HashMap<String, String> errParams = new HashMap<String, String>();
+      errParams.put("error", "limit - number format exception");
+      return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, errParams); // http 400 - bad request
+    }
+    
     /**
     if (loginname == null || loginname.isEmpty()) {
         HashMap<String, String> errParams = new HashMap<String, String>();

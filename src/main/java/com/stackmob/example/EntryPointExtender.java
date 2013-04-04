@@ -39,6 +39,7 @@ public class EntryPointExtender extends JarEntryObject {
     list.add(new HighScore());
     list.add(new SetHighScore());
     list.add(new UserSelfFeed());
+    list.add(new RecommendFollower());
     
     return list;
   }

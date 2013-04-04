@@ -125,7 +125,7 @@ public class RecommendFollower implements CustomCodeMethod {
     
     // com.stackmob.sdkapi.ResultFilters.ResultFilters(long start, long end, List<SMOrdering> orderings, List<String> fields)
     // 시작, 끝, 정렬, 가져올 필드 값. 
-	ResultFilters filters = new ResultFilters(0, 5 , orderings, Arrays.asList("characters_id", "charactername","level","avatarimageurl","heropoint"));
+	ResultFilters filters = new ResultFilters(0, limit , orderings, Arrays.asList("characters_id", "charactername","level","avatarimageurl","heropoint"));
 	
 	// cQuery.add(new SMEquals("username", new SMString(loginname)));
     

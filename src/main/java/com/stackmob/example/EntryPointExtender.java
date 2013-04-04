@@ -27,10 +27,10 @@ public class EntryPointExtender extends JarEntryObject {
   @Override
   public List<CustomCodeMethod> methods() {
     List<CustomCodeMethod> list = new ArrayList<CustomCodeMethod>();
-    list.add(new HelloWorld());
-    list.add(new TwilioSMS());
+//    list.add(new HelloWorld());
+//    list.add(new TwilioSMS());
+//    list.add(new Stripe());
     list.add(new SendGrid());
-    list.add(new Stripe());
     list.add(new Increment());
     list.add(new SMPushRegisterDevice());
     
@@ -40,6 +40,7 @@ public class EntryPointExtender extends JarEntryObject {
     list.add(new SetHighScore());
     list.add(new UserSelfFeed());
     list.add(new RecommendFollower());
+    list.add(new UserGameInfo());
     
     return list;
   }

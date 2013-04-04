@@ -41,16 +41,26 @@ import com.stackmob.sdkapi.SMOrdering;
 import com.stackmob.sdkapi.SMString;
 import com.stackmob.sdkapi.SMValue;
 
-public class RecommendFollower implements CustomCodeMethod {
+
+/** 
+ * @author sson
+ * User 가 해당 게임에 로그인을 한 후 해당 로그인 키값을 이용하여 
+ * 게임 캐릭터 정보를 가져온다. 
+ * 아직 API 가 만들어지지 않았기 때문에 임시로 캐릭터를 가져온다고 가정한다. 
+ * 
+ */
+// 
+
+public class UserGameInfo implements CustomCodeMethod {
 
   @Override
   public String getMethodName() {
-    return "recommend_follower";
+    return "user_game_info";
   }
 
   @Override
   public List<String> getParams() {
-	  return Arrays.asList("page","limit","characters_id");
+	  return Arrays.asList("gameid","gamename");
   }
 
   @Override
@@ -62,34 +72,23 @@ public class RecommendFollower implements CustomCodeMethod {
 	    
 	    
     String loginname = request.getLoggedInUser();
-    int page = 0 ;
-    int limit = 0 ;  
     
-    String strPage = request.getParams().get("page");
-    String strLimit = request.getParams().get("limit");
-    String strCharactersID = request.getParams().get("characters_id");
-
-    if ( !Util.strCheck(strPage) ) {
-      strPage = "0";
+    
+    // game id : hangame 에서 보내준 user 의 auth key id 
+    // game name : "KRITIKA" 
+    
+    String gameid = request.getParams().get("gameid");
+    String gamename = request.getParams().get("gamename");
+    
+    
+    if ( !Util.strCheck(gameid) ) {
+    	gameid = "";
     }
-    if ( !Util.strCheck(strLimit) ) {
-	  strLimit = "5";
+    if ( !Util.strCheck(gamename) ) {
+    	gamename = "KRITIKA";
 	}
     
-    try {
-    	page = Integer.parseInt(strPage);
-    } catch (NumberFormatException e) {
-      HashMap<String, String> errParams = new HashMap<String, String>();
-      errParams.put("error", "page - number format exception");
-      return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, errParams); // http 400 - bad request
-    }
-    try {
-    	limit = Integer.parseInt(strLimit);
-    } catch (NumberFormatException e) {
-      HashMap<String, String> errParams = new HashMap<String, String>();
-      errParams.put("error", "limit - number format exception");
-      return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, errParams); // http 400 - bad request
-    }
+   
     
     /**
     if (loginname == null || loginname.isEmpty()) {
@@ -100,15 +99,9 @@ public class RecommendFollower implements CustomCodeMethod {
     **/
     
     /**
-     * recommend follower 
+     * http:// 연결로 게임 서버로 캐릭터 정보를 쿼리 한다. 
      * 
-     * 1. top 5 heropoint characters.
-     * 2. 카테고리별로 나눠서 추천한다.  
-     * 3. 팔로우 한 사람을 기반으로 추천. - 팔로우 한 사람들이 팔로우 한 사람을 찾아서 많은 숫자대로 정렬하면 될 듯 하다. 
-     * 
-     * 2013-04-05 : 우선 1번만 구현을 했다. 
-     * 
-     *
+     * 지금은 임시 방편으로 characters 안에 들어있는 것으로 형태만 만들어놓았음. 
      * 
      */
     
@@ -123,13 +116,13 @@ public class RecommendFollower implements CustomCodeMethod {
     List<SMObject> result;
    
     List<SMOrdering> orderings = Arrays.asList(
-	  new SMOrdering("heropoint", OrderingDirection.DESCENDING),
-	  new SMOrdering("level", OrderingDirection.DESCENDING)
+	  new SMOrdering("level", OrderingDirection.DESCENDING),
+	  new SMOrdering("exp", OrderingDirection.DESCENDING)
 	);
     
     // com.stackmob.sdkapi.ResultFilters.ResultFilters(long start, long end, List<SMOrdering> orderings, List<String> fields)
     // 시작, 끝, 정렬, 가져올 필드 값. 
-	ResultFilters filters = new ResultFilters(0, limit , orderings, Arrays.asList("characters_id", "charactername","level","avatarimageurl","heropoint"));
+	ResultFilters filters = new ResultFilters(0, 3 , orderings, Arrays.asList("charactername","servername","level","exp","avatarimageurl"));
 	
 	// cQuery.add(new SMEquals("username", new SMString(loginname)));
     

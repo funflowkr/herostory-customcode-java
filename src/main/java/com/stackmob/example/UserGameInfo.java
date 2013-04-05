@@ -88,8 +88,7 @@ public class UserGameInfo implements CustomCodeMethod {
     	gamename = "KRITIKA";
 	}
     
-   
-    
+   	    
     /**
     if (loginname == null || loginname.isEmpty()) {
         HashMap<String, String> errParams = new HashMap<String, String>();
@@ -122,7 +121,7 @@ public class UserGameInfo implements CustomCodeMethod {
     
     // com.stackmob.sdkapi.ResultFilters.ResultFilters(long start, long end, List<SMOrdering> orderings, List<String> fields)
     // 시작, 끝, 정렬, 가져올 필드 값. 
-	ResultFilters filters = new ResultFilters(0, 3 , orderings, Arrays.asList("charactername","servername","level","exp","avatarimageurl"));
+	ResultFilters filters = new ResultFilters(0, 3 , orderings, Arrays.asList("charactername","servername","classtype","level","exp","avatarimageurl"));
 	
 	// cQuery.add(new SMEquals("username", new SMString(loginname)));
     

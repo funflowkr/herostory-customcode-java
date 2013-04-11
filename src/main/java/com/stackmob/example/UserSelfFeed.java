@@ -189,7 +189,7 @@ public class UserSelfFeed implements CustomCodeMethod {
     if (max_id > 0) {
     	query.add(new SMLess("createdate",new SMInt(max_id)));
     }
-    logger.debug("since_id="+ since_id+"");
+    logger.debug("since_id="+ query);
     if (since_id > 0) {
     	query.add(new SMGreater("createdate",new SMInt(since_id)));
     }

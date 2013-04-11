@@ -114,6 +114,8 @@ public class UserSelfFeed implements CustomCodeMethod {
       return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, errParams); // http 400 - bad request
     }
 
+    logger.debug("--max_id="+ max_id+"");
+    logger.debug("--since_id="+ since_id+"");
     
     if (loginname == null || loginname.isEmpty()) {
         HashMap<String, String> errParams = new HashMap<String, String>();
@@ -196,7 +198,7 @@ public class UserSelfFeed implements CustomCodeMethod {
 	  new SMOrdering("createddate", OrderingDirection.DESCENDING)
 	);
     
-    logger.debug("limit"+ limit+"");
+    logger.debug("limit="+ limit+"");
     // limit 
     ResultFilters filters = new ResultFilters(0, limit, orderings, null);
     

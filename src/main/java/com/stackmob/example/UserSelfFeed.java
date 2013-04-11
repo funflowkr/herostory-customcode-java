@@ -183,19 +183,20 @@ public class UserSelfFeed implements CustomCodeMethod {
     // build a query
     List<SMCondition> query  = new ArrayList<SMCondition>();
     query.add(new SMIn("character",followers));
-    if (max_id > 0)
-    	logger.debug("max_id"+ max_id+"");
+    logger.debug("max_id="+ max_id+"");
+    if (max_id > 0) {
     	query.add(new SMLess("createdate",new SMInt(max_id)));
-    if (since_id > 0)
-    	logger.debug("max_id"+ since_id+"");
+    }
+    logger.debug("since_id="+ since_id+"");
+    if (since_id > 0) {
     	query.add(new SMGreater("createdate",new SMInt(since_id)));
-    
+    }
     
     List<SMOrdering> orderings = Arrays.asList(
 	  new SMOrdering("createddate", OrderingDirection.DESCENDING)
 	);
     
-    
+    logger.debug("limit"+ limit+"");
     // limit 
     ResultFilters filters = new ResultFilters(0, limit, orderings, null);
     

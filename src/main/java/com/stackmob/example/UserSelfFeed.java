@@ -22,10 +22,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.stackmob.core.DatastoreException;
 import com.stackmob.core.InvalidSchemaException;
@@ -34,20 +30,19 @@ import com.stackmob.core.rest.ProcessedAPIRequest;
 import com.stackmob.core.rest.ResponseToProcess;
 import com.stackmob.sdkapi.DataService;
 import com.stackmob.sdkapi.LoggerService;
+import com.stackmob.sdkapi.OrderingDirection;
+import com.stackmob.sdkapi.ResultFilters;
 import com.stackmob.sdkapi.SDKServiceProvider;
 import com.stackmob.sdkapi.SMCondition;
 import com.stackmob.sdkapi.SMEquals;
+import com.stackmob.sdkapi.SMGreater;
 import com.stackmob.sdkapi.SMIn;
 import com.stackmob.sdkapi.SMInt;
-import com.stackmob.sdkapi.SMList;
+import com.stackmob.sdkapi.SMLess;
 import com.stackmob.sdkapi.SMObject;
-import com.stackmob.sdkapi.SMSet;
+import com.stackmob.sdkapi.SMOrdering;
 import com.stackmob.sdkapi.SMString;
-import com.stackmob.sdkapi.SMUpdate;
 import com.stackmob.sdkapi.SMValue;
-import com.stackmob.sdkapi.http.HttpService;
-import com.stackmob.sdkapi.http.request.GetRequest;
-import com.stackmob.sdkapi.http.response.HttpResponse;
 
 public class UserSelfFeed implements CustomCodeMethod {
 
@@ -56,9 +51,15 @@ public class UserSelfFeed implements CustomCodeMethod {
     return "user_self_feed";
   }
 
+//  max_id : timestamp ( createdate ) 가져와야 하는 최고 값 
+//  since_id : 가져와야 하는 최저값 
+//  
+//  since_id < id < max_id 이어야 함. 
+//  https://dev.twitter.com/docs/working-with-timelines
+  
   @Override
   public List<String> getParams() {
-	  return Arrays.asList("page","limit");
+	  return Arrays.asList("max_id","since_id","limit");
   }
 
   @Override
@@ -70,26 +71,41 @@ public class UserSelfFeed implements CustomCodeMethod {
 	    
 	    
     String loginname = request.getLoggedInUser();
-    int page = 0 ;
+    long  max_id = 0 ;
+    long  since_id = 0 ;
+    
     int limit = 0 ;  
     
-    String strPage = request.getParams().get("page");
+    String strMaxId = request.getParams().get("max_id");
+    String strSinceId = request.getParams().get("since_id");
+    
     String strLimit = request.getParams().get("limit");
 
-    if ( !Util.strCheck(strPage) ) {
-      strPage = "0";
+    if ( !Util.strCheck(strMaxId) ) {
+    	strMaxId = "0";
+    }
+    if ( !Util.strCheck(strSinceId) ) {
+    	strSinceId = "0";
     }
     if ( !Util.strCheck(strLimit) ) {
-	  strLimit = "0";
+	  strLimit = "100";
 	}
 
     try {
-    	page = Integer.parseInt(strPage);
+    	max_id = Long.parseLong(strMaxId);
     } catch (NumberFormatException e) {
       HashMap<String, String> errParams = new HashMap<String, String>();
-      errParams.put("error", "page - number format exception");
+      errParams.put("error", "max_id - number format exception");
       return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, errParams); // http 400 - bad request
     }
+	try {
+		since_id = Long.parseLong(strSinceId);
+	} catch (NumberFormatException e) {
+      HashMap<String, String> errParams = new HashMap<String, String>();
+      errParams.put("error", "since_id - number format exception");
+      return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, errParams); // http 400 - bad request
+    }
+	
     try {
     	limit = Integer.parseInt(strLimit);
     } catch (NumberFormatException e) {
@@ -164,14 +180,35 @@ public class UserSelfFeed implements CustomCodeMethod {
      
     
     // build a query
-    List<SMCondition> query = new ArrayList<SMCondition>();
+    List<SMCondition> query  = new ArrayList<SMCondition>();
     query.add(new SMIn("character",followers));
+    if (max_id > 0)
+    	query.add(new SMLess("createdate",new SMInt(max_id)));
+    if (since_id > 0)
+    	query.add(new SMGreater("createdate",new SMInt(since_id)));
+    
+    
+    List<SMOrdering> orderings = Arrays.asList(
+	  new SMOrdering("createddate", OrderingDirection.DESCENDING)
+	);
+    
+    // limit 
+    ResultFilters filters = new ResultFilters(0, limit, orderings, null);
     
     // execute the query
     List<SMObject> result;
     try {
-   
-      result = dataService.readObjects("posts",query,1);
+    	
+	/***
+    	readObjects(
+    		String schema, 
+    		List<SMCondition> conditions, 
+    		int expandDepth, 
+    		ResultFilters resultFilters
+		) throws InvalidSchemaException, DatastoreException
+	 */
+
+      result = dataService.readObjects("posts",query,1,filters);
       SMObject postObject;
       
       Map<String, Object> returnMap = new HashMap<String, Object>();

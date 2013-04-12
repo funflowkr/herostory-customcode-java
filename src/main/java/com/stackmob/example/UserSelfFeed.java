@@ -133,21 +133,23 @@ public class UserSelfFeed implements CustomCodeMethod {
     
     userQuery.add(new SMEquals("username", new SMString(loginname)));
     
+    ResultFilters userFilters = new ResultFilters(0, -1, null, Arrays.asList("username", "gameauths", "gameauths.characters","gameauths.characters.follows"));
+    
     SMObject userObject;
     List<SMValue> followers = new ArrayList<SMValue>();
     
     try {
     	   
-    	userResult = dataService.readObjects("user",userQuery);
+    	userResult = dataService.readObjects("user",userQuery,2,userFilters);
         
-    	// logger.debug("user result size=" + userResult);
+    	logger.debug("user result=" + userResult);
     	
     	
         
      	  // user was in the datastore, so check the score and update if necessary
         if (userResult != null && userResult.size() == 1) {
         	userObject = userResult.get(0);
-
+        	logger.debug("user followers==" + userObject);
         	followers.add(new SMString("8d6116b56fc34ee69132a493fb81a2fd"));
         	followers.add(new SMString("4c3ac97db716474aa66118854e2f9b96"));
         	followers.add(new SMString("8442544a42394cc3b4a800599ff964a3"));

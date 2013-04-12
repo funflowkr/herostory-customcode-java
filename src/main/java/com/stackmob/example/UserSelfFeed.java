@@ -137,6 +137,7 @@ public class UserSelfFeed implements CustomCodeMethod {
     //ResultFilters userFilters = new ResultFilters(0, -1, null, Arrays.asList("username", "gameauths.characters.follows"));
     
     SMObject userObject;
+    
     List<SMValue> followers = new ArrayList<SMValue>();
     
     try {
@@ -155,11 +156,11 @@ public class UserSelfFeed implements CustomCodeMethod {
         	
         	logger.debug("user followers==" + userObject);
         	
-        	List<SMObject> gameauths = (List<SMObject>) userObject.getValue().get("gameauths");
+        	SMObject gameauths = (SMObject) userObject.getValue().get("gameauths");
         	logger.debug("gameauths =" + gameauths);
         	
         	SMObject gameauthsObject;
-        	gameauthsObject = gameauths.get(0);
+        	gameauthsObject = (SMObject) gameauths.getValue().get("characters");
         	logger.debug("gameauths Obj =" + gameauthsObject);
         	
         	

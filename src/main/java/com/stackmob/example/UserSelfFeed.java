@@ -23,6 +23,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import com.stackmob.core.DatastoreException;
 import com.stackmob.core.InvalidSchemaException;
 import com.stackmob.core.customcode.CustomCodeMethod;
@@ -156,11 +159,24 @@ public class UserSelfFeed implements CustomCodeMethod {
         	
         	logger.debug("user followers==" + userObject);
         	
-        	// SMObject gameauths = (SMObject) userObject.getValue().get("gameauths");
-        	logger.debug("gameauths =" + userObject.getValue().get("gameauths"));
+        	//List<SMObject> gameauths ;
         	
-       /* 	
-        * 	SMObject gameauths = (SMObject) userObject.getValue().get("gameauths");
+        	JSONArray jArr = new JSONArray(userObject.getValue().get("gameauths"));
+        	JSONObject jObj = jArr.getJSONObject(0);
+        	
+        	logger.debug("gameauths1 =" + jObj + "");
+        	
+        	logger.debug("gameauths2 =" + jObj.getJSONArray("characters").getJSONObject(0)) ;
+        	
+        	
+        	Map<String, SMValue> userMap = new HashMap<String, SMValue>();
+        	userMap.put("username", userObject.getValue().get("gameauths"));
+            SMObject gameauths = new SMObject(userMap);
+            
+        	
+        	
+        	
+       /*
         	logger.debug("gameauths =" + gameauths);
         	
         	SMObject gameauthsObject;

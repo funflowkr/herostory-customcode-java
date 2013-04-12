@@ -133,7 +133,7 @@ public class CharacterFeed implements CustomCodeMethod {
     // build a query
     List<SMCondition> query  = new ArrayList<SMCondition>();
     
-    query.add(new SMEquals("characters_id", new SMString(characters_id)));
+    query.add(new SMEquals("character", new SMString(characters_id)));
     
     // logger.debug("max_id="+ max_id+"");
     if (max_id > 0) {

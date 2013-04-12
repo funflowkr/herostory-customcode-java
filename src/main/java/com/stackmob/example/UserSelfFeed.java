@@ -161,7 +161,7 @@ public class UserSelfFeed implements CustomCodeMethod {
         	
         	//List<SMObject> gameauths ;
         	
-        	JSONArray jArr = new JSONArray(userObject.getValue().get("gameauths"));
+        	JSONArray jArr = new JSONArray(userObject.getValue().get("gameauths").toString());
         	JSONObject jObj = jArr.getJSONObject(0);
         	
         	logger.debug("gameauths1 =" + jObj + "");

@@ -201,8 +201,14 @@ public class UserSelfFeed implements CustomCodeMethod {
 	  new SMOrdering("createddate", OrderingDirection.DESCENDING)
 	);
     
-    logger.debug("limit="+ limit+"");
+    // logger.debug("limit="+ limit+"");
     // limit 
+    if ( limit > 0 ) {
+    	limit = limit-1;  
+    } else {
+    	limit = 99; // default value = 100  
+    }
+    
     ResultFilters filters = new ResultFilters(0, limit, orderings, null);
     
     // execute the query

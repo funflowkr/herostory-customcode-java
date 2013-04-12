@@ -167,23 +167,23 @@ public class UserSelfFeed implements CustomCodeMethod {
         	
         	logger.debug("gameauths1 =" + jObj + "");
         	
-        	for (int i=1;i<characterArray.length();i++) {
+        	for (int i=0;i<characterArray.length();i++) {
         		logger.debug("gameauths characters=" + i + " - " + characterArray.getJSONObject(i).getJSONArray("follows"));
         		JSONArray follows = characterArray.getJSONObject(i).getJSONArray("follows");
-        		for (int j=1;j<follows.length();j++) {
+        		for (int j=0;j<follows.length();j++) {
         			
         			logger.debug("gameauths follows=" + j + " - "+ follows.getString(j) + " ");
         			followers.add(new SMString(follows.getString(j)));
         		}
         	}
         	
-        	
+        	/**
         	followers.add(new SMString("8d6116b56fc34ee69132a493fb81a2fd"));
         	followers.add(new SMString("4c3ac97db716474aa66118854e2f9b96"));
         	followers.add(new SMString("8442544a42394cc3b4a800599ff964a3"));
+        	**/
         	
-        	  
-        	logger.debug("user followers==" + followers);
+        	logger.debug("user followers=" + followers);
         	//logger.debug("user followers==" + followers);
         	//
         } else {
@@ -215,8 +215,9 @@ public class UserSelfFeed implements CustomCodeMethod {
     // build a query
     List<SMCondition> query  = new ArrayList<SMCondition>();
     
-    
-    query.add(new SMIn("character",followers));
+    if (result != null && result.size() >= 1) { 
+        query.add(new SMIn("character",followers));
+    }
     logger.debug("max_id="+ max_id+"");
     if (max_id > 0) {
     	query.add(new SMLess("createddate",new SMInt(max_id)));

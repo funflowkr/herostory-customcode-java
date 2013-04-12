@@ -147,7 +147,7 @@ public class UserSelfFeed implements CustomCodeMethod {
     	   
     	userResult = dataService.readObjects("user",userQuery,2,userFilters);
         
-    	logger.debug("user result=" + userResult);
+    	// logger.debug("user result=" + userResult);
     	
     	//userObject = result.get(0);
         //to = userObject.getValue().get("email").toString();
@@ -157,7 +157,7 @@ public class UserSelfFeed implements CustomCodeMethod {
         if (userResult != null && userResult.size() == 1) {
         	userObject = userResult.get(0);
         	
-        	logger.debug("user followers==" + userObject);
+        	// logger.debug("user followers==" + userObject);
         	
         	//List<SMObject> gameauths ;
         	
@@ -165,14 +165,14 @@ public class UserSelfFeed implements CustomCodeMethod {
         	JSONObject jObj = jArr.getJSONObject(0);
         	JSONArray characterArray = jObj.getJSONArray("characters");
         	
-        	logger.debug("gameauths1 =" + jObj + "");
+        	logger.debug("gameauths =" + jObj + "");
         	
         	for (int i=0;i<characterArray.length();i++) {
-        		logger.debug("gameauths characters=" + i + " - " + characterArray.getJSONObject(i).getJSONArray("follows"));
+        	//	logger.debug("gameauths characters=" + i + " - " + characterArray.getJSONObject(i).getJSONArray("follows"));
         		JSONArray follows = characterArray.getJSONObject(i).getJSONArray("follows");
         		for (int j=0;j<follows.length();j++) {
         			
-        			logger.debug("gameauths follows=" + j + " - "+ follows.getString(j) + " ");
+        			logger.debug("gameauths follows=" + i + "/" + j + " - "+ follows.getString(j) + " ");
         			followers.add(new SMString(follows.getString(j)));
         		}
         	}

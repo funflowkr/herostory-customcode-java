@@ -165,14 +165,14 @@ public class UserSelfFeed implements CustomCodeMethod {
         	JSONObject jObj = jArr.getJSONObject(0);
         	JSONArray characterArray = jObj.getJSONArray("characters");
         	
-        	logger.debug("gameauths =" + jObj + "");
+        	logger.info("gameauths =" + jObj + "");
         	
         	for (int i=0;i<characterArray.length();i++) {
         	//	logger.debug("gameauths characters=" + i + " - " + characterArray.getJSONObject(i).getJSONArray("follows"));
         		JSONArray follows = characterArray.getJSONObject(i).getJSONArray("follows");
         		for (int j=0;j<follows.length();j++) {
         			
-        			logger.debug("gameauths follows=" + i + "/" + j + " - "+ follows.getString(j) + " ");
+        			logger.info("gameauths follows=" + i + "/" + j + " - "+ follows.getString(j) + " ");
         			followers.add(new SMString(follows.getString(j)));
         		}
         	}

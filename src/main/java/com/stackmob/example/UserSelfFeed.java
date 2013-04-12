@@ -156,13 +156,14 @@ public class UserSelfFeed implements CustomCodeMethod {
         	
         	logger.debug("user followers==" + userObject);
         	
-        	SMObject gameauths = (SMObject) userObject.getValue().get("gameauths");
+       /* 	
+        * 	SMObject gameauths = (SMObject) userObject.getValue().get("gameauths");
         	logger.debug("gameauths =" + gameauths);
         	
         	SMObject gameauthsObject;
         	gameauthsObject = (SMObject) gameauths.getValue().get("characters");
         	logger.debug("gameauths Obj =" + gameauthsObject);
-        	
+       */ 	
         	
         	
         	followers.add(new SMString("8d6116b56fc34ee69132a493fb81a2fd"));
@@ -249,10 +250,10 @@ public class UserSelfFeed implements CustomCodeMethod {
    	  // user was in the datastore, so check the score and update if necessary
       if (result != null && result.size() == 1) {
     	  postObject = result.get(0);
-    	  returnMap.put("", postObject);
+    	  returnMap.put("data", postObject);
       //  logger.debug("result=="+result);
       } else if (result.size() > 1 ){
-    	  returnMap.put("", result);
+    	  returnMap.put("data", result);
       } else {
       //  Map<String, SMValue> userMap = new HashMap<String, SMValue>();
       //  userMap.put("username", new SMString(username));

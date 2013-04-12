@@ -156,6 +156,9 @@ public class UserSelfFeed implements CustomCodeMethod {
         	
         	logger.debug("user followers==" + userObject);
         	
+        	// SMObject gameauths = (SMObject) userObject.getValue().get("gameauths");
+        	logger.debug("gameauths =" + userObject.getValue().get("gameauths"));
+        	
        /* 	
         * 	SMObject gameauths = (SMObject) userObject.getValue().get("gameauths");
         	logger.debug("gameauths =" + gameauths);

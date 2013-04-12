@@ -215,7 +215,7 @@ public class UserSelfFeed implements CustomCodeMethod {
     // build a query
     List<SMCondition> query  = new ArrayList<SMCondition>();
     
-    if (result != null && result.size() >= 1) { 
+    if (followers != null && followers.size() >= 1) { 
         query.add(new SMIn("character",followers));
     }
     logger.debug("max_id="+ max_id+"");

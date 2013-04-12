@@ -70,7 +70,7 @@ public class UserSelfFeed implements CustomCodeMethod {
 	
 	LoggerService logger = serviceProvider.getLoggerService(UserSelfFeed.class);
 	//Log the JSON object passed to the StackMob Logs
-	logger.debug(request.getBody());
+	//logger.debug(request.getBody());
 	    
 	    
     String loginname = request.getLoggedInUser();
@@ -117,8 +117,7 @@ public class UserSelfFeed implements CustomCodeMethod {
       return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, errParams); // http 400 - bad request
     }
 
-    logger.debug("--max_id="+ max_id+"");
-    logger.debug("--since_id="+ since_id+"");
+    logger.debug("--max_id="+ max_id+""+"--since_id="+ since_id+"");
     
     if (loginname == null || loginname.isEmpty()) {
         HashMap<String, String> errParams = new HashMap<String, String>();
@@ -168,7 +167,7 @@ public class UserSelfFeed implements CustomCodeMethod {
         	logger.debug("gameauths =" + jObj + "");
         	
         	for (int i=0;i<characterArray.length();i++) {
-        		logger.error("gameauths characters=" + i + " - " + characterArray.getJSONObject(i).getJSONArray("follows"));
+        		logger.debug("gameauths characters=" + i + " - " + characterArray.getJSONObject(i).getJSONArray("follows"));
         		JSONArray follows = characterArray.getJSONObject(i).getJSONArray("follows");
         		for (int j=0;j<follows.length();j++) {
         			
@@ -218,11 +217,11 @@ public class UserSelfFeed implements CustomCodeMethod {
     if (followers != null && followers.size() >= 1) { 
         query.add(new SMIn("character",followers));
     }
-    logger.debug("max_id="+ max_id+"");
+    // logger.debug("max_id="+ max_id+"");
     if (max_id > 0) {
     	query.add(new SMLess("createddate",new SMInt(max_id)));
     }
-    logger.debug("since_id="+ since_id);
+    // logger.debug("since_id="+ since_id);
     if (since_id > 0) {
     	query.add(new SMGreater("createddate",new SMInt(since_id)));
     }

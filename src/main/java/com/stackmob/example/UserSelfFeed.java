@@ -133,7 +133,8 @@ public class UserSelfFeed implements CustomCodeMethod {
     
     userQuery.add(new SMEquals("username", new SMString(loginname)));
     
-    ResultFilters userFilters = new ResultFilters(0, -1, null, Arrays.asList("username", "gameauths", "gameauths.characters","gameauths.characters.follows"));
+    // ResultFilters userFilters = new ResultFilters(0, -1, null, Arrays.asList("username", "gameauths", "gameauths.characters","gameauths.characters.follows"));
+    ResultFilters userFilters = new ResultFilters(0, -1, null, Arrays.asList("username", "gameauths.characters.follows"));
     
     SMObject userObject;
     List<SMValue> followers = new ArrayList<SMValue>();

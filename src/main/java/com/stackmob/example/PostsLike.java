@@ -23,6 +23,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.stackmob.core.DatastoreException;
 import com.stackmob.core.InvalidSchemaException;
 import com.stackmob.core.customcode.CustomCodeMethod;
@@ -60,10 +63,28 @@ public class PostsLike implements CustomCodeMethod {
 	
     Map<String, Object> map = new HashMap<String, Object>();
     String verb = request.getVerb().toString();
+    String posts_id = null ;
+    String characters_id = null;
     
-    
-    String posts_id = request.getParams().get("posts_id");
-    String characters_id = request.getParams().get("characters_id");
+    if (verb.equalsIgnoreCase("post") || verb.equalsIgnoreCase("put")) {
+    	logger.debug("GET ACTION ==== POST or PUT");
+    	
+    	if (!request.getBody().isEmpty()) {
+            try {
+              JSONObject jsonObj = new JSONObject(request.getBody());
+              if (!jsonObj.isNull("posts_id")) posts_id = jsonObj.getString("posts_id");
+              if (!jsonObj.isNull("characters_id")) characters_id = jsonObj.getString("characters_id");
+            } catch (JSONException e) {
+            	logger.debug("Caught JSON Exception");
+              e.printStackTrace();
+            }
+          } else logger.debug("Request body is empty");
+    } else { 
+    	posts_id = request.getParams().get("posts_id");
+        characters_id = request.getParams().get("characters_id");
+    	
+    }
+    	
     
     if (!Util.strCheck(posts_id) ) {
     	HashMap<String, String> errParams = new HashMap<String, String>();
@@ -87,6 +108,7 @@ public class PostsLike implements CustomCodeMethod {
     	// this is where we handle the special case for `POST` and `PUT` requests
 	    if (verb.equalsIgnoreCase("post") || verb.equalsIgnoreCase("put")) {
 	    	logger.debug("GET ACTION ==== POST or PUT");
+	    	
 	    	// like 한 사람 입력
 	    	List<SMString> valuesToAppend = Arrays.asList(new SMString(characters_id));
 	    	SMObject result = dataService.addRelatedObjects("posts", new SMString(posts_id), "likes", valuesToAppend);
@@ -119,10 +141,8 @@ public class PostsLike implements CustomCodeMethod {
 	        	
 	    }
 	 
-	    map.put("message", sb.toString());
-	    map.put("verb", verb);
+	    logger.debug("message==" + sb.toString());
 	    
-		
 	    
     
           

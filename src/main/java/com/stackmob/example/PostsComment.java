@@ -31,6 +31,7 @@ import com.stackmob.core.InvalidSchemaException;
 import com.stackmob.core.customcode.CustomCodeMethod;
 import com.stackmob.core.rest.ProcessedAPIRequest;
 import com.stackmob.core.rest.ResponseToProcess;
+import com.stackmob.sdkapi.BulkResult;
 import com.stackmob.sdkapi.DataService;
 import com.stackmob.sdkapi.LoggerService;
 import com.stackmob.sdkapi.SDKServiceProvider;
@@ -39,6 +40,7 @@ import com.stackmob.sdkapi.SMInt;
 import com.stackmob.sdkapi.SMObject;
 import com.stackmob.sdkapi.SMString;
 import com.stackmob.sdkapi.SMUpdate;
+import com.stackmob.sdkapi.SMValue;
 
 public class PostsComment implements CustomCodeMethod {
 
@@ -125,9 +127,15 @@ public class PostsComment implements CustomCodeMethod {
 	    if (verb.equalsIgnoreCase("post")) {
 	    	logger.debug("GET ACTION ==== POST");
 	    	
+	    	
+	    	Map<String, SMValue> objMap = new HashMap<String, SMValue>();
+	    	objMap.put("character", new SMString(characters_id));
+	    	objMap.put("text", new SMString(comment_text));
+	    	
+	    	
 	    	// insert comment
-	    	List<SMString> valuesToAppend = Arrays.asList(new SMString(characters_id),new SMString(comment_text));
-	    	SMObject result = dataService.addRelatedObjects("posts", new SMString(posts_id), "comments", valuesToAppend);
+	    	List<SMObject> objectsToCreate = Arrays.asList(new SMObject(objMap));
+	    	BulkResult result = dataService.createRelatedObjects("posts", new SMString(posts_id), "comments", objectsToCreate);
 	    	
 	    	// comment 한 Count Update 
 	    	List<SMUpdate> update = new ArrayList<SMUpdate>();

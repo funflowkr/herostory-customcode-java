@@ -171,8 +171,8 @@ public class PostsComment implements CustomCodeMethod {
           
       Map<String, Object> returnMap = new HashMap<String, Object>();
       
-      returnMap.put("code", "200");
-      returnMap.put("data", resultinc.toString());
+      returnMap.put("code", HttpURLConnection.HTTP_OK);
+      returnMap.put("data", resultinc);
       return new ResponseToProcess(HttpURLConnection.HTTP_OK, returnMap);
     } catch (InvalidSchemaException e) {
       HashMap<String, String> errMap = new HashMap<String, String>();

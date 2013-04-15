@@ -120,7 +120,8 @@ public class PostsComment implements CustomCodeMethod {
     
  // get the datastore service and assemble the query
     DataService dataService = serviceProvider.getDataService();
-	
+    SMObject resultinc = null;
+    
     try {
 	    
     	// this is where we handle the special case for `POST` and `PUT` requests
@@ -137,12 +138,13 @@ public class PostsComment implements CustomCodeMethod {
 	    	List<SMObject> objectsToCreate = Arrays.asList(new SMObject(objMap));
 	    	BulkResult result = dataService.createRelatedObjects("posts", new SMString(posts_id), "comments", objectsToCreate);
 	    	
+	    	
 	    	// comment 한 Count Update 
 	    	List<SMUpdate> update = new ArrayList<SMUpdate>();
 	    	update.add(new SMIncrement("comment_count", new SMInt((long) 1)));
-	    	SMObject resultinc = dataService.updateObject("posts", new SMString(posts_id), update);
+	    	resultinc = dataService.updateObject("posts", new SMString(posts_id), update);
 	    	
-	    	logger.debug("update result="+result + ", increment result=" + resultinc + ",,update=" + update);
+	    	logger.debug("update result="+result + "//"+ result.getSuccessIds() + ", increment result=" + resultinc + ",,update=" + update);
 	    	
 	    // this is where we handle the case for `DELETE` requests
 	    } else if (verb.equalsIgnoreCase("delete") ) {
@@ -154,7 +156,7 @@ public class PostsComment implements CustomCodeMethod {
 	    	// comment 한 Count-1 update  
 	    	List<SMUpdate> update = new ArrayList<SMUpdate>();
 	    	update.add(new SMIncrement("comment_count", new SMInt((long) -1)));
-	    	SMObject resultinc = dataService.updateObject("posts", new SMString(posts_id), update);
+	    	resultinc = dataService.updateObject("posts", new SMString(posts_id), update);
 	    	
 	    	logger.debug("update result="+ ", increment result=" + resultinc + "update=" + update);
 	    	
@@ -170,7 +172,7 @@ public class PostsComment implements CustomCodeMethod {
       Map<String, Object> returnMap = new HashMap<String, Object>();
       
       returnMap.put("code", "200");
-      
+      returnMap.put("data", resultinc.toString());
       return new ResponseToProcess(HttpURLConnection.HTTP_OK, returnMap);
     } catch (InvalidSchemaException e) {
       HashMap<String, String> errMap = new HashMap<String, String>();

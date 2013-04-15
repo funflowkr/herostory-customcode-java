@@ -43,6 +43,7 @@ public class EntryPointExtender extends JarEntryObject {
     list.add(new UserGameInfo());
     list.add(new CharacterLikeFeed());
     list.add(new CharacterFeed());
+    list.add(new PostsLike());
     
     return list;
   }

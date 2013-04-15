@@ -115,7 +115,7 @@ public class PostsLike implements CustomCodeMethod {
 	    	
 	    	// like 한 Count Update 
 	    	List<SMUpdate> update = new ArrayList<SMUpdate>();
-	    	update.add(new SMIncrement("likes_count", new SMInt((long) 1)));
+	    	update.add(new SMIncrement("like_count", new SMInt((long) 1)));
 	    	SMObject resultinc = dataService.updateObject("posts", new SMString(posts_id), update);
 	    	
 	    	logger.debug("update result="+result + ", increment result=" + resultinc + "update=" + update);
@@ -129,7 +129,7 @@ public class PostsLike implements CustomCodeMethod {
 	    	
 	    	// like 한 Count-1 update  
 	    	List<SMUpdate> update = new ArrayList<SMUpdate>();
-	    	update.add(new SMIncrement("likes_count", new SMInt((long) -1)));
+	    	update.add(new SMIncrement("like_count", new SMInt((long) -1)));
 	    	SMObject resultinc = dataService.updateObject("posts", new SMString(posts_id), update);
 	    	
 	    	logger.debug("update result="+ ", increment result=" + resultinc + "update=" + update);

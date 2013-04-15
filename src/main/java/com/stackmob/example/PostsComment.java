@@ -40,24 +40,24 @@ import com.stackmob.sdkapi.SMObject;
 import com.stackmob.sdkapi.SMString;
 import com.stackmob.sdkapi.SMUpdate;
 
-public class PostsLike implements CustomCodeMethod {
+public class PostsComment implements CustomCodeMethod {
 
   @Override
   public String getMethodName() {
-    return "posts_like";
+    return "posts_comment";
   }
 
   
   @Override
   public List<String> getParams() {
-	  return Arrays.asList("posts_id","characters_id");
+	  return Arrays.asList("posts_id","characters_id","comment_text","comments_id");
   }
 
  
   @Override
   public ResponseToProcess execute(ProcessedAPIRequest request, SDKServiceProvider serviceProvider) {
 	
-	LoggerService logger = serviceProvider.getLoggerService(PostsLike.class);
+	LoggerService logger = serviceProvider.getLoggerService(PostsComment.class);
 	//Log the JSON object passed to the StackMob Logs
 	//logger.debug(request.getBody());
 	
@@ -65,24 +65,45 @@ public class PostsLike implements CustomCodeMethod {
     String verb = request.getVerb().toString();
     String posts_id = null ;
     String characters_id = null;
+    String comment_text = null;
+    String comments_id = null;
     
-    if (verb.equalsIgnoreCase("post") || verb.equalsIgnoreCase("put")) {
-    	logger.debug("GET ACTION ==== POST or PUT");
+    if (verb.equalsIgnoreCase("post")) {
     	
     	if (!request.getBody().isEmpty()) {
             try {
               JSONObject jsonObj = new JSONObject(request.getBody());
               if (!jsonObj.isNull("posts_id")) posts_id = jsonObj.getString("posts_id");
               if (!jsonObj.isNull("characters_id")) characters_id = jsonObj.getString("characters_id");
+              if (!jsonObj.isNull("comment_text")) comment_text = jsonObj.getString("comment_text");
             } catch (JSONException e) {
             	logger.debug("Caught JSON Exception");
               e.printStackTrace();
             }
           } else logger.debug("Request body is empty");
-    } else { 
-    	posts_id = request.getParams().get("posts_id");
-        characters_id = request.getParams().get("characters_id");
     	
+    	if (!Util.strCheck(characters_id) ) {
+        	HashMap<String, String> errParams = new HashMap<String, String>();
+            errParams.put("error", "no characters_id - exception");
+            return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, errParams); // http 400 - bad request
+      	}
+    	if (!Util.strCheck(comment_text) ) {
+        	HashMap<String, String> errParams = new HashMap<String, String>();
+            errParams.put("error", "no comment_text - exception");
+            return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, errParams); // http 400 - bad request
+      	}
+    
+    } else { 
+    	
+    	posts_id = request.getParams().get("posts_id");
+        comments_id = request.getParams().get("comments_id");
+    	
+        if (!Util.strCheck(comments_id) ) {
+        	HashMap<String, String> errParams = new HashMap<String, String>();
+            errParams.put("error", "no comments_id - exception");
+            return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, errParams); // http 400 - bad request
+      	}
+        
     }
     	
     
@@ -92,11 +113,7 @@ public class PostsLike implements CustomCodeMethod {
         return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, errParams); // http 400 - bad request
   	}
     
-    if (!Util.strCheck(characters_id) ) {
-    	HashMap<String, String> errParams = new HashMap<String, String>();
-        errParams.put("error", "no characters_id - exception");
-        return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, errParams); // http 400 - bad request
-  	}
+    
     
     
  // get the datastore service and assemble the query
@@ -105,16 +122,16 @@ public class PostsLike implements CustomCodeMethod {
     try {
 	    
     	// this is where we handle the special case for `POST` and `PUT` requests
-	    if (verb.equalsIgnoreCase("post") || verb.equalsIgnoreCase("put")) {
-	    	logger.debug("GET ACTION ==== POST or PUT");
+	    if (verb.equalsIgnoreCase("post")) {
+	    	logger.debug("GET ACTION ==== POST");
 	    	
-	    	// like 한 사람 입력
-	    	List<SMString> valuesToAppend = Arrays.asList(new SMString(characters_id));
-	    	SMObject result = dataService.addRelatedObjects("posts", new SMString(posts_id), "likes", valuesToAppend);
+	    	// insert comment
+	    	List<SMString> valuesToAppend = Arrays.asList(new SMString(characters_id),new SMString(comment_text));
+	    	SMObject result = dataService.addRelatedObjects("posts", new SMString(posts_id), "comments", valuesToAppend);
 	    	
-	    	// like 한 Count Update 
+	    	// comment 한 Count Update 
 	    	List<SMUpdate> update = new ArrayList<SMUpdate>();
-	    	update.add(new SMIncrement("like_count", new SMInt((long) 1)));
+	    	update.add(new SMIncrement("comment_count", new SMInt((long) 1)));
 	    	SMObject resultinc = dataService.updateObject("posts", new SMString(posts_id), update);
 	    	
 	    	logger.debug("update result="+result + ", increment result=" + resultinc + ",,update=" + update);
@@ -122,13 +139,13 @@ public class PostsLike implements CustomCodeMethod {
 	    // this is where we handle the case for `DELETE` requests
 	    } else if (verb.equalsIgnoreCase("delete") ) {
 	    	logger.debug("GET ACTION ==== DELETE");
-	    	// like 한 사람 delete 
-	    	List<SMString> valuesToRemove = Arrays.asList(new SMString(characters_id));
-	    	dataService.removeRelatedObjects("posts", new SMString(posts_id),"likes", valuesToRemove, true);
+	    	// comment 한 사람 delete 
+	    	List<SMString> valuesToRemove = Arrays.asList(new SMString(comments_id));
+	    	dataService.removeRelatedObjects("posts", new SMString(posts_id),"comments", valuesToRemove, true);
 	    	
-	    	// like 한 Count-1 update  
+	    	// comment 한 Count-1 update  
 	    	List<SMUpdate> update = new ArrayList<SMUpdate>();
-	    	update.add(new SMIncrement("like_count", new SMInt((long) -1)));
+	    	update.add(new SMIncrement("comment_count", new SMInt((long) -1)));
 	    	SMObject resultinc = dataService.updateObject("posts", new SMString(posts_id), update);
 	    	
 	    	logger.debug("update result="+ ", increment result=" + resultinc + "update=" + update);

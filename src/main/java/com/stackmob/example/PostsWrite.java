@@ -134,7 +134,6 @@ public class PostsWrite implements CustomCodeMethod {
 	    	// insert comment
 	    	List<SMObject> objectsToCreate = Arrays.asList();
 	    	SMObject result = dataService.createObject("posts", new SMObject(objMap));
-	    	resultdata = result;
 	    	
 	    	SMObject resultshare = null ;
 	    	SMObject resultshareinc = null ;
@@ -156,6 +155,8 @@ public class PostsWrite implements CustomCodeMethod {
 	    	}
 	    	
 	    	logger.debug("post result="+result + ", share result=" + resultshare + ",result share inc=" + resultshareinc);
+	    	resultdata = result;
+	    	
 	    	
 	    // this is where we handle the case for `DELETE` requests
 	    } else if (verb.equalsIgnoreCase("delete") ) {
@@ -202,6 +203,7 @@ public class PostsWrite implements CustomCodeMethod {
 	    	
 	    	logger.debug("update result="+ result + ", increment result=" + resultshareinc);
 	    	
+	    	resultdata = resultshareinc;
 	    
 	    	// this is where we handle the case for `GET` 
 	    } else {
@@ -214,7 +216,7 @@ public class PostsWrite implements CustomCodeMethod {
       Map<String, Object> returnMap = new HashMap<String, Object>();
       
       returnMap.put("code", HttpURLConnection.HTTP_OK);
-      returnMap.put("data", resultinc);
+      returnMap.put("data", resultdata);
       return new ResponseToProcess(HttpURLConnection.HTTP_OK, returnMap);
     } catch (InvalidSchemaException e) {
       HashMap<String, String> errMap = new HashMap<String, String>();

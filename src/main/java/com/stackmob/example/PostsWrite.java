@@ -79,12 +79,7 @@ public class PostsWrite implements CustomCodeMethod {
     String characters_id = null;
     String share_posts_id = null ;
     
-    if (!Util.strCheck(characters_id) ) {
-    	HashMap<String, String> errParams = new HashMap<String, String>();
-        errParams.put("error", "no characters_id - exception");
-        return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, errParams); // http 400 - bad request
-  	}
-	
+    
     
     try {
 	    
@@ -115,6 +110,11 @@ public class PostsWrite implements CustomCodeMethod {
 	    	if (!Util.strCheck(post_text) ) {
 	        	HashMap<String, String> errParams = new HashMap<String, String>();
 	            errParams.put("error", "no post_text - exception");
+	            return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, errParams); // http 400 - bad request
+	      	}
+	    	if (!Util.strCheck(characters_id) ) {
+	        	HashMap<String, String> errParams = new HashMap<String, String>();
+	            errParams.put("error", "no characters_id - exception");
 	            return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, errParams); // http 400 - bad request
 	      	}
 	    	
@@ -172,7 +172,12 @@ public class PostsWrite implements CustomCodeMethod {
 	            errParams.put("error", "no posts_id - exception");
 	            return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, errParams); // http 400 - bad request
 	      	}
-	        
+	        if (!Util.strCheck(characters_id) ) {
+	        	HashMap<String, String> errParams = new HashMap<String, String>();
+	            errParams.put("error", "no characters_id - exception");
+	            return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, errParams); // http 400 - bad request
+	      	}
+	    	
 	        boolean result = dataService.deleteObject("posts", posts_id);
 	    	
 	    	SMObject resultshare = null ;

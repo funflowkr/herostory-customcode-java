@@ -79,7 +79,7 @@ public class PostsWrite implements CustomCodeMethod {
     String characters_id = null;
     String share_posts_id = null ;
     
-    
+    SMObject resultdata = null;
     
     try {
 	    
@@ -134,13 +134,14 @@ public class PostsWrite implements CustomCodeMethod {
 	    	// insert comment
 	    	List<SMObject> objectsToCreate = Arrays.asList();
 	    	SMObject result = dataService.createObject("posts", new SMObject(objMap));
+	    	resultdata = result;
 	    	
 	    	SMObject resultshare = null ;
 	    	SMObject resultshareinc = null ;
 	    	
 	    	// share 한 포스트가 있는 경우는 shares 와 share_count+1 에 넣어준다. 
 	    	
-	    	if (!Util.strCheck(share_posts_id)) {
+	    	if (Util.strCheck(share_posts_id)) {
 	    		
 	    		// shares 한 사람 입력
 		    	List<SMString> valuesToAppend = Arrays.asList(new SMString(characters_id));
@@ -183,7 +184,7 @@ public class PostsWrite implements CustomCodeMethod {
 	    	SMObject resultshare = null ;
 	    	SMObject resultshareinc = null ;
 	    	
-	    	if (!Util.strCheck(share_posts_id)) {
+	    	if (Util.strCheck(share_posts_id)) {
 	    		
 	    		// shares 한 사람 입력
 		    	List<SMString> valuesToRemove = Arrays.asList(new SMString(characters_id));

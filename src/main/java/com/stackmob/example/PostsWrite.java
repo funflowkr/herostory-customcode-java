@@ -42,7 +42,7 @@ import com.stackmob.sdkapi.SMString;
 import com.stackmob.sdkapi.SMUpdate;
 import com.stackmob.sdkapi.SMValue;
 
-public class Posts implements CustomCodeMethod {
+public class PostsWrite implements CustomCodeMethod {
 
   @Override
   public String getMethodName() {
@@ -62,7 +62,7 @@ public class Posts implements CustomCodeMethod {
 	  
 	
 	  
-	LoggerService logger = serviceProvider.getLoggerService(Posts.class);
+	LoggerService logger = serviceProvider.getLoggerService(PostsWrite.class);
 	//Log the JSON object passed to the StackMob Logs
 	//logger.debug(request.getBody());
 	

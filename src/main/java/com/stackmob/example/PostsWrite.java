@@ -46,7 +46,7 @@ public class PostsWrite implements CustomCodeMethod {
 
   @Override
   public String getMethodName() {
-    return "posts";
+    return "posts_write";
   }
 
   

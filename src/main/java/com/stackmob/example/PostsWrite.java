@@ -167,6 +167,8 @@ public class PostsWrite implements CustomCodeMethod {
 	    	// share_count 도 -1 
 	    	
 	    	String posts_id = request.getParams().get("posts_id");
+	    	characters_id = request.getParams().get("characters_id");
+	    	share_posts_id = request.getParams().get("share_posts_id");
 	        
 	        if (!Util.strCheck(posts_id) ) {
 	        	HashMap<String, String> errParams = new HashMap<String, String>();

@@ -82,6 +82,7 @@ public class PostsLike implements CustomCodeMethod {
     } else { 
     	posts_id = request.getParams().get("posts_id");
         characters_id = request.getParams().get("characters_id");
+       
     	
     }
     	

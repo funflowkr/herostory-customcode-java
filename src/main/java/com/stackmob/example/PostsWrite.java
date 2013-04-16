@@ -191,7 +191,7 @@ public class PostsWrite implements CustomCodeMethod {
 	    		
 	    		// shares 한 사람 입력
 		    	List<SMString> valuesToRemove = Arrays.asList(new SMString(characters_id));
-		    	dataService.removeRelatedObjects("posts", new SMString(share_posts_id), "shares", valuesToRemove,true);
+		    	dataService.removeRelatedObjects("posts", new SMString(share_posts_id), "shares", valuesToRemove,false);
 		    	
 		    	// share 한 Count Update 
 		    	List<SMUpdate> update = new ArrayList<SMUpdate>();

@@ -125,7 +125,7 @@ public class PostsLike implements CustomCodeMethod {
 	    	logger.debug("GET ACTION ==== DELETE");
 	    	// like 한 사람 delete 
 	    	List<SMString> valuesToRemove = Arrays.asList(new SMString(characters_id));
-	    	dataService.removeRelatedObjects("posts", new SMString(posts_id),"likes", valuesToRemove, true);
+	    	dataService.removeRelatedObjects("posts", new SMString(posts_id),"likes", valuesToRemove, false);
 	    	
 	    	// like 한 Count-1 update  
 	    	List<SMUpdate> update = new ArrayList<SMUpdate>();

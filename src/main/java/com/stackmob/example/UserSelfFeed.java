@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.stackmob.core.DatastoreException;
@@ -167,12 +168,19 @@ public class UserSelfFeed implements CustomCodeMethod {
         	logger.debug("gameauths =" + jObj + "");
         	
         	for (int i=0;i<characterArray.length();i++) {
-        		logger.debug("gameauths characters=" + i + " - " + characterArray.getJSONObject(i).getJSONArray("follows"));
-        		JSONArray follows = characterArray.getJSONObject(i).getJSONArray("follows");
-        		for (int j=0;j<follows.length();j++) {
+        		try {
         			
-        			//logger.info("gameauths follows=" + i + "/" + j + " - "+ follows.getString(j) + " ");
-        			followers.add(new SMString(follows.getString(j)));
+        			logger.debug("gameauths characters=" + i + " - " + characterArray.getJSONObject(i).getJSONArray("follows"));
+	        		JSONArray follows = characterArray.getJSONObject(i).getJSONArray("follows");
+	        		for (int j=0;j<follows.length();j++) {
+	        			
+	        			//logger.info("gameauths follows=" + i + "/" + j + " - "+ follows.getString(j) + " ");
+	        			followers.add(new SMString(follows.getString(j)));
+	        		}
+        		} catch (JSONException e){
+        			// follows 가 없다면 걍 넘어간다.
+        			logger.debug("Json error=" + e.toString());
+	        		
         		}
         	}
         	

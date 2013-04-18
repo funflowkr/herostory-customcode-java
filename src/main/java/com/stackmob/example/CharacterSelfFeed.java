@@ -178,14 +178,16 @@ public class CharacterSelfFeed implements CustomCodeMethod {
         	    	followers.add(new SMString(string));
         		}
         		*/
+        		SMValue follows = userObject.getValue().get("follows");
         		
-        		JSONArray characterArray = new JSONArray(userObject.getValue().get("follows").toString());
-	        	
-	        	logger.debug("characterArray =" + characterArray + "");
-	        	
-	        	for (int i=0;i<characterArray.length();i++) {
-	        		followers.add(new SMString(characterArray.getString(i)));
-	    		}
+        		if (follows != null) {
+        			JSONArray characterArray = new JSONArray(userObject.getValue().get("follows").toString());
+        			logger.debug("characterArray =" + characterArray + "");
+		        	
+		        	for (int i=0;i<characterArray.length();i++) {
+		        		followers.add(new SMString(characterArray.getString(i)));
+		    		}
+        		}
         	} catch (JSONException e){
     			// follows 가 없다면 걍 넘어간다.
     			logger.debug("Json error=" + e.toString());

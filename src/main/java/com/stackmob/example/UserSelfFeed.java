@@ -168,12 +168,13 @@ public class UserSelfFeed implements CustomCodeMethod {
         	logger.debug("gameauths =" + jObj + "");
         	
         	for (int i=0;i<characterArray.length();i++) {
+        		
+        		// 내가 쓴 글도 나와야 하니까. 내 캐릭터 id 도 추가한다. 
+    			followers.add(new SMString(characterArray.getJSONObject(i).getString("characters_id")));
+    			
         		try {
-        			
         			logger.debug("gameauths characters=" + i + " - " + characterArray.getJSONObject(i).getString("characters_id") + " / "+ characterArray.getJSONObject(i).getJSONArray("follows"));
-        			// 내가 쓴 글도 나와야 하니까. 내 캐릭터 id 도 추가한다. 
-        			followers.add(new SMString(characterArray.getJSONObject(i).getString("characters_id")));
-        			
+        				
 	        		JSONArray follows = characterArray.getJSONObject(i).getJSONArray("follows");
 	        		for (int j=0;j<follows.length();j++) {
 	        			

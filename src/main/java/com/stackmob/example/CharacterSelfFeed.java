@@ -156,7 +156,7 @@ public class CharacterSelfFeed implements CustomCodeMethod {
     	
     	
 //    	followers.
-    	// logger.debug("user result=" + userResult);
+    	logger.debug("user result=" + userResult);
     	
     	//to = userObject.getValue().get("email").toString();
         //toname = userObject.getValue().get("name").toString();

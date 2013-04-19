@@ -52,7 +52,7 @@ public class PostsWrite implements CustomCodeMethod {
   
   @Override
   public List<String> getParams() {
-	  return Arrays.asList("characters_id","post_text","imageurl","share_posts_id","posts_id");
+	  return Arrays.asList("characters_id","post_text","imageurl","share_posts_id","share_characters_id","posts_id");
   }
 
  
@@ -78,6 +78,7 @@ public class PostsWrite implements CustomCodeMethod {
     
     String characters_id = null;
     String share_posts_id = null ;
+    String share_characters_id = null;
     
     SMObject resultdata = null;
     
@@ -100,6 +101,7 @@ public class PostsWrite implements CustomCodeMethod {
 	              if (!jsonObj.isNull("post_text")) post_text = jsonObj.getString("post_text");
 	              if (!jsonObj.isNull("imageurl")) imageurl = jsonObj.getString("imageurl");
 	              if (!jsonObj.isNull("share_posts_id")) share_posts_id = jsonObj.getString("share_posts_id");
+	              if (!jsonObj.isNull("share_characters_id")) share_characters_id = jsonObj.getString("share_characters_id");
 	              
 	            } catch (JSONException e) {
 	            	logger.debug("Caught JSON Exception");
@@ -128,7 +130,7 @@ public class PostsWrite implements CustomCodeMethod {
 	    	
 	    	objMap.put("imageurl", new SMString(imageurl));
 	    	objMap.put("share_post", new SMString(share_posts_id));
-	    	
+	    	objMap.put("share_post_character", new SMString(share_characters_id));
 	    	
 	    	
 	    	// insert comment

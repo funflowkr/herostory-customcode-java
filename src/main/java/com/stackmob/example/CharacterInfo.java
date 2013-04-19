@@ -93,7 +93,7 @@ public class CharacterInfo implements CustomCodeMethod {
     
  // execute the query
     List<SMObject> result;
-    int resultFollowingCount;
+    int resultFollowingCount = 0;
     try {
         result = dataService.readObjects("characters",query);
 	    
@@ -166,6 +166,11 @@ public class CharacterInfo implements CustomCodeMethod {
     	
     	Map<String, SMValue> userMap = new HashMap<String, SMValue>();
     	userMap.put("followers", new SMString(resultFollowers.get(0).getValue().get("follows").toString()));
+    	userMap.put("like_count", new SMInt((long) resultLikeCount));
+    	userMap.put("followers_count", new SMInt((long) resultFollowersCount));
+    	userMap.put("following_count", new SMInt((long) resultFollowingCount));
+    	
+    	
     	result.add(new SMObject(userMap));
     	
     	

@@ -158,12 +158,13 @@ public class CharacterInfo implements CustomCodeMethod {
     	
     	if (resultFollowers != null) {
     		resultFollowersCount = resultFollowers.size();
+    		logger.debug("resultFollowers="+resultFollowers+ "///Count="+resultFollowersCount);
     		result.add(resultFollowers.get(0));
     	} else {
     		resultFollowersCount = 0 ;
     	}
     	
-    	logger.debug("resultFollowers="+resultFollowers+ "///Count="+resultFollowersCount);
+    	
     	
     } catch(Exception e) {
 	    HashMap<String, String> errMap = new HashMap<String, String>();

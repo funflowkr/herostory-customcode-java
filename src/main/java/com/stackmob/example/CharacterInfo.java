@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.stackmob.core.DatastoreException;
@@ -92,12 +93,19 @@ public class CharacterInfo implements CustomCodeMethod {
     
  // execute the query
     List<SMObject> result;
+    int resultFollowingCount;
     try {
         result = dataService.readObjects("characters",query);
 	    
 	    if (result != null) {
-	    	JSONArray jArr = new JSONArray(result.get(0).getValue().get("follows").toString());
-	    	logger.debug("result="+result+"/following="+ jArr);
+	    	try {
+		    	JSONArray jArr = new JSONArray(result.get(0).getValue().get("follows").toString());
+		    	resultFollowingCount = jArr.length();
+	    	} catch (JSONException e){
+	    		resultFollowingCount = 0;
+	    		
+	    	}
+	    	logger.debug("result="+result+"/following="+ resultFollowingCount);
 	    }
 	    
 	    
@@ -121,12 +129,13 @@ public class CharacterInfo implements CustomCodeMethod {
     try {
     	
     	resultLike = dataService.readObjects("posts",query,1,filters);
-    	logger.debug("resultLike="+resultLike);
     	if (resultLike != null) {
     		resultLikeCount = resultLike.size();
     	} else {
     		resultLikeCount = 0 ;
     	}
+    	logger.debug("resultLike="+resultLike+ "///Count="+resultLikeCount);
+    	
     } catch(Exception e) {
 	    HashMap<String, String> errMap = new HashMap<String, String>();
 	    errMap.put("error", "unknown");
@@ -146,12 +155,15 @@ public class CharacterInfo implements CustomCodeMethod {
     try {
     	
     	resultFollowers = dataService.readObjects("characters",query,1,null);
-    	logger.debug("resultFollowers="+resultFollowers);
+    	
     	if (resultFollowers != null) {
     		resultFollowersCount = resultFollowers.size();
     	} else {
     		resultFollowersCount = 0 ;
     	}
+    	
+    	logger.debug("resultFollowers="+resultFollowers+ "///Count="+resultFollowersCount);
+    	
     } catch(Exception e) {
 	    HashMap<String, String> errMap = new HashMap<String, String>();
 	    errMap.put("error", "unknown");

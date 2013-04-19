@@ -128,7 +128,7 @@ public class CharacterInfo implements CustomCodeMethod {
     int resultLikeCount;
     try {
     	
-    	resultLike = dataService.readObjects("posts",query,1,filters);
+    	resultLike = dataService.readObjects("posts",queryLike,1,filters);
     	if (resultLike != null) {
     		resultLikeCount = resultLike.size();
     	} else {
@@ -154,7 +154,7 @@ public class CharacterInfo implements CustomCodeMethod {
     int resultFollowersCount;
     try {
     	
-    	resultFollowers = dataService.readObjects("characters",query,1,null);
+    	resultFollowers = dataService.readObjects("characters",queryFollowers,1,null);
     	
     	if (resultFollowers != null) {
     		resultFollowersCount = resultFollowers.size();

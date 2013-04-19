@@ -44,6 +44,8 @@ public class EntryPointExtender extends JarEntryObject {
     list.add(new CharacterLikeFeed());
     list.add(new CharacterFeed());
     list.add(new CharacterSelfFeed());
+    list.add(new CharacterInfo());
+    
     list.add(new PostsWrite());
     list.add(new PostsLike());
     list.add(new PostsComment());

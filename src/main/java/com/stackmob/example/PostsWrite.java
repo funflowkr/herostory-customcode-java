@@ -217,8 +217,10 @@ public class PostsWrite implements CustomCodeMethod {
           
       Map<String, Object> returnMap = new HashMap<String, Object>();
       
+      List<SMObject> result = Arrays.asList(resultdata);
+      
       returnMap.put("code", HttpURLConnection.HTTP_OK);
-      returnMap.put("data", resultdata);
+      returnMap.put("data", result);
       return new ResponseToProcess(HttpURLConnection.HTTP_OK, returnMap);
     } catch (InvalidSchemaException e) {
       HashMap<String, String> errMap = new HashMap<String, String>();

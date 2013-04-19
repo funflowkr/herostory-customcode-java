@@ -92,31 +92,71 @@ public class CharacterInfo implements CustomCodeMethod {
     
  // execute the query
     List<SMObject> result;
+    try {
+        result = dataService.readObjects("characters",query);
+	    logger.debug("result="+result);
+    } catch(Exception e) {
+	    HashMap<String, String> errMap = new HashMap<String, String>();
+	    errMap.put("error", "unknown");
+	    errMap.put("detail", e.toString());
+	    return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errMap); // http 500 - internal server error
+	}
     
-    result = dataService.readObjects("characters",query,0,null);
-    SMObject postObject;
+    // count like feed // 
+    List<SMCondition> queryLike = new ArrayList<SMCondition>();
     
+    queryLike.add(new SMIn("likes", Arrays.asList(new SMString(characters_id))));
     
-    // logger.debug("max_id="+ max_id+"");
-    if (max_id > 0) {
-    	query.add(new SMLess("createddate",new SMInt(max_id)));
-    }
-    // logger.debug("since_id="+ since_id);
-    if (since_id > 0) {
-    	query.add(new SMGreater("createddate",new SMInt(since_id)));
-    }
-    logger.debug("query="+ query);
-    
-    List<SMOrdering> fields = Arrays.asList(
-	  new SMOrdering("createddate", OrderingDirection.DESCENDING)
-	);
-    
-    
-    ResultFilters filters = new ResultFilters(0, -1 , null, Arrays.asList("characters_id", "charactername","level","avatarimageurl","heropoint"));
-	
+    ResultFilters filters = new ResultFilters(0, -1, null, Arrays.asList("posts_id"));
     
     // execute the query
-    List<SMObject> result;
+    List<SMObject> resultLike;
+    int resultLikeCount;
+    try {
+    	
+    	resultLike = dataService.readObjects("posts",query,1,filters);
+    	logger.debug("resultLike="+resultLike);
+    	if (resultLike != null) {
+    		resultLikeCount = resultLike.size();
+    	} else {
+    		resultLikeCount = 0 ;
+    	}
+    } catch(Exception e) {
+	    HashMap<String, String> errMap = new HashMap<String, String>();
+	    errMap.put("error", "unknown");
+	    errMap.put("detail", e.toString());
+	    return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errMap); // http 500 - internal server error
+	}
+    
+    // count followers // 
+    List<SMCondition> queryFollowers = new ArrayList<SMCondition>();
+    
+    queryFollowers.add(new SMIn("follows", Arrays.asList(new SMString(characters_id))));
+    
+    
+    // execute the query
+    List<SMObject> resultFollowers;
+    int resultFollowersCount;
+    try {
+    	
+    	resultFollowers = dataService.readObjects("characters",query,1,null);
+    	logger.debug("resultFollowers="+resultFollowers);
+    	if (resultFollowers != null) {
+    		resultFollowersCount = resultFollowers.size();
+    	} else {
+    		resultFollowersCount = 0 ;
+    	}
+    } catch(Exception e) {
+	    HashMap<String, String> errMap = new HashMap<String, String>();
+	    errMap.put("error", "unknown");
+	    errMap.put("detail", e.toString());
+	    return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errMap); // http 500 - internal server error
+	}
+    
+    
+    
+    // execute the query
+    List<SMObject> resultTotal;
     try {
     	
 	/***

@@ -76,9 +76,9 @@ public class PostsWrite implements CustomCodeMethod {
     DataService dataService = serviceProvider.getDataService();
     SMObject resultinc = null;
     
-    String characters_id = null;
-    String share_posts_id = null ;
-    String share_characters_id = null;
+    String characters_id = "";
+    String share_posts_id = "" ;
+    String share_characters_id = "";
     
     SMObject resultdata = null;
     
@@ -88,8 +88,8 @@ public class PostsWrite implements CustomCodeMethod {
 	    if (verb.equalsIgnoreCase("post")) {
 	    	logger.debug("GET ACTION ==== POST");
 	    	
-	    	String post_text = null;
-	        String imageurl = null;
+	    	String post_text = "";
+	        String imageurl = "";
 	        
 	    	// 새로운 글을 쓰고. 
 	    	// 원본 글에는 shares 와 share_count + 1 해주고. 

@@ -158,6 +158,7 @@ public class CharacterInfo implements CustomCodeMethod {
     	
     	if (resultFollowers != null) {
     		resultFollowersCount = resultFollowers.size();
+    		result.add(resultFollowers.get(0));
     	} else {
     		resultFollowersCount = 0 ;
     	}
@@ -175,26 +176,11 @@ public class CharacterInfo implements CustomCodeMethod {
     
     // execute the query
     List<SMObject> resultTotal;
-    try {
-    	
-	/***
-    	readObjects(
-    		String schema, 
-    		List<SMCondition> conditions, 
-    		int expandDepth, 
-    		ResultFilters resultFilters
-		) throws InvalidSchemaException, DatastoreException
-	 */
-
-      result = dataService.readObjects("posts",query,1,filters);
-      SMObject postObject;
-      
+    
       Map<String, Object> returnMap = new HashMap<String, Object>();
       
    	  // user was in the datastore, so check the score and update if necessary
       if (result != null && result.size() == 1) {
-    	  postObject = result.get(0);
-      //  returnMap.put("data", postObject);
     	  returnMap.put("data", result);
       //  logger.debug("result=="+result);
       } else if (result.size() > 1 ){
@@ -204,28 +190,12 @@ public class CharacterInfo implements CustomCodeMethod {
       //  userMap.put("username", new SMString(username));
       //  userMap.put("score", new SMInt(0L));
       //  newUser = true;
-        postObject = null ; // new SMObject(userMap);
-        logger.debug("result size=" + result.size());
+      //  postObject = null ; // new SMObject(userMap);
+      //  logger.debug("result size=" + result.size());
       }
-   
+     
    
       return new ResponseToProcess(HttpURLConnection.HTTP_OK, returnMap);
-    } catch (InvalidSchemaException e) {
-      HashMap<String, String> errMap = new HashMap<String, String>();
-      errMap.put("error", "invalid_schema");
-      errMap.put("detail", e.toString());
-      return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errMap); // http 500 - internal server error
-    } catch (DatastoreException e) {
-      HashMap<String, String> errMap = new HashMap<String, String>();
-      errMap.put("error", "datastore_exception");
-      errMap.put("detail", e.toString());
-      return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errMap); // http 500 - internal server error
-    } catch(Exception e) {
-      HashMap<String, String> errMap = new HashMap<String, String>();
-      errMap.put("error", "unknown");
-      errMap.put("detail", e.toString());
-      return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errMap); // http 500 - internal server error
-    }
    
   }
 }

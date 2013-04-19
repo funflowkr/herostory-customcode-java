@@ -88,13 +88,19 @@ public class CharacterInfo implements CustomCodeMethod {
     // build a query
     List<SMCondition> query  = new ArrayList<SMCondition>();
     
-    query.add(new SMEquals("character", new SMString(characters_id)));
+    query.add(new SMEquals("characters_id", new SMString(characters_id)));
     
  // execute the query
     List<SMObject> result;
     try {
         result = dataService.readObjects("characters",query);
-	    logger.debug("result="+result);
+	    
+	    if (result != null) {
+	    	JSONArray jArr = new JSONArray(result.get(0).getValue().get("follows").toString());
+	    	logger.debug("result="+result+"/following="+ jArr);
+	    }
+	    
+	    
     } catch(Exception e) {
 	    HashMap<String, String> errMap = new HashMap<String, String>();
 	    errMap.put("error", "unknown");

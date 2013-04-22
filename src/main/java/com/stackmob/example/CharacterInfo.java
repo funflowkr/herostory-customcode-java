@@ -172,7 +172,7 @@ public class CharacterInfo implements CustomCodeMethod {
     	
     	
     	result.add(new SMObject(userMap));
-    	
+    	logger.debug("result="+result);
     	
     } catch(Exception e) {
 	    HashMap<String, String> errMap = new HashMap<String, String>();

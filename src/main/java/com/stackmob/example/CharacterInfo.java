@@ -37,6 +37,7 @@ import com.stackmob.sdkapi.SDKServiceProvider;
 import com.stackmob.sdkapi.SMCondition;
 import com.stackmob.sdkapi.SMEquals;
 import com.stackmob.sdkapi.SMIn;
+import com.stackmob.sdkapi.SMInt;
 import com.stackmob.sdkapi.SMObject;
 import com.stackmob.sdkapi.SMString;
 import com.stackmob.sdkapi.SMValue;
@@ -86,6 +87,8 @@ public class CharacterInfo implements CustomCodeMethod {
     
  // execute the query
     List<SMObject> result;
+    SMObject resultObj = null;
+    
     int resultFollowingCount = 0;
     try {
         result = dataService.readObjects("characters",query);
@@ -100,6 +103,7 @@ public class CharacterInfo implements CustomCodeMethod {
 	    		
 	    	}
 	    	logger.debug("result="+result+"/following="+ resultFollowingCount);
+	    	resultObj = result.get(0);
 	    }
 	    
 	    
@@ -153,7 +157,7 @@ public class CharacterInfo implements CustomCodeMethod {
     	if (resultFollowers != null) {
     		resultFollowersCount = resultFollowers.size();
     		logger.debug("resultFollowers="+resultFollowers.get(0)+ "///Count="+resultFollowersCount + "////" + resultFollowers.get(0).getValue().get("follows"));
-    		
+    		resultObj.getValue().put("followers", resultFollowers.get(0).getValue().get("follows"));
     	} else {
     		resultFollowersCount = 0 ;
     	}
@@ -171,6 +175,11 @@ public class CharacterInfo implements CustomCodeMethod {
 	    errMap.put("detail", e.toString());
 	    return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errMap); // http 500 - internal server error
 	}
+    
+    resultObj.getValue().put("like_count",new SMInt((long) resultLikeCount));
+    resultObj.getValue().put("follows_count",new SMInt((long) resultFollowingCount));
+    resultObj.getValue().put("followers_count",new SMInt((long) resultFollowersCount));
+    
     
     //result.set(0, new SMObject(jObjResult));
     //SMObject aaa = new SMObject()

@@ -171,7 +171,7 @@ public class CharacterInfo implements CustomCodeMethod {
     	//userMap.put("following_count", new SMInt((long) resultFollowingCount));
     	
     	
-    	result.add(new SMObject(userMap));
+    	result.set(0, new SMObject(userMap));
     	logger.debug("result="+result);
     	
     } catch(Exception e) {

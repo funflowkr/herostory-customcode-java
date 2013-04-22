@@ -60,6 +60,10 @@ public class PostsWrite implements CustomCodeMethod {
   public ResponseToProcess execute(ProcessedAPIRequest request, SDKServiceProvider serviceProvider) {
 	
 	  
+	LoggerService logger = serviceProvider.getLoggerService(PostsWrite.class);
+	//Log the JSON object passed to the StackMob Logs
+	//logger.debug(request.getBody());
+	
 	String loginname = request.getLoggedInUser();
 	
 	if (loginname == null || loginname.isEmpty()) {
@@ -67,10 +71,6 @@ public class PostsWrite implements CustomCodeMethod {
         errParams.put("error", "no user is logged in!!");
         return new ResponseToProcess(HttpURLConnection.HTTP_UNAUTHORIZED, errParams); // http 401 - unauthorized
     }
-	  
-	LoggerService logger = serviceProvider.getLoggerService(PostsWrite.class);
-	//Log the JSON object passed to the StackMob Logs
-	//logger.debug(request.getBody());
 	
     Map<String, Object> map = new HashMap<String, Object>();
     String verb = request.getVerb().toString();

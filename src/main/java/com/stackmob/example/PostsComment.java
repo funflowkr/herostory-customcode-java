@@ -63,6 +63,15 @@ public class PostsComment implements CustomCodeMethod {
 	//Log the JSON object passed to the StackMob Logs
 	//logger.debug(request.getBody());
 	
+	
+	String loginname = request.getLoggedInUser();
+	
+	if (loginname == null || loginname.isEmpty()) {
+        HashMap<String, String> errParams = new HashMap<String, String>();
+        errParams.put("error", "no user is logged in!!");
+        return new ResponseToProcess(HttpURLConnection.HTTP_UNAUTHORIZED, errParams); // http 401 - unauthorized
+    }
+	
     Map<String, Object> map = new HashMap<String, Object>();
     String verb = request.getVerb().toString();
     String posts_id = null ;

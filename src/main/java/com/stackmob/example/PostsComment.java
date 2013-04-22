@@ -52,7 +52,7 @@ public class PostsComment implements CustomCodeMethod {
   
   @Override
   public List<String> getParams() {
-	  return Arrays.asList("posts_id","characters_id","comment_text","comments_id");
+	  return Arrays.asList("posts_id","characters_id","comment_text","comments_id","m");
   }
 
  
@@ -78,6 +78,8 @@ public class PostsComment implements CustomCodeMethod {
     String characters_id = null;
     String comment_text = null;
     String comments_id = null;
+    String m = null;
+    
     
     if (verb.equalsIgnoreCase("post")) {
     	
@@ -114,7 +116,9 @@ public class PostsComment implements CustomCodeMethod {
             errParams.put("error", "no comments_id - exception");
             return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, errParams); // http 400 - bad request
       	}
-        
+        // m = DELETE 이면 삭제하라는 것이다. 
+        // custom code 에서 DELETE Verb 를 쓸 수 있게 android code 를 짤수가 없다. -0- 
+        m = request.getParams().get("m");
     }
     	
     
@@ -157,18 +161,21 @@ public class PostsComment implements CustomCodeMethod {
 	    	
 	    // this is where we handle the case for `DELETE` requests
 	    } else if (verb.equalsIgnoreCase("delete") ) {
-	    	logger.debug("GET ACTION ==== DELETE");
-	    	// comment 한 사람 delete 
-	    	List<SMString> valuesToRemove = Arrays.asList(new SMString(comments_id));
-	    	dataService.removeRelatedObjects("posts", new SMString(posts_id),"comments", valuesToRemove, true);
 	    	
-	    	// comment 한 Count-1 update  
-	    	List<SMUpdate> update = new ArrayList<SMUpdate>();
-	    	update.add(new SMIncrement("comment_count", new SMInt((long) -1)));
-	    	resultinc = dataService.updateObject("posts", new SMString(posts_id), update);
+	    	if (m.equalsIgnoreCase("delete")) {
 	    	
-	    	logger.debug("update result="+ ", increment result=" + resultinc + "update=" + update);
-	    	
+		    	logger.debug("GET ACTION ==== DELETE");
+		    	// comment 한 사람 delete 
+		    	List<SMString> valuesToRemove = Arrays.asList(new SMString(comments_id));
+		    	dataService.removeRelatedObjects("posts", new SMString(posts_id),"comments", valuesToRemove, true);
+		    	
+		    	// comment 한 Count-1 update  
+		    	List<SMUpdate> update = new ArrayList<SMUpdate>();
+		    	update.add(new SMIncrement("comment_count", new SMInt((long) -1)));
+		    	resultinc = dataService.updateObject("posts", new SMString(posts_id), update);
+		    	
+		    	logger.debug("update result="+ ", increment result=" + resultinc + "update=" + update);
+	    	}
 	    
 	    	// this is where we handle the case for `GET` 
 	    } else {

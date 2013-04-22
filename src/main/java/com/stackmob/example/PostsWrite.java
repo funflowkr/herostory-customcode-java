@@ -63,9 +63,9 @@ public class PostsWrite implements CustomCodeMethod {
 	String loginname = request.getLoggedInUser();
 	
 	if (loginname == null || loginname.isEmpty()) {
-    //    HashMap<String, String> errParams = new HashMap<String, String>();
-    //    errParams.put("error", "no user is logged in!!");
-    //    return new ResponseToProcess(HttpURLConnection.HTTP_UNAUTHORIZED, errParams); // http 401 - unauthorized
+        HashMap<String, String> errParams = new HashMap<String, String>();
+        errParams.put("error", "no user is logged in!!");
+        return new ResponseToProcess(HttpURLConnection.HTTP_UNAUTHORIZED, errParams); // http 401 - unauthorized
     }
 	  
 	LoggerService logger = serviceProvider.getLoggerService(PostsWrite.class);

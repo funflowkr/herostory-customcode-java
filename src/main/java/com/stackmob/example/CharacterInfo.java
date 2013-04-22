@@ -162,13 +162,6 @@ public class CharacterInfo implements CustomCodeMethod {
     		resultFollowersCount = 0 ;
     	}
     	
-    	//JSONObject jObjResult = new JSONObject(result.get(0));
-        //jObjResult.put("followers", new JSONArray());
-        
-        result.get(0).getValue().put("followers", resultFollowers.get(0).getValue().get("follows"));
-        
-    	logger.debug("result="+result);
-    	
     } catch(Exception e) {
 	    HashMap<String, String> errMap = new HashMap<String, String>();
 	    errMap.put("error", "unknown");
@@ -180,9 +173,6 @@ public class CharacterInfo implements CustomCodeMethod {
     resultObj.getValue().put("follows_count",new SMInt((long) resultFollowingCount));
     resultObj.getValue().put("followers_count",new SMInt((long) resultFollowersCount));
     
-    
-    //result.set(0, new SMObject(jObjResult));
-    //SMObject aaa = new SMObject()
     
     // execute the query
     List<SMObject> resultTotal;

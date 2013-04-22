@@ -139,9 +139,9 @@ public class PostsComment implements CustomCodeMethod {
 	    	
 	    	
 	    	Map<String, SMValue> objMap = new HashMap<String, SMValue>();
+	    	objMap.put("sm_owner", new SMString(loginnam));
 	    	objMap.put("character", new SMString(characters_id));
 	    	objMap.put("text", new SMString(comment_text));
-	    	
 	    	
 	    	// insert comment
 	    	List<SMObject> objectsToCreate = Arrays.asList(new SMObject(objMap));

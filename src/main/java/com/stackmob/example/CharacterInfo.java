@@ -27,24 +27,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.stackmob.core.DatastoreException;
-import com.stackmob.core.InvalidSchemaException;
 import com.stackmob.core.customcode.CustomCodeMethod;
 import com.stackmob.core.rest.ProcessedAPIRequest;
 import com.stackmob.core.rest.ResponseToProcess;
 import com.stackmob.sdkapi.DataService;
 import com.stackmob.sdkapi.LoggerService;
-import com.stackmob.sdkapi.OrderingDirection;
 import com.stackmob.sdkapi.ResultFilters;
 import com.stackmob.sdkapi.SDKServiceProvider;
 import com.stackmob.sdkapi.SMCondition;
 import com.stackmob.sdkapi.SMEquals;
-import com.stackmob.sdkapi.SMGreater;
 import com.stackmob.sdkapi.SMIn;
-import com.stackmob.sdkapi.SMInt;
-import com.stackmob.sdkapi.SMLess;
 import com.stackmob.sdkapi.SMObject;
-import com.stackmob.sdkapi.SMOrdering;
 import com.stackmob.sdkapi.SMString;
 import com.stackmob.sdkapi.SMValue;
 
@@ -101,6 +94,7 @@ public class CharacterInfo implements CustomCodeMethod {
 	    	try {
 		    	JSONArray jArr = new JSONArray(result.get(0).getValue().get("follows").toString());
 		    	resultFollowingCount = jArr.length();
+		    	
 	    	} catch (JSONException e){
 	    		resultFollowingCount = 0;
 	    		
@@ -164,15 +158,10 @@ public class CharacterInfo implements CustomCodeMethod {
     		resultFollowersCount = 0 ;
     	}
     	
-    	Map<String, SMValue> userMap = new HashMap<String, SMValue>();
-    	userMap.put("followers", new SMString(resultFollowers.get(0).getValue().get("follows").toString()));
-    	//userMap.put("like_count", new SMInt((long) resultLikeCount));
-    	//userMap.put("followers_count", new SMInt((long) resultFollowersCount));
-    	//userMap.put("following_count", new SMInt((long) resultFollowingCount));
-    	
-    	
-    	result.set(0, new SMObject(userMap));
-    	logger.debug("result="+result);
+    	JSONObject jObjResult = new JSONObject(result.get(0));
+        jObjResult.put("followers", new JSONArray(resultFollowers.get(0).getValue().get("follows")));
+        
+    	logger.debug("result="+jObjResult);
     	
     } catch(Exception e) {
 	    HashMap<String, String> errMap = new HashMap<String, String>();
@@ -181,11 +170,12 @@ public class CharacterInfo implements CustomCodeMethod {
 	    return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errMap); // http 500 - internal server error
 	}
     
-    
+    //result.set(0, new SMObject(jObjResult));
+    //SMObject aaa = new SMObject()
     
     // execute the query
     List<SMObject> resultTotal;
-    
+    	
       Map<String, Object> returnMap = new HashMap<String, Object>();
       
    	  // user was in the datastore, so check the score and update if necessary

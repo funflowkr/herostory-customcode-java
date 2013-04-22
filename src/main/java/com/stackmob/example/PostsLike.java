@@ -50,7 +50,7 @@ public class PostsLike implements CustomCodeMethod {
   
   @Override
   public List<String> getParams() {
-	  return Arrays.asList("posts_id","characters_id");
+	  return Arrays.asList("posts_id","characters_id","m");
   }
 
  
@@ -65,6 +65,7 @@ public class PostsLike implements CustomCodeMethod {
     String verb = request.getVerb().toString();
     String posts_id = null ;
     String characters_id = null;
+    String m = null;
     
     if (verb.equalsIgnoreCase("post") || verb.equalsIgnoreCase("put")) {
     	logger.debug("GET ACTION ==== POST or PUT");
@@ -82,7 +83,10 @@ public class PostsLike implements CustomCodeMethod {
     } else { 
     	posts_id = request.getParams().get("posts_id");
         characters_id = request.getParams().get("characters_id");
-       
+        
+        // m = DELETE 이면 삭제하라는 것이다. 
+        // custom code 에서 DELETE Verb 를 쓸 수 있게 android code 를 짤수가 없다. -0- 
+        m = request.getParams().get("m");
     	
     }
     	
@@ -121,7 +125,10 @@ public class PostsLike implements CustomCodeMethod {
 	    	logger.debug("update result="+result + ", increment result=" + resultinc + ",,update=" + update);
 	    	
 	    // this is where we handle the case for `DELETE` requests
-	    } else if (verb.equalsIgnoreCase("delete") ) {
+	    } else if (verb.equalsIgnoreCase("delete") || verb.equalsIgnoreCase("get")) {
+	    	if (m.equalsIgnoreCase("delete")) {
+	    		
+	    	
 	    	logger.debug("GET ACTION ==== DELETE");
 	    	// like 한 사람 delete 
 	    	List<SMString> valuesToRemove = Arrays.asList(new SMString(characters_id));
@@ -133,11 +140,11 @@ public class PostsLike implements CustomCodeMethod {
 	    	SMObject resultinc = dataService.updateObject("posts", new SMString(posts_id), update);
 	    	
 	    	logger.debug("update result="+ ", increment result=" + resultinc + "update=" + update);
-	    	
+	    	}
 	    
 	    	// this is where we handle the case for `GET` 
 	    } else {
-	    	logger.debug("GET ACTION ==== GET");
+	    	// logger.debug("GET ACTION ==== GET");
 	        	
 	    }
 	 

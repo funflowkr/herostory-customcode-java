@@ -158,10 +158,12 @@ public class CharacterInfo implements CustomCodeMethod {
     		resultFollowersCount = 0 ;
     	}
     	
-    	JSONObject jObjResult = new JSONObject(result.get(0));
-        jObjResult.put("followers", new JSONArray(resultFollowers.get(0).getValue().get("follows")));
+    	//JSONObject jObjResult = new JSONObject(result.get(0));
+        //jObjResult.put("followers", new JSONArray());
         
-    	logger.debug("result="+jObjResult);
+        result.get(0).getValue().put("followers", resultFollowers.get(0).getValue().get("follows"));
+        
+    	logger.debug("result="+result);
     	
     } catch(Exception e) {
 	    HashMap<String, String> errMap = new HashMap<String, String>();

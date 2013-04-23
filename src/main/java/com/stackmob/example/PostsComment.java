@@ -201,9 +201,9 @@ public class PostsComment implements CustomCodeMethod {
 	    	    	
 	    	    	
 	    	    } else {
-	    	    	HashMap<String, String> errParams = new HashMap<String, String>();
+	    	    	HashMap<String, Object> errParams = new HashMap<String, Object>();
 	    	        errParams.put("error", "Login user is not writer - exception");
-	    	        errParams.put("code", "601");
+	    	        errParams.put("code", 601);
 	    	        return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errParams); // http 500 - Internal Error
 	    	        
 	    	    }

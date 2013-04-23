@@ -35,6 +35,8 @@ import com.stackmob.sdkapi.BulkResult;
 import com.stackmob.sdkapi.DataService;
 import com.stackmob.sdkapi.LoggerService;
 import com.stackmob.sdkapi.SDKServiceProvider;
+import com.stackmob.sdkapi.SMCondition;
+import com.stackmob.sdkapi.SMEquals;
 import com.stackmob.sdkapi.SMIncrement;
 import com.stackmob.sdkapi.SMInt;
 import com.stackmob.sdkapi.SMObject;
@@ -86,7 +88,7 @@ public class PostsWrite implements CustomCodeMethod {
     String share_posts_id = "" ;
     String share_characters_id = "";
     
-    SMObject resultdata = null;
+    List<SMObject> resultdata = null;
     
     try {
 	    
@@ -146,6 +148,9 @@ public class PostsWrite implements CustomCodeMethod {
 	    	
 	    	SMObject resultshare = null ;
 	    	SMObject resultshareinc = null ;
+	    	String posts_id = null;
+	    	
+	    	posts_id = result.getValue().get("posts_id").toString();
 	    	
 	    	// share 한 포스트가 있는 경우는 shares 와 share_count+1 에 넣어준다. 
 	    	
@@ -164,7 +169,17 @@ public class PostsWrite implements CustomCodeMethod {
 	    	}
 	    	
 	    	logger.debug("post result="+result + ", share result=" + resultshare + ",result share inc=" + resultshareinc);
-	    	resultdata = result;
+	    	
+	    	List<SMCondition> query  = new ArrayList<SMCondition>();
+	        query.add(new SMEquals("posts_id", new SMString(posts_id)));
+	        
+	        // execute the query
+	        List<SMObject> resultPost;
+	        String WriterID = null;
+	        
+	        resultdata = dataService.readObjects("posts",query);
+	         
+	        
 	    	
 	    	
 	    // this is where we handle the case for `DELETE` requests
@@ -212,7 +227,7 @@ public class PostsWrite implements CustomCodeMethod {
 	    	
 	    	logger.debug("update result="+ result + ", increment result=" + resultshareinc);
 	    	
-	    	resultdata = resultshareinc;
+	    	resultdata = Arrays.asList(resultshareinc);
 	    
 	    	// this is where we handle the case for `GET` 
 	    } else {
@@ -223,11 +238,8 @@ public class PostsWrite implements CustomCodeMethod {
 	
           
       Map<String, Object> returnMap = new HashMap<String, Object>();
-      
-      List<SMObject> result = Arrays.asList(resultdata);
-      
       returnMap.put("code", HttpURLConnection.HTTP_OK);
-      returnMap.put("data", result);
+      returnMap.put("data", resultdata);
       return new ResponseToProcess(HttpURLConnection.HTTP_OK, returnMap);
     } catch (InvalidSchemaException e) {
       HashMap<String, String> errMap = new HashMap<String, String>();

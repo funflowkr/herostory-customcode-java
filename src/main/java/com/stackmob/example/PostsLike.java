@@ -128,18 +128,17 @@ public class PostsLike implements CustomCodeMethod {
 	    } else if (verb.equalsIgnoreCase("delete") || verb.equalsIgnoreCase("get")) {
 	    	if (m.equalsIgnoreCase("delete")) {
 	    		
-	    	
-	    	logger.debug("GET ACTION ==== DELETE");
-	    	// like 한 사람 delete 
-	    	List<SMString> valuesToRemove = Arrays.asList(new SMString(characters_id));
-	    	dataService.removeRelatedObjects("posts", new SMString(posts_id),"likes", valuesToRemove, false);
-	    	
-	    	// like 한 Count-1 update  
-	    	List<SMUpdate> update = new ArrayList<SMUpdate>();
-	    	update.add(new SMIncrement("like_count", new SMInt((long) -1)));
-	    	SMObject resultinc = dataService.updateObject("posts", new SMString(posts_id), update);
-	    	
-	    	logger.debug("update result="+ ", increment result=" + resultinc + "update=" + update);
+	    		logger.debug("GET ACTION ==== DELETE");
+		    	// like 한 사람 delete 
+		    	List<SMString> valuesToRemove = Arrays.asList(new SMString(characters_id));
+		    	dataService.removeRelatedObjects("posts", new SMString(posts_id),"likes", valuesToRemove, false);
+		    	
+		    	// like 한 Count-1 update  
+		    	List<SMUpdate> update = new ArrayList<SMUpdate>();
+		    	update.add(new SMIncrement("like_count", new SMInt((long) -1)));
+		    	SMObject resultinc = dataService.updateObject("posts", new SMString(posts_id), update);
+		    	
+		    	logger.debug("update result="+ ", increment result=" + resultinc + "update=" + update);
 	    	}
 	    
 	    	// this is where we handle the case for `GET` 

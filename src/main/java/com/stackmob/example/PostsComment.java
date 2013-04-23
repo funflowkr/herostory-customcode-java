@@ -163,7 +163,7 @@ public class PostsComment implements CustomCodeMethod {
 	    	logger.debug("update result="+result + "//"+ result.getSuccessIds() + ", increment result=" + resultinc + ",,update=" + update);
 	    	
 	    // this is where we handle the case for `DELETE` requests
-	    } else if (verb.equalsIgnoreCase("delete") ) {
+	    } else if (verb.equalsIgnoreCase("delete") || verb.equalsIgnoreCase("get") ) {
 	    	
 	    	if (m.equalsIgnoreCase("delete")) {
 	    	
@@ -212,7 +212,7 @@ public class PostsComment implements CustomCodeMethod {
 	    
 	    	// this is where we handle the case for `GET` 
 	    } else {
-	    	logger.debug("GET ACTION ==== GET");
+	    	// logger.debug("GET ACTION ==== GET");
 	        	
 	    }
 	 

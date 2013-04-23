@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,6 +36,8 @@ import com.stackmob.sdkapi.BulkResult;
 import com.stackmob.sdkapi.DataService;
 import com.stackmob.sdkapi.LoggerService;
 import com.stackmob.sdkapi.SDKServiceProvider;
+import com.stackmob.sdkapi.SMCondition;
+import com.stackmob.sdkapi.SMEquals;
 import com.stackmob.sdkapi.SMIncrement;
 import com.stackmob.sdkapi.SMInt;
 import com.stackmob.sdkapi.SMObject;
@@ -165,16 +168,46 @@ public class PostsComment implements CustomCodeMethod {
 	    	if (m.equalsIgnoreCase("delete")) {
 	    	
 		    	logger.debug("GET ACTION ==== DELETE");
-		    	// comment 한 사람 delete 
-		    	List<SMString> valuesToRemove = Arrays.asList(new SMString(comments_id));
-		    	dataService.removeRelatedObjects("posts", new SMString(posts_id),"comments", valuesToRemove, true);
 		    	
-		    	// comment 한 Count-1 update  
-		    	List<SMUpdate> update = new ArrayList<SMUpdate>();
-		    	update.add(new SMIncrement("comment_count", new SMInt((long) -1)));
-		    	resultinc = dataService.updateObject("posts", new SMString(posts_id), update);
+		    	// comment 를 실제로 쓴 사람이 정말 맞는지 확인 작업 필요. 
+		    	// build a query
+		        List<SMCondition> query  = new ArrayList<SMCondition>();
+		        
+		        query.add(new SMEquals("comments_id", new SMString(comments_id)));
+		        
+		        // execute the query
+		        List<SMObject> result;
+		        String WriterID = null;
+		        
+	            result = dataService.readObjects("comments",query);
+	    	    
+	    	    if (result != null) {
+	    	   		WriterID = (result.get(0).getValue().get("sm_owner").toString());
+	    	    		
+	    	    	logger.debug("WriterID="+WriterID+"/LoginName="+ loginname);
+	    	    }
+	    	    if (WriterID.equalsIgnoreCase(loginname))
+	    	    {
+	    	    	// comment 한 사람 delete 
+			    	List<SMString> valuesToRemove = Arrays.asList(new SMString(comments_id));
+			    	dataService.removeRelatedObjects("posts", new SMString(posts_id),"comments", valuesToRemove, true);
+			    	
+			    	// comment 한 Count-1 update  
+			    	List<SMUpdate> update = new ArrayList<SMUpdate>();
+			    	update.add(new SMIncrement("comment_count", new SMInt((long) -1)));
+			    	resultinc = dataService.updateObject("posts", new SMString(posts_id), update);
+			    	
+			    	logger.debug("update result="+ ", increment result=" + resultinc + "update=" + update);
+	    	    	
+	    	    	
+	    	    } else {
+	    	    	HashMap<String, String> errParams = new HashMap<String, String>();
+	    	        errParams.put("error", "Login user is not writer - exception");
+	    	        return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errParams); // http 500 - Internal Error
+	    	        
+	    	    }
+	    		
 		    	
-		    	logger.debug("update result="+ ", increment result=" + resultinc + "update=" + update);
 	    	}
 	    
 	    	// this is where we handle the case for `GET` 

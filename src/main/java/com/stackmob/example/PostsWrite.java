@@ -177,7 +177,7 @@ public class PostsWrite implements CustomCodeMethod {
 	        List<SMObject> resultPost;
 	        String WriterID = null;
 	        
-	        resultdata = dataService.readObjects("posts",query);
+	        resultdata = dataService.readObjects("posts",query,1);
 	         
 	        
 	    	

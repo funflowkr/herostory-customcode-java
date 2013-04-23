@@ -184,7 +184,7 @@ public class PostsComment implements CustomCodeMethod {
 	    	    if (result != null) {
 	    	   		WriterID = (result.get(0).getValue().get("sm_owner").toString());
 	    	    		
-	    	    	logger.debug("WriterID="+WriterID+"/LoginName="+ loginname);
+	    	    	logger.debug("WriterID="+WriterID+"/LoginName="+ loginname); 
 	    	    }
 	    	    if (WriterID.equalsIgnoreCase(loginname))
 	    	    {

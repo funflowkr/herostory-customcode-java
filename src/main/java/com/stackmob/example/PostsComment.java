@@ -164,7 +164,7 @@ public class PostsComment implements CustomCodeMethod {
 	    	// 완료된 후 comment info 를 리턴한다. 
 	        List<SMCondition> query  = new ArrayList<SMCondition>();
 	        query.add(new SMEquals("comments_id", new SMString(comments_id)));
-	        resultData = dataService.readObjects("comments",query);
+	        resultData = dataService.readObjects("comments",query,1);
             
 	    	
 	    	logger.debug("update result="+result + "//"+ result.getSuccessIds() + ", increment result=" + resultinc + ",,resultData=" + resultData);

@@ -54,7 +54,7 @@ public class PostsWrite implements CustomCodeMethod {
   
   @Override
   public List<String> getParams() {
-	  return Arrays.asList("characters_id","post_text","imageurl","share_posts_id","share_characters_id","posts_id");
+	  return Arrays.asList("characters_id","post_text","imageurl","share_posts_id","share_characters_id","posts_id","m");
   }
 
  
@@ -87,6 +87,7 @@ public class PostsWrite implements CustomCodeMethod {
     String characters_id = "";
     String share_posts_id = "" ;
     String share_characters_id = "";
+    String m = null;
     
     List<SMObject> resultdata = null;
     
@@ -183,55 +184,91 @@ public class PostsWrite implements CustomCodeMethod {
 	    	
 	    	
 	    // this is where we handle the case for `DELETE` requests
-	    } else if (verb.equalsIgnoreCase("delete") ) {
+	    } else if (verb.equalsIgnoreCase("delete") || verb.equalsIgnoreCase("get") ) {
 	    	
-	    	logger.debug("GET ACTION ==== DELETE");
-	    	
-	    	// posts_id 를 가지고 posts 를 지운다. 
-	    	// share 를 한 원글이 있다면 그 글을 찾아가서 shares 에서 삭제하고 
-	    	// share_count 도 -1 
-	    	
-	    	String posts_id = request.getParams().get("posts_id");
-	    	characters_id = request.getParams().get("characters_id");
-	    	share_posts_id = request.getParams().get("share_posts_id");
+	    	// m = DELETE 이면 삭제하라는 것이다. 
+	        // custom code 에서 DELETE Verb 를 쓸 수 있게 android code 를 짤수가 없다. -0- 
+	        m = request.getParams().get("m");
 	        
-	        if (!Util.strCheck(posts_id) ) {
-	        	HashMap<String, String> errParams = new HashMap<String, String>();
-	            errParams.put("error", "no posts_id - exception");
-	            return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, errParams); // http 400 - bad request
-	      	}
-	        if (!Util.strCheck(characters_id) ) {
-	        	HashMap<String, String> errParams = new HashMap<String, String>();
-	            errParams.put("error", "no characters_id - exception");
-	            return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, errParams); // http 400 - bad request
-	      	}
-	    	
-	        boolean result = dataService.deleteObject("posts", posts_id);
-	    	
-	    	SMObject resultshare = null ;
-	    	SMObject resultshareinc = null ;
-	    	
-	    	if (Util.strCheck(share_posts_id)) {
+	    	if (m.equalsIgnoreCase("delete")) {
 	    		
-	    		// shares 한 사람 입력
-		    	List<SMString> valuesToRemove = Arrays.asList(new SMString(characters_id));
-		    	dataService.removeRelatedObjects("posts", new SMString(share_posts_id), "shares", valuesToRemove,false);
+	    		logger.debug("GET ACTION ==== DELETE");
 		    	
-		    	// share 한 Count Update 
-		    	List<SMUpdate> update = new ArrayList<SMUpdate>();
-		    	update.add(new SMIncrement("share_count", new SMInt((long) -1)));
-		    	resultshareinc = dataService.updateObject("posts", new SMString(share_posts_id), update);	
-	    		
-	    		
+		    	String posts_id = request.getParams().get("posts_id");
+		    	characters_id = request.getParams().get("characters_id");
+		    	share_posts_id = request.getParams().get("share_posts_id");
+		        
+		        if (!Util.strCheck(posts_id) ) {
+		        	HashMap<String, String> errParams = new HashMap<String, String>();
+		            errParams.put("error", "no posts_id - exception");
+		            return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, errParams); // http 400 - bad request
+		      	}
+		        if (!Util.strCheck(characters_id) ) {
+		        	HashMap<String, String> errParams = new HashMap<String, String>();
+		            errParams.put("error", "no characters_id - exception");
+		            return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, errParams); // http 400 - bad request
+		      	}
+		    	
+		        
+		    	// posts 를 실제로 쓴 사람이 정말 맞는지 확인 작업 필요. 
+		    	// build a query
+		        List<SMCondition> query  = new ArrayList<SMCondition>();
+		        
+		        query.add(new SMEquals("posts_id", new SMString(posts_id)));
+		        
+		        // execute the query
+		        List<SMObject> result;
+		        String WriterID = null;
+		        
+	            result = dataService.readObjects("posts",query);
+	    	    
+	    	    if (result != null) {
+	    	   		WriterID = (result.get(0).getValue().get("sm_owner").toString());
+	    	    		
+	    	    	logger.debug("WriterID="+WriterID+"/LoginName="+ loginname); 
+	    	    }
+	    	    
+	    	    if (WriterID.equalsIgnoreCase(loginname))
+	    	    {
+			    	// posts_id 를 가지고 posts 를 지운다. 
+			    	// share 를 한 원글이 있다면 그 글을 찾아가서 shares 에서 삭제하고 
+			    	// share_count 도 -1 
+			    	
+			    	
+			        boolean resultb = dataService.deleteObject("posts", posts_id);
+			    	
+			    	SMObject resultshare = null ;
+			    	SMObject resultshareinc = null ;
+			    	
+			    	if (Util.strCheck(share_posts_id)) {
+			    		
+			    		// shares 한 사람 입력
+				    	List<SMString> valuesToRemove = Arrays.asList(new SMString(characters_id));
+				    	dataService.removeRelatedObjects("posts", new SMString(share_posts_id), "shares", valuesToRemove,false);
+				    	
+				    	// share 한 Count Update 
+				    	List<SMUpdate> update = new ArrayList<SMUpdate>();
+				    	update.add(new SMIncrement("share_count", new SMInt((long) -1)));
+				    	resultshareinc = dataService.updateObject("posts", new SMString(share_posts_id), update);	
+			    		
+			    		
+			    	}
+			    	
+			    	logger.debug("update result="+ resultb + ", increment result=" + resultshareinc);
+			    	
+			    	resultdata = Arrays.asList(resultshareinc);
+	    	    } else {
+	    	    	HashMap<String, Object> errParams = new HashMap<String, Object>();
+	    	        errParams.put("error", "Login user is not writer - exception");
+	    	        errParams.put("code", 601);
+	    	        return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errParams); // http 500 - Internal Error
+	    	        
+	    	    }	
+			    
 	    	}
-	    	
-	    	logger.debug("update result="+ result + ", increment result=" + resultshareinc);
-	    	
-	    	resultdata = Arrays.asList(resultshareinc);
-	    
 	    	// this is where we handle the case for `GET` 
 	    } else {
-	    	logger.debug("GET ACTION ==== GET");
+	    	// logger.debug("GET ACTION ==== GET");
 	        	
 	    }
 	 

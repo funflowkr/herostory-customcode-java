@@ -137,6 +137,7 @@ public class PostsComment implements CustomCodeMethod {
  // get the datastore service and assemble the query
     DataService dataService = serviceProvider.getDataService();
     SMObject resultinc = null;
+    List<SMObject> resultData = null;
     
     try {
 	    
@@ -153,14 +154,20 @@ public class PostsComment implements CustomCodeMethod {
 	    	// insert comment
 	    	List<SMObject> objectsToCreate = Arrays.asList(new SMObject(objMap));
 	    	BulkResult result = dataService.createRelatedObjects("posts", new SMString(posts_id), "comments", objectsToCreate);
-	    	
+	    	comments_id = result.getSuccessIds().get(0).toString();
 	    	
 	    	// comment 한 Count Update 
 	    	List<SMUpdate> update = new ArrayList<SMUpdate>();
 	    	update.add(new SMIncrement("comment_count", new SMInt((long) 1)));
 	    	resultinc = dataService.updateObject("posts", new SMString(posts_id), update);
 	    	
-	    	logger.debug("update result="+result + "//"+ result.getSuccessIds() + ", increment result=" + resultinc + ",,update=" + update);
+	    	// 완료된 후 comment info 를 리턴한다. 
+	        List<SMCondition> query  = new ArrayList<SMCondition>();
+	        query.add(new SMEquals("comments_id", new SMString(comments_id)));
+	        resultData = dataService.readObjects("comments",query);
+            
+	    	
+	    	logger.debug("update result="+result + "//"+ result.getSuccessIds() + ", increment result=" + resultinc + ",,resultData=" + resultData);
 	    	
 	    // this is where we handle the case for `DELETE` requests
 	    } else if (verb.equalsIgnoreCase("delete") || verb.equalsIgnoreCase("get") ) {
@@ -222,7 +229,7 @@ public class PostsComment implements CustomCodeMethod {
       Map<String, Object> returnMap = new HashMap<String, Object>();
       
       returnMap.put("code", HttpURLConnection.HTTP_OK);
-      returnMap.put("data", resultinc);
+      returnMap.put("data", resultData);
       return new ResponseToProcess(HttpURLConnection.HTTP_OK, returnMap);
     } catch (InvalidSchemaException e) {
       HashMap<String, String> errMap = new HashMap<String, String>();

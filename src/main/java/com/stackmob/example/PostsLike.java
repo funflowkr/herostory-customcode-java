@@ -222,7 +222,7 @@ public class PostsLike implements CustomCodeMethod {
 	    		
 	    		try { 
 	    			arrHeroPointCount = result.get(0).getValue().get("heropoint_count").toString();
-	    		} catch (NullPointerException e) {
+	    		} catch (Exception e) {
 	    			logger.debug("result.get(0).getValue().get(heropoint_count)"+e.toString());
 	    		}
 		    	logger.debug("HeroPoint="+oldHeroPoint+"/arrHeroPointCount="+ arrHeroPointCount);

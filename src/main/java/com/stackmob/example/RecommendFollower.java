@@ -142,11 +142,11 @@ public class RecommendFollower implements CustomCodeMethod {
 		  
 		  // user was in the datastore, so check the score and update if necessary
 		  if (result != null && result.size() == 1) {
-			  postObject = result.get(0);
-			  returnMap.put("response_body", postObject);
+			  //postObject = result.get(0);
+			  returnMap.put("data", result);
 			  //  logger.debug("result=="+result);
 		  } else if (result.size() > 1 ){
-			  returnMap.put("response_body", result);
+			  returnMap.put("data", result);
 		  } else {
 		  //  Map<String, SMValue> userMap = new HashMap<String, SMValue>();
 		  //  userMap.put("username", new SMString(username));

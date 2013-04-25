@@ -15,6 +15,7 @@ import com.stackmob.sdkapi.DataService;
 import com.stackmob.sdkapi.LoggerService;
 import com.stackmob.sdkapi.SDKServiceProvider;
 import com.stackmob.sdkapi.SMCondition;
+import com.stackmob.sdkapi.SMDouble;
 import com.stackmob.sdkapi.SMEquals;
 import com.stackmob.sdkapi.SMObject;
 import com.stackmob.sdkapi.SMString;
@@ -32,11 +33,15 @@ import com.stackmob.sdkapi.SMString;
 
 public class Util {
 
-	public static final int HEROPOINT_CAT_LIKE = 1;
-	public static final int HEROPOINT_CAT_SHARE = 2;
-	public static final int HEROPOINT_CAT_COMMENT = 3;
-	public static final int HEROPOINT_CAT_FOLLOW = 4;
+	public static final int HEROPOINT_CAT_LIKE = 0;
+	public static final int HEROPOINT_CAT_SHARE = 1;
+	public static final int HEROPOINT_CAT_COMMENT = 2;
+	public static final int HEROPOINT_CAT_FOLLOW = 3;
 	
+	public static final int HEROPOINT_CAT_LIKE_POINT = 1;
+	public static final int HEROPOINT_CAT_SHARE_POINT = 3;
+	public static final int HEROPOINT_CAT_COMMENT_POINT = 2;
+	public static final int HEROPOINT_CAT_FOLLOW_POINT = 30;
 	
 	static public Boolean strCheck(String str) {
 	    boolean bool = true;
@@ -49,46 +54,56 @@ public class Util {
 	}
     
 	
-  	static public String setHeroPointCount(int category,String arrHeroPointCount ) {
+  	static public List<SMDouble> setHeroPointCount(int category,String arrHeroPointCount ) {
   		
+  		
+  		List<SMDouble> heroPointCount = new ArrayList<SMDouble>();
   		
   		String[] HeroPointCounts = arrHeroPointCount.replaceAll("\\[", "").replaceAll("\\]", "").split(",");
-  		String returnHeroPointCount = "";
-  		
   		
   		for (int i = 0; i < HeroPointCounts.length; i++) {
   		    try {
-  		    	if (category == i+1 ) {
-  		    		HeroPointCounts[i] = Float.parseFloat(HeroPointCounts[i])+1+"";
-  		    	} 
-  		    } catch (NumberFormatException nfe) {};
+  		    	if (category == i ) {
+  		    		heroPointCount.add(new SMDouble((double) (Float.parseFloat(HeroPointCounts[i])+1)));
+  		    		
+  		    	} else {
+  		    		heroPointCount.add(new SMDouble((double) Float.parseFloat(HeroPointCounts[i])));
+  		    	}
+  		    //	logger.debug("HeroPointCounts=="+heroPointCount.toString());
+  		    } catch (NumberFormatException nfe) {
+  		    //	logger.debug(nfe.toString());
+  		    	
+  		    };
+  		    
   		}
-  		returnHeroPointCount = Arrays.toString(HeroPointCounts);
-  		return returnHeroPointCount;
+  		//returnHeroPointCount = Arrays.toString(HeroPointCounts);
+  		return heroPointCount;
   	}
   	
-  	static public int getHeroPoint(int oldHeroPoint,int category) {
-	  
-  		int point=0;
+  	static public int getHeroPoint(List<SMDouble> heroPointCount) {
+  		int totalPoint = 0 ;
+  		for (int i=0;i<heroPointCount.size();i++) {
+  			switch (i) {
+		    	case HEROPOINT_CAT_LIKE    : 
+		    		totalPoint = totalPoint + HEROPOINT_CAT_LIKE_POINT * heroPointCount.get(i).getValue().intValue();
+		    		break;
+		    	case HEROPOINT_CAT_SHARE   : 
+		    		totalPoint = totalPoint + HEROPOINT_CAT_SHARE_POINT * heroPointCount.get(i).getValue().intValue();
+		    		break;
+		       	case HEROPOINT_CAT_COMMENT  : 
+		       		totalPoint = totalPoint + HEROPOINT_CAT_COMMENT_POINT * heroPointCount.get(i).getValue().intValue();
+		    		break;
+		        case HEROPOINT_CAT_FOLLOW  : 
+		        	totalPoint = totalPoint + HEROPOINT_CAT_FOLLOW_POINT * heroPointCount.get(i).getValue().intValue();
+		    		break;
+		        default    :
+		            break;
+  			}
+  		}
 		  
-		switch (category) {
-	    	case HEROPOINT_CAT_LIKE    : 
-	    		point = 1;
-	    		break;
-	    	case HEROPOINT_CAT_SHARE   : 
-				point = 3;
-	    		break;
-	       	case HEROPOINT_CAT_COMMENT  : 
-		       	point = 2;
-	    		break;
-	        case HEROPOINT_CAT_FOLLOW  : 
-	           	point = 30;
-	    		break;
-	        default    :
-	            break;
-	    }
 		
-		return oldHeroPoint + point ;
+		
+		return totalPoint;
 		
 	  
   	}

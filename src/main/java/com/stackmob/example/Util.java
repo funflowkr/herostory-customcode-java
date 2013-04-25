@@ -48,75 +48,7 @@ public class Util {
 	   return bool;
 	}
     
-	static public HashMap<String, String> addHeroPoint(int category, String characters_id) {
-		
-		/*LoggerService logger = serviceProvider.getLoggerService(Util.class);
-		DataService dataService = serviceProvider.getDataService();
-		
-		// build a query
-	    List<SMCondition> query  = new ArrayList<SMCondition>();
-	    
-	    query.add(new SMEquals("characters_id", new SMString(characters_id)));
-	    
-	 // execute the query
-	    List<SMObject> result;
-	    
-	    String arrHeroPointCount = "0,0,0,0";
-	    
-	    int oldHeroPoint = 0;
-	    int newHeroPoint;
-	    
-	    try {
-	    
-	    	result = dataService.readObjects("characters",query);
-		    
-		    if (result != null) {
-		    	try {
-		    		oldHeroPoint = Integer.parseInt(result.get(0).getValue().get("heropoint").toString());
-		    		arrHeroPointCount = result.get(0).getValue().get("heropoint_count").toString();
-			    } catch (NumberFormatException nfe) {
-			    	HashMap<String, String> errMap = new HashMap<String, String>();
-				    errMap.put("error", "heropoint is not integer.");
-				    errMap.put("detail", nfe.toString());
-				    return errMap;
-			    	
-			    }; 
-		    	logger.debug("HeroPoint="+oldHeroPoint+"/arrHeroPointCount="+ arrHeroPointCount);
-		    }
-		    
-		    newHeroPoint = getHeroPoint(oldHeroPoint,category);
-		    arrHeroPointCount = setHeroPointCount(category,arrHeroPointCount);
-		    
-		} catch (InvalidSchemaException e) {
-	      HashMap<String, String> errMap = new HashMap<String, String>();
-	      errMap.put("error", "invalid_schema");
-	      errMap.put("detail", e.toString());
-	      return errMap;
-	      //  return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errMap); // http 500 - internal server error
-	    } catch (DatastoreException e) {
-	      HashMap<String, String> errMap = new HashMap<String, String>();
-	      errMap.put("error", "datastore_exception");
-	      errMap.put("detail", e.toString());
-	      return errMap;
-		  //  return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errMap); // http 500 - internal server error
-	    } catch(Exception e) {
-	      HashMap<String, String> errMap = new HashMap<String, String>();
-	      errMap.put("error", "unknown");
-	      errMap.put("detail", e.toString());
-	      return errMap;
-		  //return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errMap); // http 500 - internal server error
-	    }    
-	    */
-	    HashMap<String, String> returnMap = new HashMap<String, String>();
-	    returnMap.put("success", "true");
-	    //returnMap.put("HeroPoint", HeroPoint+"");
-	    //returnMap.put("HeroPoint", HeroPoint+"");
-	    		
-	    return returnMap;
-		
-	}
 	
-  
   	static public String setHeroPointCount(int category,String arrHeroPointCount ) {
   		
   		
@@ -127,7 +59,7 @@ public class Util {
   		for (int i = 0; i < HeroPointCounts.length; i++) {
   		    try {
   		    	if (category == i+1 ) {
-  		    		HeroPointCounts[i] = Integer.parseInt(HeroPointCounts[i])+1+"";
+  		    		HeroPointCounts[i] = Float.parseFloat(HeroPointCounts[i])+1+"";
   		    	} 
   		    } catch (NumberFormatException nfe) {};
   		}

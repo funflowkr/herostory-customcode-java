@@ -257,18 +257,21 @@ public class PostsLike implements CustomCodeMethod {
 	      HashMap<String, String> errMap = new HashMap<String, String>();
 	      errMap.put("error", "invalid_schema");
 	      errMap.put("detail", e.toString());
+	      logger.debug("error"+e.toString());
 	      return errMap;
 	      //  return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errMap); // http 500 - internal server error
 	    } catch (DatastoreException e) {
 	      HashMap<String, String> errMap = new HashMap<String, String>();
 	      errMap.put("error", "datastore_exception");
 	      errMap.put("detail", e.toString());
+	      logger.debug("error"+e.toString());
 	      return errMap;
 		  //  return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errMap); // http 500 - internal server error
 	    } catch(Exception e) {
 	      HashMap<String, String> errMap = new HashMap<String, String>();
 	      errMap.put("error", "unknown");
 	      errMap.put("detail", e.toString());
+	      logger.debug("error"+e.toString());
 	      return errMap;
 		  //return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errMap); // http 500 - internal server error
 	    }    

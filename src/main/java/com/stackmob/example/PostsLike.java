@@ -104,7 +104,7 @@ public class PostsLike implements CustomCodeMethod {
     	
     }
     
-    addHeroPoint(Util.HEROPOINT_CAT_LIKE, characters_id, serviceProvider);
+    
 	
     
     
@@ -141,6 +141,10 @@ public class PostsLike implements CustomCodeMethod {
 	    	
 	    	logger.debug("update result="+result + ", increment result=" + resultinc + ",,update=" + update);
 	    	
+	    	if (!setHeroPoint(Util.HEROPOINT_CAT_LIKE, 1, characters_id, serviceProvider)) {
+	    		logger.debug("HERO POINT ERR: category="+ Util.HEROPOINT_CAT_LIKE + ",posts_id="+posts_id+",characters_id="+ characters_id);
+	    	}
+	    	
 	    // this is where we handle the case for `DELETE` requests
 	    } else if (verb.equalsIgnoreCase("delete") || verb.equalsIgnoreCase("get")) {
 	    	if (m.equalsIgnoreCase("delete")) {
@@ -156,6 +160,10 @@ public class PostsLike implements CustomCodeMethod {
 		    	SMObject resultinc = dataService.updateObject("posts", new SMString(posts_id), update);
 		    	
 		    	logger.debug("update result="+ ", increment result=" + resultinc + "update=" + update);
+		    	
+		    	if (!setHeroPoint(Util.HEROPOINT_CAT_LIKE, -1, characters_id, serviceProvider)) {
+		    		logger.debug("HERO POINT ERR: category="+ Util.HEROPOINT_CAT_LIKE + ",posts_id="+posts_id+",characters_id="+ characters_id);
+		    	}
 	    	}
 	    
 	    	// this is where we handle the case for `GET` 
@@ -190,7 +198,7 @@ public class PostsLike implements CustomCodeMethod {
    
   }
   
-  public HashMap<String, String> addHeroPoint(int category, String characters_id, SDKServiceProvider serviceProvider) {
+  public boolean setHeroPoint(int category, int incrementCnt, String characters_id, SDKServiceProvider serviceProvider) {
 		
 		LoggerService logger = serviceProvider.getLoggerService(PostsLike.class);
 		DataService dataService = serviceProvider.getDataService();
@@ -208,68 +216,73 @@ public class PostsLike implements CustomCodeMethod {
 	    int oldHeroPoint = 0;
 	    int newHeroPoint;
 	    
+	    if (incrementCnt>0) {
+	    	incrementCnt = 1;
+	    } else {
+	    	incrementCnt = -1;
+	    }
+	    
 	    try {
 	    
 	    	result = dataService.readObjects("characters",query);
 	    	
 	    	if (result != null) {
-	    		logger.debug("result="+result.get(0));
+	    		// logger.debug("result="+result.get(0));
 	    		try {
 	    			oldHeroPoint = Integer.parseInt(result.get(0).getValue().get("heropoint").toString());
 	    		} catch (Exception e) {
-	    			logger.debug("result.get(0).getValue().get(heropoint)"+e.toString());
+	    		//	logger.debug("result.get(0).getValue().get(heropoint)"+e.toString());
 	    		}
 	    		
 	    		try { 
 	    			arrHeroPointCount = result.get(0).getValue().get("heropoint_count").toString();
 	    		} catch (Exception e) {
-	    			logger.debug("result.get(0).getValue().get(heropoint_count)"+e.toString());
+	    		//	logger.debug("result.get(0).getValue().get(heropoint_count)"+e.toString());
 	    		}
-		    	logger.debug("HeroPoint="+oldHeroPoint+"/arrHeroPointCount="+ arrHeroPointCount);
+		    	logger.debug("old HeroPoint="+oldHeroPoint+"/old arrHeroPointCount="+ arrHeroPointCount);
 		    	
 		    	heroPointCount = Util.setHeroPointCount(category,arrHeroPointCount);
 			    newHeroPoint = Util.getHeroPoint(heroPointCount);
 			    
-			    logger.debug("newHeroPoint="+newHeroPoint+"/newArrHeroPointCount="+ heroPointCount.toString());
+			    // logger.debug("newHeroPoint="+newHeroPoint+"/newArrHeroPointCount="+ heroPointCount.toString());
 			    
 			    List<SMUpdate> update = new ArrayList<SMUpdate>();
 				update.add(new SMSet("heropoint", new SMInt((long) newHeroPoint)));
 				update.add(new SMSet("heropoint_count", new SMList(heroPointCount)));
 				SMObject resultUpdate = dataService.updateObject("characters", new SMString(characters_id), update);;
 				logger.debug("resultUpdate="+resultUpdate);
-		    }
-		    
-		    
+				return true;
+		    } 
 		    
 		} catch (InvalidSchemaException e) {
-	      HashMap<String, String> errMap = new HashMap<String, String>();
+		  /*HashMap<String, String> errMap = new HashMap<String, String>();
 	      errMap.put("error", "invalid_schema");
 	      errMap.put("detail", e.toString());
-	      logger.debug("error="+e.toString());
-	      return errMap;
+	      logger.debug("error="+e.toString());*/
+	      //  return errMap;
 	      //  return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errMap); // http 500 - internal server error
 	    } catch (DatastoreException e) {
-	      HashMap<String, String> errMap = new HashMap<String, String>();
+	      /*HashMap<String, String> errMap = new HashMap<String, String>();
 	      errMap.put("error", "datastore_exception");
 	      errMap.put("detail", e.toString());
 	      logger.debug("error"+e.toString());
-	      return errMap;
+	      return errMap;*/
 		  //  return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errMap); // http 500 - internal server error
 	    } catch(Exception e) {
-	      HashMap<String, String> errMap = new HashMap<String, String>();
+	      /*HashMap<String, String> errMap = new HashMap<String, String>();
 	      errMap.put("error", "unknown");
 	      errMap.put("detail", e.toString());
 	      logger.debug("error"+e.toString());
-	      return errMap;
+	      return errMap;*/
 		  //return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errMap); // http 500 - internal server error
 	    }    
 	    
-	    HashMap<String, String> returnMap = new HashMap<String, String>();
+	    /*HashMap<String, String> returnMap = new HashMap<String, String>();
 	    returnMap.put("success", "true");
 	    //returnMap.put("HeroPoint", HeroPoint+"");
 	    //returnMap.put("HeroPoint", HeroPoint+"");
-	    		
-	    return returnMap;
+*/	    		
+	    return false;
 		
 	
   }

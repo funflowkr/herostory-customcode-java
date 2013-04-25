@@ -35,6 +35,7 @@ import com.stackmob.sdkapi.DataService;
 import com.stackmob.sdkapi.LoggerService;
 import com.stackmob.sdkapi.SDKServiceProvider;
 import com.stackmob.sdkapi.SMCondition;
+import com.stackmob.sdkapi.SMDouble;
 import com.stackmob.sdkapi.SMEquals;
 import com.stackmob.sdkapi.SMIncrement;
 import com.stackmob.sdkapi.SMInt;
@@ -198,7 +199,7 @@ public class PostsLike implements CustomCodeMethod {
 	    List<SMObject> result;
 	    
 	    String arrHeroPointCount = "0,0,0,0";
-	    List<SMInt> heroPointCount = new ArrayList<SMInt>();
+	    List<SMDouble> heroPointCount = new ArrayList<SMDouble>();
 	    
 	    int oldHeroPoint = 0;
 	    int newHeroPoint;
@@ -231,10 +232,10 @@ public class PostsLike implements CustomCodeMethod {
 	  		for (int i = 0; i < HeroPointCounts.length; i++) {
 	  		    try {
 	  		    	if (category == i+1 ) {
-	  		    		heroPointCount.add(new SMInt(Long.parseLong(HeroPointCounts[i])+1));
+	  		    		heroPointCount.add(new SMDouble((double) (Float.parseFloat(HeroPointCounts[i])+1)));
 	  		    		
 	  		    	} else {
-	  		    		heroPointCount.add(new SMInt(Long.parseLong(HeroPointCounts[i])));
+	  		    		heroPointCount.add(new SMDouble((double) Float.parseFloat(HeroPointCounts[i])));
 	  		    	}
 	  		    	logger.debug("HeroPointCounts=="+heroPointCount.toString());
 	  		    } catch (NumberFormatException nfe) {

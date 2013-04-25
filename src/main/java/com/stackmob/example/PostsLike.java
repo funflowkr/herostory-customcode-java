@@ -217,7 +217,7 @@ public class PostsLike implements CustomCodeMethod {
 	    		try {
 	    			oldHeroPoint = Integer.parseInt(result.get(0).getValue().get("heropoint").toString());
 	    		} catch (NumberFormatException nfe) {
-	    			logger.debug("result.get(0).getValue().get(heropoint)"+e.toString());
+	    			logger.debug("result.get(0).getValue().get(heropoint)"+nfe.toString());
 	    		}
 	    		
 	    		try { 

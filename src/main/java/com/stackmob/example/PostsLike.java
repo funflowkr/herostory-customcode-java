@@ -208,28 +208,29 @@ public class PostsLike implements CustomCodeMethod {
 	    
 	    	result = dataService.readObjects("characters",query);
 		    
-		    if (result != null) {
+	    	if (result != null) {
 		    	oldHeroPoint = Integer.parseInt(result.get(0).getValue().get("heropoint").toString());
 		    	arrHeroPointCount = result.get(0).getValue().get("heropoint_count").toString();
 		    	logger.debug("HeroPoint="+oldHeroPoint+"/arrHeroPointCount="+ arrHeroPointCount);
+		    	heroPointCount = Util.setHeroPointCount(category,arrHeroPointCount);
+			    newHeroPoint = Util.getHeroPoint(heroPointCount);
+			    
+			    logger.debug("newHeroPoint="+newHeroPoint+"/newArrHeroPointCount="+ heroPointCount.toString());
+			    
+			    List<SMUpdate> update = new ArrayList<SMUpdate>();
+				update.add(new SMSet("heropoint", new SMInt((long) newHeroPoint)));
+				update.add(new SMSet("heropoint_count", new SMList(heroPointCount)));
+				SMObject resultUpdate = dataService.updateObject("characters", new SMString(characters_id), update);;
+				logger.debug("resultUpdate="+resultUpdate);
 		    }
 		    
-		    heroPointCount = Util.setHeroPointCount(category,arrHeroPointCount);
-		    newHeroPoint = Util.getHeroPoint(heroPointCount);
 		    
-		    logger.debug("newHeroPoint="+newHeroPoint+"/newArrHeroPointCount="+ heroPointCount.toString());
-		    
-		    List<SMUpdate> update = new ArrayList<SMUpdate>();
-			update.add(new SMSet("heropoint", new SMInt((long) newHeroPoint)));
-			update.add(new SMSet("heropoint_count", new SMList(heroPointCount)));
-			SMObject resultUpdate = dataService.updateObject("characters", new SMString(characters_id), update);;
-			logger.debug("resultUpdate="+resultUpdate);
 		    
 		} catch (InvalidSchemaException e) {
 	      HashMap<String, String> errMap = new HashMap<String, String>();
 	      errMap.put("error", "invalid_schema");
 	      errMap.put("detail", e.toString());
-	      logger.debug("error"+e.toString());
+	      logger.debug("error="+e.toString());
 	      return errMap;
 	      //  return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errMap); // http 500 - internal server error
 	    } catch (DatastoreException e) {

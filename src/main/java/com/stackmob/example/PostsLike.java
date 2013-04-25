@@ -192,7 +192,6 @@ public class PostsLike implements CustomCodeMethod {
 		
 		// build a query
 	    List<SMCondition> query  = new ArrayList<SMCondition>();
-	    
 	    query.add(new SMEquals("characters_id", new SMString(characters_id)));
 	    
 	 // execute the query
@@ -209,50 +208,15 @@ public class PostsLike implements CustomCodeMethod {
 	    	result = dataService.readObjects("characters",query);
 		    
 		    if (result != null) {
-		    	try {
-		    		oldHeroPoint = Integer.parseInt(result.get(0).getValue().get("heropoint").toString());
-		    		arrHeroPointCount = result.get(0).getValue().get("heropoint_count").toString();
-		    		logger.debug("arrHeroPointCount"+arrHeroPointCount);
-			    } catch (NumberFormatException nfe) {
-			    	HashMap<String, String> errMap = new HashMap<String, String>();
-				    errMap.put("error", "heropoint is not integer.");
-				    errMap.put("detail", nfe.toString());
-				    return errMap;
-			    	
-			    }; 
+		    	oldHeroPoint = Integer.parseInt(result.get(0).getValue().get("heropoint").toString());
+		    	arrHeroPointCount = result.get(0).getValue().get("heropoint_count").toString();
 		    	logger.debug("HeroPoint="+oldHeroPoint+"/arrHeroPointCount="+ arrHeroPointCount);
 		    }
 		    
-		    newHeroPoint = Util.getHeroPoint(oldHeroPoint,category);
+		    heroPointCount = Util.setHeroPointCount(category,arrHeroPointCount);
+		    newHeroPoint = Util.getHeroPoint(heroPointCount);
 		    
-		    
-		    String[] HeroPointCounts = arrHeroPointCount.replaceAll("\\[", "").replaceAll("\\]", "").split(",");
-	  		String returnHeroPointCount = "";
-	  			  		
-	  		for (int i = 0; i < HeroPointCounts.length; i++) {
-	  		    try {
-	  		    	if (category == i+1 ) {
-	  		    		heroPointCount.add(new SMDouble((double) (Float.parseFloat(HeroPointCounts[i])+1)));
-	  		    		
-	  		    	} else {
-	  		    		heroPointCount.add(new SMDouble((double) Float.parseFloat(HeroPointCounts[i])));
-	  		    	}
-	  		    	logger.debug("HeroPointCounts=="+heroPointCount.toString());
-	  		    } catch (NumberFormatException nfe) {
-	  		    	logger.debug(nfe.toString());
-	  		    	
-	  		    };
-	  		    
-	  		}
-	  		logger.debug("arrHeroPointCount" + Arrays.toString(HeroPointCounts));
-	  		
-	  		returnHeroPointCount = Arrays.toString(HeroPointCounts).replaceAll("\\[", "").replaceAll("\\]", "");
-		    
-		    
-		    //arrHeroPointCount = Util.setHeroPointCount(category,arrHeroPointCount);
-		    
-		    
-		    logger.debug("HeroPoint="+newHeroPoint+"/arrHeroPointCount="+ returnHeroPointCount);
+		    logger.debug("HeroPoint="+newHeroPoint+"/arrHeroPointCount="+ heroPointCount.toString());
 		    
 		    List<SMUpdate> update = new ArrayList<SMUpdate>();
 			update.add(new SMSet("heropoint", new SMInt((long) newHeroPoint)));

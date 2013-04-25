@@ -229,7 +229,7 @@ public class PostsLike implements CustomCodeMethod {
 	  		for (int i = 0; i < HeroPointCounts.length; i++) {
 	  		    try {
 	  		    	if (category == i+1 ) {
-	  		    		HeroPointCounts[i] = Integer.parseInt(HeroPointCounts[i])+1+"";
+	  		    		HeroPointCounts[i] = Float.parseFloat(HeroPointCounts[i])+1+"";
 	  		    		logger.debug("HeroPointCounts["+i+"]=="+HeroPointCounts[i]);
 	  		    	} 
 	  		    } catch (NumberFormatException nfe) {

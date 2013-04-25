@@ -66,7 +66,7 @@ public class PostsLike implements CustomCodeMethod {
 	//logger.debug(request.getBody());
 	
 	
-	HashMap<String, String> maptest = addHeroPoint(0, "8442544a42394cc3b4a800599ff964a3", serviceProvider);
+	HashMap<String, String> maptest = addHeroPoint(Util.HEROPOINT_CAT_LIKE, "8442544a42394cc3b4a800599ff964a3", serviceProvider);
 	
 	
     Map<String, Object> map = new HashMap<String, Object>();
@@ -219,6 +219,7 @@ public class PostsLike implements CustomCodeMethod {
 		    
 		    newHeroPoint = Util.getHeroPoint(oldHeroPoint,category);
 		    arrHeroPointCount = Util.setHeroPointCount(category,arrHeroPointCount);
+		    logger.debug("HeroPoint="+newHeroPoint+"/arrHeroPointCount="+ arrHeroPointCount);
 		    
 		} catch (InvalidSchemaException e) {
 	      HashMap<String, String> errMap = new HashMap<String, String>();

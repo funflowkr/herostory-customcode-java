@@ -239,19 +239,19 @@ public class PostsLike implements CustomCodeMethod {
 	  		}
 	  		logger.debug("arrHeroPointCount" + Arrays.toString(HeroPointCounts));
 	  		
-		    
+	  		returnHeroPointCount = Arrays.toString(HeroPointCounts);
 		    
 		    
 		    //arrHeroPointCount = Util.setHeroPointCount(category,arrHeroPointCount);
 		    
 		    
-		    logger.debug("HeroPoint="+newHeroPoint+"/arrHeroPointCount="+ arrHeroPointCount);
+		    logger.debug("HeroPoint="+newHeroPoint+"/arrHeroPointCount="+ returnHeroPointCount);
 		    
 		    List<SMUpdate> update = new ArrayList<SMUpdate>();
 			update.add(new SMSet("heropoint", new SMInt((long) newHeroPoint)));
-			update.add(new SMSet("heropoint_count", new SMString(arrHeroPointCount)));
+			update.add(new SMSet("heropoint_count", new SMString(returnHeroPointCount)));
 			SMObject resultUpdate = dataService.updateObject("characters", new SMString(characters_id), update);;
-
+			logger.debug("resultUpdate="+resultUpdate);
 		    
 		} catch (InvalidSchemaException e) {
 	      HashMap<String, String> errMap = new HashMap<String, String>();

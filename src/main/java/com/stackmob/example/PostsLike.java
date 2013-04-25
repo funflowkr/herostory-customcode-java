@@ -141,8 +141,11 @@ public class PostsLike implements CustomCodeMethod {
 	    	
 	    	logger.debug("update result="+result + ", increment result=" + resultinc + ",,update=" + update);
 	    	
-	    	if (!setHeroPoint(Util.HEROPOINT_CAT_LIKE, 1, characters_id, serviceProvider)) {
-	    		logger.debug("HERO POINT ERR: category="+ Util.HEROPOINT_CAT_LIKE + ",posts_id="+posts_id+",characters_id="+ characters_id);
+	    	// 원본글 글쓴이 파악해서 영웅지수 업데이트 
+	    	String post_characters_id = resultinc.getValue().get("character").toString();
+	    	
+	    	if (!setHeroPoint(Util.HEROPOINT_CAT_LIKE, 1, post_characters_id, serviceProvider)) {
+	    		logger.debug("HERO POINT ERR: category="+ Util.HEROPOINT_CAT_LIKE + ",posts_id="+posts_id+",characters_id="+ post_characters_id);
 	    	}
 	    	
 	    // this is where we handle the case for `DELETE` requests
@@ -161,8 +164,11 @@ public class PostsLike implements CustomCodeMethod {
 		    	
 		    	logger.debug("update result="+ ", increment result=" + resultinc + "update=" + update);
 		    	
-		    	if (!setHeroPoint(Util.HEROPOINT_CAT_LIKE, -1, characters_id, serviceProvider)) {
-		    		logger.debug("HERO POINT ERR: category="+ Util.HEROPOINT_CAT_LIKE + ",posts_id="+posts_id+",characters_id="+ characters_id);
+		    	// 원본글 글쓴이 파악해서 영웅지수 업데이트 
+		    	String post_characters_id = resultinc.getValue().get("character").toString();
+		    	
+		    	if (!setHeroPoint(Util.HEROPOINT_CAT_LIKE, -1, post_characters_id, serviceProvider)) {
+		    		logger.debug("HERO POINT ERR: category="+ Util.HEROPOINT_CAT_LIKE + ",posts_id="+posts_id+",characters_id="+ post_characters_id);
 		    	}
 	    	}
 	    

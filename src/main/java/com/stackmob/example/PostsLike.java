@@ -209,6 +209,7 @@ public class PostsLike implements CustomCodeMethod {
 		    	try {
 		    		oldHeroPoint = Integer.parseInt(result.get(0).getValue().get("heropoint").toString());
 		    		arrHeroPointCount = result.get(0).getValue().get("heropoint_count").toString();
+		    		logger.debug("arrHeroPointCount"+arrHeroPointCount);
 			    } catch (NumberFormatException nfe) {
 			    	HashMap<String, String> errMap = new HashMap<String, String>();
 				    errMap.put("error", "heropoint is not integer.");
@@ -239,7 +240,7 @@ public class PostsLike implements CustomCodeMethod {
 	  		}
 	  		logger.debug("arrHeroPointCount" + Arrays.toString(HeroPointCounts));
 	  		
-	  		returnHeroPointCount = Arrays.toString(HeroPointCounts);
+	  		returnHeroPointCount = Arrays.toString(HeroPointCounts).replaceAll("\\[", "").replaceAll("\\]", "");
 		    
 		    
 		    //arrHeroPointCount = Util.setHeroPointCount(category,arrHeroPointCount);

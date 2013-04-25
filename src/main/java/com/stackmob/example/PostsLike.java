@@ -38,6 +38,7 @@ import com.stackmob.sdkapi.SMCondition;
 import com.stackmob.sdkapi.SMEquals;
 import com.stackmob.sdkapi.SMIncrement;
 import com.stackmob.sdkapi.SMInt;
+import com.stackmob.sdkapi.SMList;
 import com.stackmob.sdkapi.SMObject;
 import com.stackmob.sdkapi.SMSet;
 import com.stackmob.sdkapi.SMString;
@@ -197,6 +198,7 @@ public class PostsLike implements CustomCodeMethod {
 	    List<SMObject> result;
 	    
 	    String arrHeroPointCount = "0,0,0,0";
+	    List<SMInt> heroPointCount = new ArrayList<SMInt>();
 	    
 	    int oldHeroPoint = 0;
 	    int newHeroPoint;
@@ -225,18 +227,21 @@ public class PostsLike implements CustomCodeMethod {
 		    
 		    String[] HeroPointCounts = arrHeroPointCount.replaceAll("\\[", "").replaceAll("\\]", "").split(",");
 	  		String returnHeroPointCount = "";
-	  		
-	  		
+	  			  		
 	  		for (int i = 0; i < HeroPointCounts.length; i++) {
 	  		    try {
 	  		    	if (category == i+1 ) {
-	  		    		HeroPointCounts[i] = Float.parseFloat(HeroPointCounts[i])+1+"";
-	  		    		logger.debug("HeroPointCounts["+i+"]=="+HeroPointCounts[i]);
-	  		    	} 
+	  		    		heroPointCount.add(new SMInt(Long.parseLong(HeroPointCounts[i])+1));
+	  		    		
+	  		    	} else {
+	  		    		heroPointCount.add(new SMInt(Long.parseLong(HeroPointCounts[i])));
+	  		    	}
+	  		    	logger.debug("HeroPointCounts=="+heroPointCount.toString());
 	  		    } catch (NumberFormatException nfe) {
 	  		    	logger.debug(nfe.toString());
 	  		    	
 	  		    };
+	  		    
 	  		}
 	  		logger.debug("arrHeroPointCount" + Arrays.toString(HeroPointCounts));
 	  		
@@ -250,7 +255,7 @@ public class PostsLike implements CustomCodeMethod {
 		    
 		    List<SMUpdate> update = new ArrayList<SMUpdate>();
 			update.add(new SMSet("heropoint", new SMInt((long) newHeroPoint)));
-			update.add(new SMSet("heropoint_count", new SMString(returnHeroPointCount)));
+			update.add(new SMSet("heropoint_count", new SMList(heroPointCount)));
 			SMObject resultUpdate = dataService.updateObject("characters", new SMString(characters_id), update);;
 			logger.debug("resultUpdate="+resultUpdate);
 		    

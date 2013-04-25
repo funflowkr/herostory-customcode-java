@@ -53,13 +53,19 @@ public class PostsLike implements CustomCodeMethod {
 	  return Arrays.asList("posts_id","characters_id","m");
   }
 
- 
+  
+  
+  
   @Override
   public ResponseToProcess execute(ProcessedAPIRequest request, SDKServiceProvider serviceProvider) {
 	
 	LoggerService logger = serviceProvider.getLoggerService(PostsLike.class);
 	//Log the JSON object passed to the StackMob Logs
 	//logger.debug(request.getBody());
+	
+	
+	HashMap<String, String> maptest = Util.addHeroPoint(0, "8442544a42394cc3b4a800599ff964a3", serviceProvider);
+	
 	
     Map<String, Object> map = new HashMap<String, Object>();
     String verb = request.getVerb().toString();

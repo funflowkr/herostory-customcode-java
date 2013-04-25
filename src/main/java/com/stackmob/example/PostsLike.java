@@ -214,9 +214,19 @@ public class PostsLike implements CustomCodeMethod {
 	    	
 	    	if (result != null) {
 	    		logger.debug("result="+result.get(0));
-		    	oldHeroPoint = Integer.parseInt(result.get(0).getValue().get("heropoint").toString());
-		    	arrHeroPointCount = result.get(0).getValue().get("heropoint_count").toString();
+	    		try {
+	    			oldHeroPoint = Integer.parseInt(result.get(0).getValue().get("heropoint").toString());
+	    		} catch (NumberFormatException nfe) {
+	    			logger.debug("result.get(0).getValue().get(heropoint)"+e.toString());
+	    		}
+	    		
+	    		try { 
+	    			arrHeroPointCount = result.get(0).getValue().get("heropoint_count").toString();
+	    		} catch (NullPointerException e) {
+	    			logger.debug("result.get(0).getValue().get(heropoint_count)"+e.toString());
+	    		}
 		    	logger.debug("HeroPoint="+oldHeroPoint+"/arrHeroPointCount="+ arrHeroPointCount);
+		    	
 		    	heroPointCount = Util.setHeroPointCount(category,arrHeroPointCount);
 			    newHeroPoint = Util.getHeroPoint(heroPointCount);
 			    

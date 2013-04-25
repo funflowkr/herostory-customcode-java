@@ -207,8 +207,9 @@ public class PostsLike implements CustomCodeMethod {
 	    try {
 	    
 	    	result = dataService.readObjects("characters",query);
-		    
+	    	
 	    	if (result != null) {
+	    		logger.debug("result="+result.get(0));
 		    	oldHeroPoint = Integer.parseInt(result.get(0).getValue().get("heropoint").toString());
 		    	arrHeroPointCount = result.get(0).getValue().get("heropoint_count").toString();
 		    	logger.debug("HeroPoint="+oldHeroPoint+"/arrHeroPointCount="+ arrHeroPointCount);

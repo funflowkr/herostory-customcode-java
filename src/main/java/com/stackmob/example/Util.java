@@ -54,7 +54,7 @@ public class Util {
 	}
     
 	
-  	static public List<SMDouble> setHeroPointCount(int category,String arrHeroPointCount ) {
+  	static public List<SMDouble> setHeroPointCount(int category,String arrHeroPointCount,int incrementCnt ) {
   		
   		
   		List<SMDouble> heroPointCount = new ArrayList<SMDouble>();
@@ -64,7 +64,7 @@ public class Util {
   		for (int i = 0; i < HeroPointCounts.length; i++) {
   		    try {
   		    	if (category == i ) {
-  		    		heroPointCount.add(new SMDouble((double) (Float.parseFloat(HeroPointCounts[i])+1)));
+  		    		heroPointCount.add(new SMDouble((double) (Float.parseFloat(HeroPointCounts[i])+incrementCnt)));
   		    		
   		    	} else {
   		    		heroPointCount.add(new SMDouble((double) Float.parseFloat(HeroPointCounts[i])));

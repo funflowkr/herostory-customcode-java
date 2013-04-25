@@ -70,9 +70,10 @@ public class PostsLike implements CustomCodeMethod {
 	//logger.debug(request.getBody());
 	
 	
+	/*
 	HashMap<String, String> maptest = addHeroPoint(Util.HEROPOINT_CAT_LIKE, "8442544a42394cc3b4a800599ff964a3", serviceProvider);
 	addHeroPoint(Util.HEROPOINT_CAT_LIKE, "08cc6758de3542888367ca77ede5f0e0", serviceProvider);
-	
+	*/
 	
     Map<String, Object> map = new HashMap<String, Object>();
     String verb = request.getVerb().toString();
@@ -102,7 +103,10 @@ public class PostsLike implements CustomCodeMethod {
         m = request.getParams().get("m");
     	
     }
-    	
+    
+    addHeroPoint(Util.HEROPOINT_CAT_LIKE, characters_id, serviceProvider);
+	
+    
     
     if (!Util.strCheck(posts_id) ) {
     	HashMap<String, String> errParams = new HashMap<String, String>();

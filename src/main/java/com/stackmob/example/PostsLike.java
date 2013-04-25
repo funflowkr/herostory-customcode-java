@@ -220,7 +220,31 @@ public class PostsLike implements CustomCodeMethod {
 		    }
 		    
 		    newHeroPoint = Util.getHeroPoint(oldHeroPoint,category);
-		    arrHeroPointCount = Util.setHeroPointCount(category,arrHeroPointCount);
+		    
+		    
+		    String[] HeroPointCounts = arrHeroPointCount.replaceAll("\\[", "").replaceAll("\\]", "").split(",");
+	  		String returnHeroPointCount = "";
+	  		
+	  		
+	  		for (int i = 0; i < HeroPointCounts.length; i++) {
+	  		    try {
+	  		    	if (category == i+1 ) {
+	  		    		HeroPointCounts[i] = Integer.parseInt(HeroPointCounts[i])+1+"";
+	  		    		logger.debug("HeroPointCounts["+i+"]=="+HeroPointCounts[i]);
+	  		    	} 
+	  		    } catch (NumberFormatException nfe) {
+	  		    	logger.debug(nfe.toString());
+	  		    	
+	  		    };
+	  		}
+	  		logger.debug("arrHeroPointCount" + Arrays.toString(HeroPointCounts));
+	  		
+		    
+		    
+		    
+		    //arrHeroPointCount = Util.setHeroPointCount(category,arrHeroPointCount);
+		    
+		    
 		    logger.debug("HeroPoint="+newHeroPoint+"/arrHeroPointCount="+ arrHeroPointCount);
 		    
 		    List<SMUpdate> update = new ArrayList<SMUpdate>();

@@ -357,7 +357,7 @@ public class PostsWrite implements CustomCodeMethod {
 	    		}
 		    	logger.debug("old HeroPoint="+oldHeroPoint+"/old arrHeroPointCount="+ arrHeroPointCount);
 		    	
-		    	heroPointCount = Util.setHeroPointCount(category,arrHeroPointCount);
+		    	heroPointCount = Util.setHeroPointCount(category,arrHeroPointCount,incrementCnt);
 			    newHeroPoint = Util.getHeroPoint(heroPointCount);
 			    
 			    // logger.debug("newHeroPoint="+newHeroPoint+"/newArrHeroPointCount="+ heroPointCount.toString());

@@ -316,7 +316,7 @@ public class PostsWrite implements CustomCodeMethod {
   
   public boolean setHeroPoint(int category, int incrementCnt, String characters_id, SDKServiceProvider serviceProvider) {
 		
-		LoggerService logger = serviceProvider.getLoggerService(PostsLike.class);
+		LoggerService logger = serviceProvider.getLoggerService(PostsWrite.class);
 		DataService dataService = serviceProvider.getDataService();
 		
 		// build a query

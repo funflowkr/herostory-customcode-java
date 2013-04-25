@@ -64,7 +64,7 @@ public class PostsLike implements CustomCodeMethod {
 	//logger.debug(request.getBody());
 	
 	
-	HashMap<String, String> maptest = Util.addHeroPoint(0, "8442544a42394cc3b4a800599ff964a3", serviceProvider);
+	HashMap<String, String> maptest = Util.addHeroPoint(0, "8442544a42394cc3b4a800599ff964a3") ; //, serviceProvider);
 	
 	
     Map<String, Object> map = new HashMap<String, Object>();

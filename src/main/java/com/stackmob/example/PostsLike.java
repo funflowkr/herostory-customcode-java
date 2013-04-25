@@ -217,7 +217,7 @@ public class PostsLike implements CustomCodeMethod {
 		    heroPointCount = Util.setHeroPointCount(category,arrHeroPointCount);
 		    newHeroPoint = Util.getHeroPoint(heroPointCount);
 		    
-		    logger.debug("HeroPoint="+newHeroPoint+"/arrHeroPointCount="+ heroPointCount.toString());
+		    logger.debug("newHeroPoint="+newHeroPoint+"/newArrHeroPointCount="+ heroPointCount.toString());
 		    
 		    List<SMUpdate> update = new ArrayList<SMUpdate>();
 			update.add(new SMSet("heropoint", new SMInt((long) newHeroPoint)));

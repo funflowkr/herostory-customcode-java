@@ -39,8 +39,10 @@ import com.stackmob.sdkapi.SMEquals;
 import com.stackmob.sdkapi.SMIncrement;
 import com.stackmob.sdkapi.SMInt;
 import com.stackmob.sdkapi.SMObject;
+import com.stackmob.sdkapi.SMSet;
 import com.stackmob.sdkapi.SMString;
 import com.stackmob.sdkapi.SMUpdate;
+import com.stackmob.sdkapi.SMValue;
 
 public class PostsLike implements CustomCodeMethod {
 
@@ -220,6 +222,12 @@ public class PostsLike implements CustomCodeMethod {
 		    newHeroPoint = Util.getHeroPoint(oldHeroPoint,category);
 		    arrHeroPointCount = Util.setHeroPointCount(category,arrHeroPointCount);
 		    logger.debug("HeroPoint="+newHeroPoint+"/arrHeroPointCount="+ arrHeroPointCount);
+		    
+		    List<SMUpdate> update = new ArrayList<SMUpdate>();
+			update.add(new SMSet("heropoint", new SMInt((long) newHeroPoint)));
+			update.add(new SMSet("heropoint_count", new SMString(arrHeroPointCount)));
+			SMObject resultUpdate = dataService.updateObject("characters", new SMString(characters_id), update);;
+
 		    
 		} catch (InvalidSchemaException e) {
 	      HashMap<String, String> errMap = new HashMap<String, String>();

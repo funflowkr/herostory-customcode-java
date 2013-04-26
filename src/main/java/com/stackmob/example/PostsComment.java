@@ -217,7 +217,7 @@ public class PostsComment implements CustomCodeMethod {
 			    	 // 원본글 글쓴이 파악해서 영웅지수 업데이트 
 			    	String post_characters_id = resultinc.getValue().get("character").toString();
 			    	
-			    	if (!setHeroPoint(Util.HEROPOINT_CAT_COMMENT, -1, post_characters_id, serviceProvider)) {
+			    	if (!Util.setHeroPoint(Util.HEROPOINT_CAT_COMMENT, -1, post_characters_id, serviceProvider)) {
 			    		logger.debug("HERO POINT ERR: category="+ Util.HEROPOINT_CAT_LIKE + ",posts_id="+posts_id+",characters_id="+ post_characters_id);
 			    	}
 			    	

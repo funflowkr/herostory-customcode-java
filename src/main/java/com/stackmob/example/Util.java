@@ -114,7 +114,7 @@ public class Util {
   	
     public static boolean setHeroPoint(int category, int incrementCnt, String characters_id, SDKServiceProvider serviceProvider) {
 		
-  		LoggerService logger = serviceProvider.getLoggerService(PostsComment.class);
+  		LoggerService logger = serviceProvider.getLoggerService(Util.class);
   		DataService dataService = serviceProvider.getDataService();
   		
   		// build a query

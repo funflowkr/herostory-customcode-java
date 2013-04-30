@@ -96,6 +96,11 @@ public class CharacterInfo implements CustomCodeMethod {
 	    if (result != null) {
 	    	try {
 		    	JSONArray jArr = new JSONArray(result.get(0).getValue().get("follows").toString());
+		    	
+		    	SMValue aaa = result.get(0).getValue().get("follows");
+		    	
+		    	logger.debug("result="+aaa.toString());
+		    	logger.debug("result="+aaa.getValue().toString());
 		    	resultFollowingCount = jArr.length();
 		    	
 	    	} catch (JSONException e){

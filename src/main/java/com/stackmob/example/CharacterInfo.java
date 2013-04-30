@@ -91,7 +91,7 @@ public class CharacterInfo implements CustomCodeMethod {
     
     int resultFollowingCount = 0;
     try {
-        result = dataService.readObjects("characters",query);
+        result = dataService.readObjects("characters",query,1);
 	    
 	    if (result != null) {
 	    	try {

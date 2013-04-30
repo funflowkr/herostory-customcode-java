@@ -95,19 +95,16 @@ public class CharacterInfo implements CustomCodeMethod {
 	    
 	    if (result != null) {
 	    	try {
+		    	// JSON parsing 하는데 : , / , = 이 섞여서 제대로 못한다. 
+	    		// 완전 땜빵 짜증 
+	    		JSONArray jArr = new JSONArray(result.get(0).getValue().get("follows").toString().replace(":","").replace("/","").replaceAll("size=",""));
 		    	
-	    		SMValue aaa = result.get(0).getValue().get("follows");
-		    	
-		    	logger.debug("result="+aaa.toString());
-		    	logger.debug("result="+aaa.getValue().toString());
-		    	
-		    	
-	    		JSONArray jArr = new JSONArray(result.get(0).getValue().get("follows").toString());
-		    	
+	    		
 		    	resultFollowingCount = jArr.length();
 		    	
 	    	} catch (JSONException e){
 	    		resultFollowingCount = 0;
+	    		logger.debug(e.toString());
 	    		
 	    	}
 	    	logger.debug("result="+result+"/following="+ resultFollowingCount);
@@ -184,7 +181,7 @@ public class CharacterInfo implements CustomCodeMethod {
     
     // execute the query
     List<SMObject> resultTotal;
-    	
+    
       Map<String, Object> returnMap = new HashMap<String, Object>();
       
    	  // user was in the datastore, so check the score and update if necessary
@@ -202,7 +199,6 @@ public class CharacterInfo implements CustomCodeMethod {
       //  logger.debug("result size=" + result.size());
       }
      
-   
       return new ResponseToProcess(HttpURLConnection.HTTP_OK, returnMap);
    
   }

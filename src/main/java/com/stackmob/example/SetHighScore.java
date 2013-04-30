@@ -48,7 +48,7 @@ public class SetHighScore implements CustomCodeMethod {
     String verb = request.getVerb().toString();
  
     StringBuilder sb = new StringBuilder(verb + " =>");
- 
+    
     // this is where we handle the special case for `POST` and `PUT` requests
     if (verb.equalsIgnoreCase("post") || verb.equalsIgnoreCase("put")) {
  

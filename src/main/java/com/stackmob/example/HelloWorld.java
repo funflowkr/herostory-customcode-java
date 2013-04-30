@@ -25,6 +25,7 @@ import com.stackmob.core.rest.ProcessedAPIRequest;
 import com.stackmob.core.rest.ResponseToProcess;
 import com.stackmob.sdkapi.LoggerService;
 import com.stackmob.sdkapi.SDKServiceProvider;
+import com.stackmob.sdkapi.SMString;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class HelloWorld implements CustomCodeMethod {
     String username = "sohnkh@gmail.com";
     String characters_id = "asdfasdlfja;sdfjkasd;f";
     String codeName = "F_USER";
-    List<String> args = Arrays.asList("aasdf","asdfasdf","adsfasdf");
+    List<SMString> args = Arrays.asList(new SMString("aasdf"),new SMString("as"),new SMString("vvvv"));
      try {
     	 logger.debug("start push");
 		UtilPush.sendPush(username, characters_id, codeName, args, serviceProvider);

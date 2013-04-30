@@ -39,7 +39,7 @@ public class UtilPush {
 	public static final String PUSH_CONTENT_TYPE_MOVIE  = "MOVIE";
 	public static final String PUSH_CONTENT_TYPE_LINK  = "LINK";
 	
-	public static boolean sendPush(String username,String characters_id,String codeName,List<String> args, SDKServiceProvider serviceProvider) throws ServiceNotActivatedException,JSONException, InvalidSchemaException, DatastoreException, PushServiceException, Exception {
+	public static boolean sendPush(String username,String characters_id,String codeName,List<SMString> args, SDKServiceProvider serviceProvider) throws ServiceNotActivatedException,JSONException, InvalidSchemaException, DatastoreException, PushServiceException, Exception {
 		
     	
   		LoggerService logger = serviceProvider.getLoggerService(UtilPush.class);
@@ -53,10 +53,11 @@ public class UtilPush {
   		Map<String, SMValue> objMap = new HashMap<String, SMValue>();
     	objMap.put("sm_owner", new SMString(username));
     	objMap.put("character", new SMString(characters_id));
-    	objMap.put("msgArgs", new SMList(args));
-    	objMap.put("codeName", new SMString(codeName));
+    	objMap.put("msgArgs", new SMList<SMString>(args));
+    	objMap.put("codename", new SMString(codeName));
     	
   		SMObject toCreate = new SMObject(objMap);
+  		logger.debug("toCreate="+ toCreate.toString());
   		SMObject createResult = dataService.createObject("pushes", toCreate);
   		
   		logger.debug("createResult="+ createResult);

@@ -23,6 +23,7 @@ import com.stackmob.core.ServiceNotActivatedException;
 import com.stackmob.core.customcode.CustomCodeMethod;
 import com.stackmob.core.rest.ProcessedAPIRequest;
 import com.stackmob.core.rest.ResponseToProcess;
+import com.stackmob.sdkapi.LoggerService;
 import com.stackmob.sdkapi.SDKServiceProvider;
 
 import java.net.HttpURLConnection;
@@ -48,32 +49,35 @@ public class HelloWorld implements CustomCodeMethod {
 
   @Override
   public ResponseToProcess execute(ProcessedAPIRequest request, SDKServiceProvider serviceProvider) {
-    Map<String, Object> map = new HashMap<String, Object>();
+    
+	  LoggerService logger = serviceProvider.getLoggerService(HelloWorld.class);
+	   
+	  Map<String, Object> map = new HashMap<String, Object>();
     String username = "sohnkh@gmail.com";
     String characters_id = "asdfasdlfja;sdfjkasd;f";
     String codeName = "F_USER";
     List<String> args = Arrays.asList("aasdf","asdfasdf","adsfasdf");
-    
-    try {
+     try {
+    	 logger.debug("start push");
 		UtilPush.sendPush(username, characters_id, codeName, args, serviceProvider);
 	} catch (ServiceNotActivatedException e) {
 		// TODO Auto-generated catch block
-		e.printStackTrace();
+		logger.debug(e.toString());
 	} catch (JSONException e) {
 		// TODO Auto-generated catch block
-		e.printStackTrace();
+		logger.debug(e.toString());
 	} catch (InvalidSchemaException e) {
 		// TODO Auto-generated catch block
-		e.printStackTrace();
+		logger.debug(e.toString());
 	} catch (DatastoreException e) {
 		// TODO Auto-generated catch block
-		e.printStackTrace();
+		logger.debug(e.toString());
 	} catch (PushServiceException e) {
 		// TODO Auto-generated catch block
-		e.printStackTrace();
+		logger.debug(e.toString());
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
-		e.printStackTrace();
+		logger.debug(e.toString());
 	}
     map.put("msg", "Hello, world!!!");
     return new ResponseToProcess(HttpURLConnection.HTTP_OK, map);

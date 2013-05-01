@@ -58,7 +58,7 @@ public class PostsComment implements CustomCodeMethod {
   
   @Override
   public List<String> getParams() {
-	  return Arrays.asList("posts_id","characters_id","comment_text","comments_id","m");
+	  return Arrays.asList("posts_id","characters_id","comment_text","comments_id","m","charactername");
   }
 
  
@@ -85,7 +85,7 @@ public class PostsComment implements CustomCodeMethod {
     String comment_text = null;
     String comments_id = null;
     String m = null;
-    
+    String charactername = "캐릭터이름";
     
     if (verb.equalsIgnoreCase("post")) {
     	
@@ -95,6 +95,8 @@ public class PostsComment implements CustomCodeMethod {
               if (!jsonObj.isNull("posts_id")) posts_id = jsonObj.getString("posts_id");
               if (!jsonObj.isNull("characters_id")) characters_id = jsonObj.getString("characters_id");
               if (!jsonObj.isNull("comment_text")) comment_text = jsonObj.getString("comment_text");
+              if (!jsonObj.isNull("charactername")) charactername = jsonObj.getString("charactername");
+              
             } catch (JSONException e) {
             	logger.debug("Caught JSON Exception");
               e.printStackTrace();
@@ -175,6 +177,23 @@ public class PostsComment implements CustomCodeMethod {
 	    	if (!Util.setHeroPoint(Util.HEROPOINT_CAT_COMMENT, 1, post_characters_id, serviceProvider)) {
 	    		logger.debug("HERO POINT ERR: category="+ Util.HEROPOINT_CAT_LIKE + ",posts_id="+posts_id+",characters_id="+ post_characters_id);
 	    	}
+	    	
+	    	// 원본글 글쓴이에게 Push 해준다. 
+	    	String post_username = resultinc.getValue().get("sm_owner").toString();
+	    	String content_type = UtilPush.PUSH_CONTENT_TYPE_POST ;
+	    	
+	    	try {
+		    	if (Util.strCheck(resultinc.getValue().get("imageurl").toString())) {
+		    		content_type = UtilPush.PUSH_CONTENT_TYPE_PICTURE;
+		    	}
+	    	} catch (Exception e){ }
+	    	
+	    	List<SMString> pushArgs = new ArrayList<SMString>();
+	    	pushArgs.add(new SMString(charactername));
+	    	pushArgs.add(new SMString(content_type));
+	    	pushArgs.add(new SMString(comment_text));
+	    		    	    	
+	    	UtilPush.sendPush(post_username, characters_id, "MY_COMMENT", pushArgs , serviceProvider);
 	    	
 	    	
 	    	logger.debug("update result="+result + "//"+ result.getSuccessIds() + ", increment result=" + resultinc + ",,resultData=" + resultData);

@@ -154,10 +154,16 @@ public class PostsLike implements CustomCodeMethod {
 	    	// 원본글 글쓴이에게 Push 해준다. 
 	    	String post_username = resultinc.getValue().get("sm_owner").toString();
 	    	String post_text = resultinc.getValue().get("text").toString();
+	    	String content_type = UtilPush.PUSH_CONTENT_TYPE_POST ;
+	    	try {
+		    	if (Util.strCheck(resultinc.getValue().get("imageurl").toString())) {
+		    		content_type = UtilPush.PUSH_CONTENT_TYPE_PICTURE;
+		    	}
+	    	} catch (Exception e){ }
 	    	
 	    	List<SMString> pushArgs = new ArrayList<SMString>();
 	    	pushArgs.add(new SMString(charactername));
-	    	pushArgs.add(new SMString(UtilPush.PUSH_CONTENT_TYPE_POST));
+	    	pushArgs.add(new SMString(content_type));
 	    	pushArgs.add(new SMString(post_text));
 	    		    	    	
 	    	UtilPush.sendPush(post_username, characters_id, "MY_LIKE", pushArgs , serviceProvider);

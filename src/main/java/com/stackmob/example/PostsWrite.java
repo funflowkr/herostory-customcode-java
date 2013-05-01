@@ -57,7 +57,7 @@ public class PostsWrite implements CustomCodeMethod {
   
   @Override
   public List<String> getParams() {
-	  return Arrays.asList("characters_id","post_text","imageurl","share_posts_id","share_characters_id","posts_id","m");
+	  return Arrays.asList("characters_id","post_text","imageurl","share_posts_id","share_characters_id","posts_id","m","charactername");
   }
 
  
@@ -91,6 +91,7 @@ public class PostsWrite implements CustomCodeMethod {
     String share_posts_id = "" ;
     String share_characters_id = "";
     String m = null;
+    String charactername = "캐릭터이름"; // 공유한 사람의 캐릭터 이름. 
     
     List<SMObject> resultdata = null;
     
@@ -114,6 +115,7 @@ public class PostsWrite implements CustomCodeMethod {
 	              if (!jsonObj.isNull("imageurl")) imageurl = jsonObj.getString("imageurl");
 	              if (!jsonObj.isNull("share_posts_id")) share_posts_id = jsonObj.getString("share_posts_id");
 	              if (!jsonObj.isNull("share_characters_id")) share_characters_id = jsonObj.getString("share_characters_id");
+	              if (!jsonObj.isNull("charactername")) charactername = jsonObj.getString("charactername");
 	              
 	            } catch (JSONException e) {
 	            	logger.debug("Caught JSON Exception");
@@ -176,7 +178,23 @@ public class PostsWrite implements CustomCodeMethod {
 		    		logger.debug("HERO POINT ERR: category="+ Util.HEROPOINT_CAT_LIKE + ",posts_id="+posts_id+",characters_id="+ post_characters_id);
 		    	}
 		    	
-	    		
+		    	// 원본글 글쓴이에게 Push 해준다. 
+		    	String post_username = resultshareinc.getValue().get("sm_owner").toString();
+		    	String content_type = UtilPush.PUSH_CONTENT_TYPE_POST ;
+		    	
+		    	try {
+			    	if (Util.strCheck(resultshareinc.getValue().get("imageurl").toString())) {
+			    		content_type = UtilPush.PUSH_CONTENT_TYPE_PICTURE;
+			    	}
+		    	} catch (Exception e){ }
+		    	
+		    	List<SMString> pushArgs = new ArrayList<SMString>();
+		    	pushArgs.add(new SMString(charactername)); // 친구 캐릭터 이름
+		    	pushArgs.add(new SMString(content_type)); // 원본글의 content type 
+		    	pushArgs.add(new SMString(post_text)); // 공유한 친구글 텍스트 
+		    		    	    	
+		    	UtilPush.sendPush(post_username, characters_id, "MY_SHARE", pushArgs , serviceProvider);
+		    	
 	    	}
 	    	
 	    	logger.debug("post result="+result + ", share result=" + resultshare + ",result share inc=" + resultshareinc);

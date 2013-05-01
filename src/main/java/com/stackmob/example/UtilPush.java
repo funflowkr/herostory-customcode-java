@@ -39,6 +39,11 @@ public class UtilPush {
 	public static final String PUSH_CONTENT_TYPE_MOVIE  = "MOVIE";
 	public static final String PUSH_CONTENT_TYPE_LINK  = "LINK";
 	
+	
+	
+	// username : 푸쉬를 받는 사람의 username 
+	// characters_id : 푸쉬를 보내는 사람의 characters_id / 주로 friend characters_id 
+	
 	public static boolean sendPush(String username,String characters_id,String codeName,List<SMString> args, SDKServiceProvider serviceProvider) throws ServiceNotActivatedException,JSONException, InvalidSchemaException, DatastoreException, PushServiceException, Exception {
 		
     	

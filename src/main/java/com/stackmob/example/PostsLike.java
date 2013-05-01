@@ -56,7 +56,7 @@ public class PostsLike implements CustomCodeMethod {
   
   @Override
   public List<String> getParams() {
-	  return Arrays.asList("posts_id","characters_id","m");
+	  return Arrays.asList("posts_id","characters_id","m","charactername");
   }
 
   
@@ -79,16 +79,19 @@ public class PostsLike implements CustomCodeMethod {
     String verb = request.getVerb().toString();
     String posts_id = null ;
     String characters_id = null;
+    String charactername = "캐릭터이름";
     String m = null;
     
     if (verb.equalsIgnoreCase("post") || verb.equalsIgnoreCase("put")) {
-    	logger.debug("GET ACTION ==== POST or PUT");
+    	//logger.debug("GET ACTION ==== POST or PUT");
     	
     	if (!request.getBody().isEmpty()) {
             try {
               JSONObject jsonObj = new JSONObject(request.getBody());
               if (!jsonObj.isNull("posts_id")) posts_id = jsonObj.getString("posts_id");
               if (!jsonObj.isNull("characters_id")) characters_id = jsonObj.getString("characters_id");
+              if (!jsonObj.isNull("charactername")) charactername = jsonObj.getString("charactername");
+              
             } catch (JSONException e) {
             	logger.debug("Caught JSON Exception");
               e.printStackTrace();
@@ -147,6 +150,17 @@ public class PostsLike implements CustomCodeMethod {
 	    	if (!Util.setHeroPoint(Util.HEROPOINT_CAT_LIKE, 1, post_characters_id, serviceProvider)) {
 	    		logger.debug("HERO POINT ERR: category="+ Util.HEROPOINT_CAT_LIKE + ",posts_id="+posts_id+",characters_id="+ post_characters_id);
 	    	}
+	    	
+	    	// 원본글 글쓴이에게 Push 해준다. 
+	    	String post_username = resultinc.getValue().get("sm_owner").toString();
+	    	String post_text = resultinc.getValue().get("text").toString();
+	    	
+	    	List<SMString> pushArgs = new ArrayList<SMString>();
+	    	pushArgs.add(new SMString(charactername));
+	    	pushArgs.add(new SMString(UtilPush.PUSH_CONTENT_TYPE_POST));
+	    	pushArgs.add(new SMString(post_text));
+	    		    	    	
+	    	UtilPush.sendPush(post_username, characters_id, "MY_LIKE", pushArgs , serviceProvider);
 	    	
 	    // this is where we handle the case for `DELETE` requests
 	    } else if (verb.equalsIgnoreCase("delete") || verb.equalsIgnoreCase("get")) {

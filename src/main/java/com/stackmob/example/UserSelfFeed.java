@@ -92,7 +92,7 @@ public class UserSelfFeed implements CustomCodeMethod {
     	strSinceId = "0";
     }
     if ( !Util.strCheck(strLimit) ) {
-	  strLimit = "100";
+	  strLimit = "30";
 	}
 
     try {

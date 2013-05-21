@@ -38,6 +38,7 @@ import com.stackmob.sdkapi.SMCondition;
 import com.stackmob.sdkapi.SMEquals;
 import com.stackmob.sdkapi.SMIn;
 import com.stackmob.sdkapi.SMInt;
+import com.stackmob.sdkapi.SMList;
 import com.stackmob.sdkapi.SMObject;
 import com.stackmob.sdkapi.SMString;
 import com.stackmob.sdkapi.SMValue;
@@ -161,9 +162,9 @@ public class CharacterInfo implements CustomCodeMethod {
     	
     	if (resultFollowers != null && resultFollowers.size() >= 1 ) {
     		resultFollowersCount = resultFollowers.size();
-    		logger.debug("resultFollowers="+resultFollowers+ "///Count="+resultFollowersCount + "////" + resultFollowers.get(0).getValue().get("follows"));
+    		logger.debug("resultFollowers="+resultFollowers+ "///Count="+resultFollowersCount );
     		// resultObj.getValue().put("followers", resultFollowers.get(0).getValue().get("follows"));
-    		resultObj.getValue().put("followers", (SMValue) resultFollowers); 
+    		resultObj.getValue().put("followers", new SMList(resultFollowers)); 
     	} else {
     		resultFollowersCount = 0 ;
     	}

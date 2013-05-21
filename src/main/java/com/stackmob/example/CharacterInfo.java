@@ -163,7 +163,7 @@ public class CharacterInfo implements CustomCodeMethod {
     		resultFollowersCount = resultFollowers.size();
     		logger.debug("resultFollowers="+resultFollowers+ "///Count="+resultFollowersCount + "////" + resultFollowers.get(0).getValue().get("follows"));
     		// resultObj.getValue().put("followers", resultFollowers.get(0).getValue().get("follows"));
-    		resultObj.getValue().put("followers", new SMString(resultFollowers.toString())); 
+    		resultObj.getValue().put("followers", (SMValue) resultFollowers); 
     	} else {
     		resultFollowersCount = 0 ;
     	}

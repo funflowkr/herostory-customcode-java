@@ -157,12 +157,13 @@ public class CharacterInfo implements CustomCodeMethod {
     int resultFollowersCount;
     try {
     	
-    	resultFollowers = dataService.readObjects("characters",queryFollowers,1,null);
+    	resultFollowers = dataService.readObjects("characters",queryFollowers,0,null);
     	
     	if (resultFollowers != null && resultFollowers.size() >= 1 ) {
     		resultFollowersCount = resultFollowers.size();
     		logger.debug("resultFollowers="+resultFollowers+ "///Count="+resultFollowersCount + "////" + resultFollowers.get(0).getValue().get("follows"));
-    		resultObj.getValue().put("followers", resultFollowers.get(0).getValue().get("follows"));
+    		// resultObj.getValue().put("followers", resultFollowers.get(0).getValue().get("follows"));
+    		resultObj.getValue().put("followers", new SMString(resultFollowers.toString())); 
     	} else {
     		resultFollowersCount = 0 ;
     	}

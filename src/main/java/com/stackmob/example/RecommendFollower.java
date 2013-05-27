@@ -73,7 +73,7 @@ public class RecommendFollower implements CustomCodeMethod {
       strPage = "0";
     }
     if ( !Util.strCheck(strLimit) ) {
-	  strLimit = "5";
+	  strLimit = "4";
 	}
     
     try {

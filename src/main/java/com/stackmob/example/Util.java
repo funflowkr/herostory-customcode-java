@@ -200,6 +200,10 @@ public class Util {
   		
   	
     }
+    
+    public static String getSMOwner(String loginname) {
+    	return "user/" + loginname ;
+    }
 }
 
 

@@ -31,18 +31,14 @@ import com.stackmob.core.InvalidSchemaException;
 import com.stackmob.core.customcode.CustomCodeMethod;
 import com.stackmob.core.rest.ProcessedAPIRequest;
 import com.stackmob.core.rest.ResponseToProcess;
-import com.stackmob.sdkapi.BulkResult;
 import com.stackmob.sdkapi.DataService;
 import com.stackmob.sdkapi.LoggerService;
 import com.stackmob.sdkapi.SDKServiceProvider;
 import com.stackmob.sdkapi.SMCondition;
-import com.stackmob.sdkapi.SMDouble;
 import com.stackmob.sdkapi.SMEquals;
 import com.stackmob.sdkapi.SMIncrement;
 import com.stackmob.sdkapi.SMInt;
-import com.stackmob.sdkapi.SMList;
 import com.stackmob.sdkapi.SMObject;
-import com.stackmob.sdkapi.SMSet;
 import com.stackmob.sdkapi.SMString;
 import com.stackmob.sdkapi.SMUpdate;
 import com.stackmob.sdkapi.SMValue;
@@ -136,7 +132,7 @@ public class PostsWrite implements CustomCodeMethod {
 	    	
 	    	
 	    	Map<String, SMValue> objMap = new HashMap<String, SMValue>();
-	    	objMap.put("sm_owner", new SMString(loginname));
+	    	objMap.put("sm_owner", new SMString(Util.getSMOwner(loginname)));
 	    	objMap.put("character", new SMString(characters_id));
 	    	objMap.put("text", new SMString(post_text));
 	    	objMap.put("comment_count", new SMInt((long) 0));

@@ -58,7 +58,7 @@ public class UtilPush {
   		Map<String, SMValue> objMap = new HashMap<String, SMValue>();
     	objMap.put("sm_owner", new SMString(username));
     	objMap.put("character", new SMString(characters_id));
-    	objMap.put("msgArgs", new SMList<SMString>(args));
+    	objMap.put("msg_args", new SMList<SMString>(args));
     	objMap.put("codename", new SMString(codeName));
     	
   		SMObject toCreate = new SMObject(objMap);

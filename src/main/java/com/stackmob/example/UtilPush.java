@@ -69,10 +69,9 @@ public class UtilPush {
 	
   		
   		// push 보내기 
-  		
-	  	//get all tokens for John Doe
+  		//get all tokens for John Doe
 	  	List<String> users = new ArrayList<String>();
-	  	users.add(username);
+	  	users.add(Util.getUsername(username));
 	  	
 	  	// make push message 
 	  	JSONArray jsonArray = new JSONArray(args);

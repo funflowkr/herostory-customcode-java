@@ -204,6 +204,11 @@ public class Util {
     public static String getSMOwner(String loginname) {
     	return "user/" + loginname ;
     }
+    public static String getUsername(String smowner) {
+    	
+    	String username = smowner.replaceFirst("user/", "");
+    	return username;
+    }
 }
 
 

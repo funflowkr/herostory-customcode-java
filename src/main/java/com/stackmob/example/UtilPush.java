@@ -62,10 +62,10 @@ public class UtilPush {
     	objMap.put("codename", new SMString(codeName));
     	
   		SMObject toCreate = new SMObject(objMap);
-  		logger.debug("toCreate="+ toCreate.toString());
+  		// logger.debug("toCreate="+ toCreate.toString());
   		SMObject createResult = dataService.createObject("pushes", toCreate);
   		
-  		logger.debug("createResult="+ createResult);
+  		// logger.debug("createResult="+ createResult);
 	
   		
   		// push 보내기 

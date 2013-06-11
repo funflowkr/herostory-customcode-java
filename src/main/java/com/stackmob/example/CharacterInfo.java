@@ -93,7 +93,7 @@ public class CharacterInfo implements CustomCodeMethod {
     int resultFollowingCount = 0;
     try {
         result = dataService.readObjects("characters",query,1);
-	    
+        logger.debug("///result="+result);
 	    if (result != null) {
 	    	try {
 		    	// JSON parsing 하는데 : , / , = 이 섞여서 제대로 못한다. 
@@ -111,7 +111,7 @@ public class CharacterInfo implements CustomCodeMethod {
 	    	logger.debug("result="+result+"/following="+ resultFollowingCount);
 	    	resultObj = result.get(0);
 	    }
-	    logger.debug("///result="+result+"/following="+ resultFollowingCount);
+	    
 	    
     } catch(Exception e) {
 	    HashMap<String, String> errMap = new HashMap<String, String>();

@@ -111,11 +111,11 @@ public class CharacterInfo implements CustomCodeMethod {
 	    	logger.debug("result="+result+"/following="+ resultFollowingCount);
 	    	resultObj = result.get(0);
 	    }
-	    
+	    logger.debug("///result="+result+"/following="+ resultFollowingCount);
 	    
     } catch(Exception e) {
 	    HashMap<String, String> errMap = new HashMap<String, String>();
-	    errMap.put("error", "unknown");
+	    errMap.put("error1", "unknown");
 	    errMap.put("detail", e.toString());
 	    return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errMap); // http 500 - internal server error
 	}
@@ -142,7 +142,7 @@ public class CharacterInfo implements CustomCodeMethod {
     	
     } catch(Exception e) {
 	    HashMap<String, String> errMap = new HashMap<String, String>();
-	    errMap.put("error", "unknown");
+	    errMap.put("error2", "unknown");
 	    errMap.put("detail", e.toString());
 	    return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errMap); // http 500 - internal server error
 	}
@@ -171,7 +171,7 @@ public class CharacterInfo implements CustomCodeMethod {
     	
     } catch(Exception e) {
 	    HashMap<String, String> errMap = new HashMap<String, String>();
-	    errMap.put("error", "unknown");
+	    errMap.put("error3", "unknown");
 	    errMap.put("detail", e.toString());
 	    return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errMap); // http 500 - internal server error
 	}

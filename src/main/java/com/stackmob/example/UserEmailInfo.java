@@ -107,20 +107,24 @@ public class UserEmailInfo implements CustomCodeMethod {
 			  
 			  username = result.get(0).getValue().get("username").toString();
 			  returnMap.put("username", username);
+			  return new ResponseToProcess(HttpURLConnection.HTTP_OK, returnMap);
 			  
 		  } else if (result.size() > 1 ){ 
 			  // 2개가 나오면 겁나 이상한 거임.. 원래 그렇게 되면 안 댐... 
 			  // returnMap.put("response_body", result);
+			  logger.error("duplicated user error");
+			  HashMap<String, String> errMap = new HashMap<String, String>();
+		      errMap.put("error", "double user");
+		      return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errMap); // http 500 - internal server error
 		  } else {
-		  //  Map<String, SMValue> userMap = new HashMap<String, SMValue>();
-		  //  userMap.put("username", new SMString(username));
-		  //  userMap.put("score", new SMInt(0L));
-		  //  newUser = true;
-		
+			  logger.error("no exist user");
+			  HashMap<String, String> errMap = new HashMap<String, String>();
+		      errMap.put("error", "no exist user");
+		      return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, errMap); // http 500 - internal server error
 		  }
 	   
    
-      return new ResponseToProcess(HttpURLConnection.HTTP_OK, returnMap);
+      
     } catch (InvalidSchemaException e) {
       HashMap<String, String> errMap = new HashMap<String, String>();
       errMap.put("error", "invalid_schema");

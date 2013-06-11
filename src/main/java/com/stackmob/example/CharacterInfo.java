@@ -98,8 +98,7 @@ public class CharacterInfo implements CustomCodeMethod {
 	    	try {
 		    	// JSON parsing 하는데 : , / , = 이 섞여서 제대로 못한다. 
 	    		// 완전 땜빵 짜증 
-	    		List<SMObject> resultkk = (List<SMObject>) result.get(0).getValue().get("follows");
-	    		logger.debug("rsultkk=size"+ resultkk.size());
+	    		
 	    		if (result.get(0).getValue().get("follows") != null) {
 	    			JSONArray jArr = new JSONArray(result.get(0).getValue().get("follows").toString().replace(":","").replace("/","").replaceAll("size=",""));
 	    			resultFollowingCount = jArr.length();

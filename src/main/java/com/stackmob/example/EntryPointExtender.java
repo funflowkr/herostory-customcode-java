@@ -50,6 +50,8 @@ public class EntryPointExtender extends JarEntryObject {
     list.add(new PostsLike());
     list.add(new PostsComment());
     
+    list.add(new UserEmailInfo());
+    
     return list;
   }
 

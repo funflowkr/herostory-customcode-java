@@ -192,7 +192,9 @@ public class PostsComment implements CustomCodeMethod {
 	    	pushArgs.add(new SMString(charactername));
 	    	pushArgs.add(new SMString(content_type));
 	    	pushArgs.add(new SMString(comment_text));
-	    		    	    	
+	    	pushArgs.add(new SMString(posts_id));
+	    	
+	    	
 	    	UtilPush.sendPush(post_username, characters_id, "MY_COMMENT", pushArgs , serviceProvider);
 	    	
 	    	

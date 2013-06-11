@@ -188,7 +188,8 @@ public class PostsWrite implements CustomCodeMethod {
 		    	pushArgs.add(new SMString(charactername)); // 친구 캐릭터 이름
 		    	pushArgs.add(new SMString(content_type)); // 원본글의 content type 
 		    	pushArgs.add(new SMString(post_text)); // 공유한 친구글 텍스트 
-		    		    	    	
+		    	pushArgs.add(new SMString(posts_id));
+		    	
 		    	UtilPush.sendPush(post_username, characters_id, "MY_SHARE", pushArgs , serviceProvider);
 		    	
 	    	}

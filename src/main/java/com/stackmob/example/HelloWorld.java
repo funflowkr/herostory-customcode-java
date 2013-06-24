@@ -95,6 +95,7 @@ public class HelloWorld implements CustomCodeMethod {
     
     try {
 		provider.retrieveAccessToken(consumer, "8tcgvBbIYS1EhOpVkgYvk_VHPLxTcY");
+		logger.debug("retrieve Access Token Success");
 	} catch (OAuthMessageSignerException e2) {
 		// TODO Auto-generated catch block
 		e2.printStackTrace();

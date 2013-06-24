@@ -28,7 +28,8 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <customcode.version>0.5.3</customcode.version>
+    <customcode.version>0.6.1</customcode.version>
+    <junit.version>4.10</junit.version>
   </properties>
     
   <dependencies>
@@ -53,8 +54,13 @@
 	  <artifactId>json</artifactId>
 	  <version>20090211</version>
 	</dependency>
-    
-    
+   
+  	<dependency>
+       <groupId>oauth.signpost</groupId>
+       <artifactId>signpost-core</artifactId>
+       <version>1.2</version>
+       <scope>compile</scope>
+    </dependency>
   </dependencies>
     
   <build>

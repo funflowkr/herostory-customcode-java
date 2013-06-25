@@ -243,12 +243,12 @@ public class OAuthNaverConnect implements CustomCodeMethod {
 	      oauth_nonce = OAuth.percentEncode(String.valueOf(getMilis()/1000 + rand.nextInt()));
 	      
 	      baseString = "GET&http%3A%2F%2Fdev.apis.naver.com%2Fapitest%2Fnid%2FgetUserId.xml&" +
-	        		"oauth_consumer_key%3D" + oauth_consumer_key + "" +
-	        		"oauth_nonce%3D" + oauth_nonce +
-	        		"oauth_signature_method%3DHMAC_SHA1%26" +
-	        		"oauth_timestamp%3D"+ oauth_timestamp + 
-	        		"oauth_token%3D" + oauth_token + 
-	        		"oauth_version%3D1.0a";
+	        		"oauth_consumer_key%3D" + oauth_consumer_key + 
+	        		"%26oauth_nonce%3D" + oauth_nonce +
+	        		"%26oauth_signature_method%3DHMAC_SHA1%26" +
+	        		"%26oauth_timestamp%3D"+ oauth_timestamp + 
+	        		"%26oauth_token%3D" + oauth_token + 
+	        		"%26oauth_version%3D1.0a";
 	      logger.debug(baseString);
 	      
 	      oauth_signature = getSignature(baseString);

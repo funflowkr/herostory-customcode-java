@@ -169,13 +169,13 @@ public class OAuthNaverConnect implements CustomCodeMethod {
       
        
       long epoch = System.currentTimeMillis()/1000;
-      String oauth_timestamp = String.valueOf(System.currentTimeMillis()/1000);
+      String oauth_timestamp = String.valueOf(epoch);
      	
       logger.debug("oauth_timestamp="+oauth_timestamp);
       
       Random rand = new Random();
       
-      String oauth_nonce = oauth_timestamp + rand.nextInt(); // api.getTimestampService().getNonce();
+      String oauth_nonce = String.valueOf(epoch + rand.nextInt()); // api.getTimestampService().getNonce();
       logger.debug("oauth_nonce="+oauth_nonce);
       
       

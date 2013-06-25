@@ -106,6 +106,13 @@ public class OAuthNaverConnect implements CustomCodeMethod {
     oauth_token = "J5U0cqcDgAyIV9R3";
     oauth_verifier = "jmTCvj_0s2i2PXAtdOP1lSvLlkPJoi";
     
+    if (oauth_token == null || oauth_token.isEmpty()) {
+        logger.error("Missing oauth_token");
+      }
+    if (oauth_verifier == null || oauth_verifier.isEmpty()) {
+        logger.error("Missing oauth_verifier");
+      }
+
     /*if (toPhoneNumber == null || toPhoneNumber.isEmpty()) {
       logger.error("Missing phone number");
     }
@@ -159,24 +166,8 @@ public class OAuthNaverConnect implements CustomCodeMethod {
     	
     
     try {
-      HttpService http = serviceProvider.getHttpService();
-      //PostRequest req = new PostRequest(url,set,body.toString());
-      GetRequest req = new GetRequest(url);
-      
-      HttpResponse resp = http.get(req);
-      responseCode = resp.getCode();
-      responseBody = resp.getBody();
-      
-      logger.debug("resp.toString()"+ resp.toString());
-      logger.debug("resp.getHeaders"+ resp.getHeaders());
       
       
-      /*
-      	{
-	  	  "response_body": "oauth_token=nvOBH0crjrw5EmC1TOnPiWW_vnhenQ&oauth_token_secret=3aq2lzse7qVNQ6CdzjdveC_g6FRLjW&userid=wmrXtANKuDkK",
-	  	  "response_code": 200  
-	  	}
-	  	*/
 	  
       /*//config.log("obtaining access token from " + api.getAccessTokenEndpoint());
       OAuthRequest oAuthRequest = new OAuthRequest(api.getAccessTokenVerb(), api.getAccessTokenEndpoint());
@@ -184,21 +175,7 @@ public class OAuthNaverConnect implements CustomCodeMethod {
       oAuthRequest.addOAuthParameter(OAuthConstants.VERIFIER, oauth_verifier);
       */
       
-      url = "https://nid.naver.com/naver.oauth?" +
-    		"mode=req_acc_token&" +
-        	"oauth_consumer_key=k2l1_0LeGKSo&" +
-    		"oauth_nonce=1CLEjo90&" +
-    		"oauth_signature_method=HAMC_SHA1&" +
-      		"oauth_timestamp=1372131694&" +
-      		"oauth_token=uGNocmbmLA1qXrh0&" +
-      		"oauth_verifier=yk8WQugXWTC_7852NTMuz1FsXdqc3D&" +
-      		"oauth_signature=QL1UwWxAhA1BwGn0qzX%2B9qb5woE%3D";
-      
-      String baseString = "GET&https%3A%2F%2Fnid.naver.com%2Fnaver.oauth&mode%3Dreq_acc_token%26oauth_consumer_key%3Dk2l1_0LeGKSo%26oauth_nonce%3Dyc02xvit%26oauth_signature_method%3DHAMC_SHA1%26oauth_timestamp%3D1372165318%26oauth_token%3DQkKpcz2Yvb2BA3w1%26oauth_verifier%3D0BG7FB3Qq4QxenYXp4lOVpIGR67PZN";
-      logger.debug(baseString);
-      
-      
-      HttpRequestSignerNaverAPI api = null;
+       
       long epoch = System.currentTimeMillis()/1000;
       String oauth_timestamp = String.valueOf(System.currentTimeMillis()/1000);
      	
@@ -208,10 +185,54 @@ public class OAuthNaverConnect implements CustomCodeMethod {
       
       String oauth_nonce = oauth_timestamp + rand.nextInt(); // api.getTimestampService().getNonce();
       logger.debug("oauth_nonce="+oauth_nonce);
+      
+      
+      
+      String baseString = "GET&https%3A%2F%2Fnid.naver.com%2Fnaver.oauth&" +
+    		  "mode%3Dreq_acc_token%26oauth_consumer_key%3D" + oauth_consumer_key + "" +
+      		"%26oauth_nonce%3D" + oauth_nonce +
+      		"%26oauth_signature_method%3DHAMC_SHA1" +
+      		"%26oauth_timestamp%3D"+ oauth_timestamp + 
+      		"%26oauth_token%3D" + oauth_token + 
+      		"%26oauth_verifier%3D" + oauth_verifier ;
+      logger.debug(baseString);
+      
       String oauth_signature = getSignature(baseString);
-      
-      
       logger.debug("oauth_signature="+oauth_signature);
+      
+      
+      
+      url = "https://nid.naver.com/naver.oauth?" +
+      		"mode=req_acc_token&" +
+          	"oauth_consumer_key=" + oauth_consumer_key +"&" +
+      		"oauth_nonce=" + oauth_nonce + "&" +
+      		"oauth_signature_method=HAMC_SHA1&" +
+    		"oauth_timestamp="+oauth_timestamp+ "&" +
+    		"oauth_token="+oauth_token+"&" +
+    		"oauth_verifier="+oauth_verifier+"&" +
+    		"oauth_signature="+oauth_signature;
+   
+      
+      HttpService http = serviceProvider.getHttpService();
+      
+      //PostRequest req = new PostRequest(url,set,body.toString());
+      
+      GetRequest req = new GetRequest(url);
+      
+      HttpResponse resp = http.get(req);
+      responseCode = resp.getCode();
+      responseBody = resp.getBody();
+      
+      logger.debug("resp.toString()"+ resp.toString());
+      logger.debug("resp.getHeaders"+ resp.getHeaders());
+      
+      /*
+    	{
+	  	  "response_body": "oauth_token=nvOBH0crjrw5EmC1TOnPiWW_vnhenQ&oauth_token_secret=3aq2lzse7qVNQ6CdzjdveC_g6FRLjW&userid=wmrXtANKuDkK",
+	  	  "response_code": 200  
+	  	}
+	  	*/
+      
       // IWDxwGUbTWAK%2ByfiGyflCUSAU94%3D
       
       

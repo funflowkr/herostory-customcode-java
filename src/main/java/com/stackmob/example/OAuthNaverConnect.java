@@ -168,14 +168,13 @@ public class OAuthNaverConnect implements CustomCodeMethod {
       */
       
        
-      long epoch = System.currentTimeMillis()/1000;
-      String oauth_timestamp = String.valueOf(epoch);
-     	
+      
+      String oauth_timestamp = String.valueOf(getMilis()/1000);
       logger.debug("oauth_timestamp="+oauth_timestamp);
       
       Random rand = new Random();
       
-      String oauth_nonce = String.valueOf(epoch + rand.nextInt()); // api.getTimestampService().getNonce();
+      String oauth_nonce = String.valueOf(getMilis()/1000 + rand.nextInt()); // api.getTimestampService().getNonce();
       logger.debug("oauth_nonce="+oauth_nonce);
       
       
@@ -221,12 +220,79 @@ public class OAuthNaverConnect implements CustomCodeMethod {
       logger.debug("resp.toString()"+ resp.toString());
       logger.debug("resp.getHeaders"+ resp.getHeaders());
       
-      /*
-    	{
-	  	  "response_body": "oauth_token=nvOBH0crjrw5EmC1TOnPiWW_vnhenQ&oauth_token_secret=3aq2lzse7qVNQ6CdzjdveC_g6FRLjW&userid=wmrXtANKuDkK",
-	  	  "response_code": 200  
-	  	}
-	  	*/
+      
+      if (responseCode== HttpURLConnection.HTTP_OK)
+      {
+	      String[] params = responseBody.split("&");  
+		  for (String param : params)  
+	  	    {  
+	  	    	if ( param.split("=").length > 1 ) { 
+	  	    		String name = param.split("=")[0];  
+	  		        String value = param.split("=")[1];  
+	  		        if (name.equalsIgnoreCase("oauth_token")) {
+	  		        	oauth_token = value;
+	  		        }
+	  		        if (name.equalsIgnoreCase("oauth_token_secret")) {
+	  		        	oauth_token_secret = value;
+	  		        }
+	  	    	}
+	  	    }  
+		  
+	      
+	      oauth_timestamp = String.valueOf(getMilis()/1000);
+	      oauth_nonce = String.valueOf(getMilis()/1000 + rand.nextInt());
+	      
+	      baseString = "GET&http%3A%2F%2Fdev.apis.naver.com%2Fapitest%2Fnid%2FgetUserId.xml&" +
+	        		"oauth_consumer_key%3D" + oauth_consumer_key + "" +
+	        		"oauth_nonce%3D" + oauth_nonce +
+	        		"oauth_signature_method%3DHMAC_SHA1%26" +
+	        		"oauth_timestamp%3D"+ oauth_timestamp + 
+	        		"oauth_token%3D" + oauth_token + 
+	        		"oauth_version%3D1.0a";
+	      logger.debug(baseString);
+	      
+	      oauth_signature = getSignature(baseString);
+	      logger.debug("oauth_signature="+oauth_signature);
+	       
+	      String AuthHeader = "realm=\"http://dev.apis.naver.com/apitest/nid/getUserId.xml" +"\"," +
+	        		"oauth_token=\"" + oauth_token+ "\"," +
+	        		"oauth_consumer_key=\""+oauth_consumer_key+ "\"," +
+	        		"oauth_nonce=\""+oauth_nonce+ "\"," +
+	        		"oauth_timestamp=\""+oauth_timestamp+ "\"," +
+	        		"oauth_version=\"1.0a\"," +
+	        		"oauth_signature_method=\"HMAC_SHA1\",oauth_signature=\""+oauth_signature+"\"";
+	      	  
+	        	
+	      url="http://dev.apis.naver.com/apitest/nid/getUserId.xml";
+	      
+	      Header accept = new Header("Accept-Charset", "utf-8");
+	      Header auth = new Header("Authorization","OAuth " + AuthHeader);
+	      Header content = new Header("Content-Type", "application/x-www-form-urlencoded");
+	
+	  		
+	  	
+	      Set<Header> set = new HashSet();
+	      set.add(accept);
+	      set.add(content);
+	      set.add(auth);
+	      
+	      GetRequest req2 = new GetRequest(url,set);  
+	      HttpResponse resp2 = http.get(req2);
+	      
+	      responseCode = resp2.getCode();
+	      responseBody = resp2.getBody();
+	      logger.debug("resp.toString()"+ resp2.toString());
+	      logger.debug("resp.getHeaders"+ resp2.getHeaders());
+	      
+	      /*
+	    	{
+		  	  "response_body": "oauth_token=nvOBH0crjrw5EmC1TOnPiWW_vnhenQ&oauth_token_secret=3aq2lzse7qVNQ6CdzjdveC_g6FRLjW&userid=wmrXtANKuDkK",
+		  	  "response_code": 200  
+		  	}
+		  	*/
+      } else {
+    	
+      }
       
       
       
@@ -298,4 +364,14 @@ public class OAuthNaverConnect implements CustomCodeMethod {
   private static final String MAC_NAME = "HmacSHA1";
 
   private SecretKey key = null;
+  
+  private final Random rand = new Random();
+	Long getMilis() {
+	  return System.currentTimeMillis();
+	}
+
+    Integer getRandomInteger() {
+      return rand.nextInt();
+    }
+  
 }

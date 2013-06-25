@@ -254,7 +254,7 @@ public class OAuthNaverConnect implements CustomCodeMethod {
 	      oauth_signature = getSignature(baseString);
 	      logger.debug("oauth_signature="+oauth_signature);
 	       
-	      String AuthHeader = "realm=\"http://dev.apis.naver.com/apitest/nid/getUserId.xml" +"\"," +
+	      String AuthHeader = "OAuth realm=\"http://dev.apis.naver.com/apitest/nid/getUserId.xml" +"\"," +
 	        		"oauth_token=\"" + oauth_token+ "\"," +
 	        		"oauth_consumer_key=\""+oauth_consumer_key+ "\"," +
 	        		"oauth_nonce=\""+oauth_nonce+ "\"," +
@@ -267,15 +267,11 @@ public class OAuthNaverConnect implements CustomCodeMethod {
 	      
 	      logger.debug(AuthHeader);
 	      
-	      Header accept = new Header("Accept-Charset", "utf-8");
-	      Header auth = new Header("Authorization","OAuth " + AuthHeader);
-	      Header content = new Header("Content-Type", "application/x-www-form-urlencoded");
-	
+	      Header auth = new Header("Authorization",AuthHeader);
+	      
 	  		
 	  	
 	      Set<Header> set = new HashSet();
-	      set.add(accept);
-	      set.add(content);
 	      set.add(auth);
 	      
 	      GetRequest req2 = new GetRequest(url,set);  

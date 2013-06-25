@@ -238,7 +238,8 @@ public class OAuthNaverConnect implements CustomCodeMethod {
 	  	    	}
 	  	    }  
 		  
-	      
+		  logger.debug("oauth_token=" +oauth_token + " oauth_token_secret=" + oauth_token_secret);
+		  
 	      oauth_timestamp = String.valueOf(getMilis()/1000);
 	      oauth_nonce = OAuth.percentEncode(String.valueOf(getMilis()/1000 + rand.nextInt()));
 	      
@@ -346,6 +347,7 @@ public class OAuthNaverConnect implements CustomCodeMethod {
           if (this.key == null) {
               String keyString = OAuth.percentEncode(oauth_consumer_secret)
                       + '&' + OAuth.percentEncode(oauth_token_secret);
+              
               byte[] keyBytes = keyString.getBytes(ENCODING);
               this.key = new SecretKeySpec(keyBytes, MAC_NAME);
           }

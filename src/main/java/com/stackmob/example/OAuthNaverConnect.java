@@ -265,6 +265,8 @@ public class OAuthNaverConnect implements CustomCodeMethod {
 	        	
 	      url="http://dev.apis.naver.com/apitest/nid/getUserId.xml";
 	      
+	      logger.debug(AuthHeader);
+	      
 	      Header accept = new Header("Accept-Charset", "utf-8");
 	      Header auth = new Header("Authorization","OAuth " + AuthHeader);
 	      Header content = new Header("Content-Type", "application/x-www-form-urlencoded");

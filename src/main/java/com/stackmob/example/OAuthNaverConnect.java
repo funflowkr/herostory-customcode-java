@@ -75,7 +75,7 @@ public class OAuthNaverConnect implements CustomCodeMethod {
   private static String oauth_token_secret = "hcFlDBd8WtAY71lRBAQBuZCemmcdPI";
   
   
-  private HttpRequestSignerNaverAPI api;
+  
   
   @Override
   public String getMethodName() {
@@ -195,7 +195,10 @@ public class OAuthNaverConnect implements CustomCodeMethod {
       
       String baseString = "GET&https%3A%2F%2Fnid.naver.com%2Fnaver.oauth&mode%3Dreq_acc_token%26oauth_consumer_key%3Dk2l1_0LeGKSo%26oauth_nonce%3Dyc02xvit%26oauth_signature_method%3DHAMC_SHA1%26oauth_timestamp%3D1372165318%26oauth_token%3DQkKpcz2Yvb2BA3w1%26oauth_verifier%3D0BG7FB3Qq4QxenYXp4lOVpIGR67PZN";
       logger.debug(baseString);
-    	      
+      
+      
+      HttpRequestSignerNaverAPI api = null;
+      
       String oauth_timestamp = api.getTimestampService().getTimestampInSeconds();      
       logger.debug("oauth_timestamp="+oauth_timestamp);
       

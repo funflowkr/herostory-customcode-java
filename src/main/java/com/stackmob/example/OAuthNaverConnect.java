@@ -66,17 +66,12 @@ public class OAuthNaverConnect implements CustomCodeMethod {
   public static final String accountsid = "YOUR_ACCOUNTSID";
   public static final String accesstoken = "YOUR_ACCESSTOKEN";
 
-  private static String urlString = "http://localhost";
-  private static String apiKey = "k2l1_0LeGKSo";
-  private static String apiSecret = "4FB5BC98lsKC3WNFHiY3";
-  
   private static String oauth_consumer_key = "k2l1_0LeGKSo";
   private static String oauth_consumer_secret = "4FB5BC98lsKC3WNFHiY3";
-  private static String oauth_token = "QkKpcz2Yvb2BA3w1";
-  private static String oauth_token_secret = "hcFlDBd8WtAY71lRBAQBuZCemmcdPI";
   
-  
-  
+  String oauth_token;
+  String oauth_verifier;
+  String oauth_token_secret ;
   
   @Override
   public String getMethodName() {
@@ -96,9 +91,9 @@ public class OAuthNaverConnect implements CustomCodeMethod {
 
 	LoggerService logger = serviceProvider.getLoggerService(OAuthNaverConnect.class);
       
-    String oauth_token = request.getParams().get("oauth_token");
-    String oauth_verifier = request.getParams().get("oauth_verifier");
-    String oauth_token_secret = request.getParams().get("oauth_token_secret");
+    oauth_token = request.getParams().get("oauth_token");
+    oauth_verifier = request.getParams().get("oauth_verifier");
+    oauth_token_secret = request.getParams().get("oauth_token_secret");
     
     if (oauth_token == null || oauth_token.isEmpty()) {
         logger.error("Missing oauth_token");
@@ -208,7 +203,10 @@ public class OAuthNaverConnect implements CustomCodeMethod {
     		"oauth_token="+oauth_token+"&" +
     		"oauth_verifier="+oauth_verifier+"&" +
     		"oauth_signature="+oauth_signature;
-   
+      
+      
+      logger.debug("url="+url);
+      
       
       HttpService http = serviceProvider.getHttpService();
       
@@ -230,21 +228,6 @@ public class OAuthNaverConnect implements CustomCodeMethod {
 	  	}
 	  	*/
       
-      // IWDxwGUbTWAK%2ByfiGyflCUSAU94%3D
-      
-      
-      /*
-      
-      
-      logger.debug("setting token to: " + oauth_token + " and verifier to: " + oauth_verifier);
-        addOAuthParams(oAuthRequest, requestToken);
-        appendSignature(request);
-        Response response = request.send(tuner);
-        return api.getAccessTokenExtractor().extract(response.getBody());
-      }
-
-      
-      */
       
       
       

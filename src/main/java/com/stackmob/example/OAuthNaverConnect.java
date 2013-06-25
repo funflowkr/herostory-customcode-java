@@ -42,6 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 import javax.crypto.Mac;
@@ -198,12 +199,14 @@ public class OAuthNaverConnect implements CustomCodeMethod {
       
       
       HttpRequestSignerNaverAPI api = null;
-      
-      String oauth_timestamp = api.getTimestampService().getTimestampInSeconds();      
+      long epoch = System.currentTimeMillis()/1000;
+      String oauth_timestamp = String.valueOf(System.currentTimeMillis()/1000);
+     	
       logger.debug("oauth_timestamp="+oauth_timestamp);
       
+      Random rand = new Random();
       
-      String oauth_nonce = api.getTimestampService().getNonce();
+      String oauth_nonce = oauth_timestamp + rand.nextInt(); // api.getTimestampService().getNonce();
       logger.debug("oauth_nonce="+oauth_nonce);
       String oauth_signature = getSignature(baseString);
       

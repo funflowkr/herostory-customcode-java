@@ -166,7 +166,7 @@ public class OAuthNaverConnect implements CustomCodeMethod {
       oAuthRequest.addOAuthParameter(OAuthConstants.TOKEN, oauth_token);
       oAuthRequest.addOAuthParameter(OAuthConstants.VERIFIER, oauth_verifier);
       */
-      
+      /*
        
       
       String oauth_timestamp = String.valueOf(getMilis()/1000);
@@ -237,31 +237,31 @@ public class OAuthNaverConnect implements CustomCodeMethod {
 	  		        }
 	  	    	}
 	  	    }  
-		  
+		  */
 		  logger.debug("oauth_token=" +oauth_token + " oauth_token_secret=" + oauth_token_secret);
 		  
-	      oauth_timestamp = String.valueOf(getMilis()/1000);
-	      oauth_nonce = OAuth.percentEncode(String.valueOf(getMilis()/1000 + rand.nextInt()));
+	      String oauth_timestamp2 = String.valueOf(getMilis()/1000);
+	      String oauth_nonce2 = OAuth.percentEncode(String.valueOf(getMilis()/1000 + rand.nextInt()));
 	      
-	      baseString = "GET&http%3A%2F%2Fdev.apis.naver.com%2Fapitest%2Fnid%2FgetUserId.xml&" +
+	      String baseString2 = "GET&http%3A%2F%2Fdev.apis.naver.com%2Fapitest%2Fnid%2FgetUserId.xml&" +
 	        		"oauth_consumer_key%3D" + oauth_consumer_key + 
-	        		"%26oauth_nonce%3D" + oauth_nonce +
+	        		"%26oauth_nonce%3D" + oauth_nonce2 +
 	        		"%26oauth_signature_method%3DHMAC_SHA1" +
-	        		"%26oauth_timestamp%3D"+ oauth_timestamp + 
+	        		"%26oauth_timestamp%3D"+ oauth_timestamp2 + 
 	        		"%26oauth_token%3D" + oauth_token + 
 	        		"%26oauth_version%3D1.0a";
-	      logger.debug(baseString);
+	      logger.debug(baseString2);
 	      
-	      oauth_signature = getSignature(baseString);
-	      logger.debug("oauth_signature="+oauth_signature);
+	      String oauth_signature2 = getSignature(baseString2);
+	      logger.debug("oauth_signature="+oauth_signature2);
 	       
 	      String AuthHeader = "OAuth realm=\"http://dev.apis.naver.com/apitest/nid/getUserId.xml" +"\"," +
 	        		"oauth_token=\"" + oauth_token+ "\"," +
 	        		"oauth_consumer_key=\""+oauth_consumer_key+ "\"," +
-	        		"oauth_nonce=\""+oauth_nonce+ "\"," +
-	        		"oauth_timestamp=\""+oauth_timestamp+ "\"," +
+	        		"oauth_nonce=\""+oauth_nonce2+ "\"," +
+	        		"oauth_timestamp=\""+oauth_timestamp2+ "\"," +
 	        		"oauth_version=\"1.0a\"," +
-	        		"oauth_signature_method=\"HMAC_SHA1\",oauth_signature=\""+oauth_signature+"\"";
+	        		"oauth_signature_method=\"HMAC_SHA1\",oauth_signature=\""+oauth_signature2+"\"";
 	      	  
 	        	
 	      url="http://dev.apis.naver.com/apitest/nid/getUserId.xml";
@@ -271,12 +271,13 @@ public class OAuthNaverConnect implements CustomCodeMethod {
 	      Header auth = new Header("Authorization",AuthHeader);
 	      
 	  		
-	  	
+	      HttpService http2 = serviceProvider.getHttpService();
+	      
 	      Set<Header> set = new HashSet();
 	      set.add(auth);
 	      
 	      GetRequest req2 = new GetRequest(url,set);  
-	      HttpResponse resp2 = http.get(req2);
+	      HttpResponse resp2 = http2.get(req2);
 	      
 	      responseCode = resp2.getCode();
 	      responseBody = resp2.getBody();
@@ -289,10 +290,10 @@ public class OAuthNaverConnect implements CustomCodeMethod {
 		  	  "response_code": 200  
 		  	}
 		  	*/
-      } else {
+/*      } else {
     	
       }
-      
+      */
       
       
       

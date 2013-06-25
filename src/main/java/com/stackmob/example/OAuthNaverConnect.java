@@ -28,27 +28,55 @@ import com.stackmob.sdkapi.http.response.HttpResponse;
 import com.stackmob.core.ServiceNotActivatedException;
 import com.stackmob.sdkapi.http.exceptions.AccessDeniedException;
 import com.stackmob.sdkapi.http.exceptions.TimeoutException;
+
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import com.stackmob.sdkapi.http.request.PostRequest;
 import com.stackmob.sdkapi.http.Header;
 import com.stackmob.sdkapi.LoggerService;
 
 import java.net.HttpURLConnection;
+import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.crypto.Mac;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+
+import net.oauth.OAuth;
+import net.oauth.OAuthException;
+import net.oauth.signature.*;
+
 import org.apache.commons.codec.binary.Base64;
+
 
 public class OAuthNaverConnect implements CustomCodeMethod {
 
+		
+	
+	
   //Create your Twilio Acct at twilio.com and enter 
   //Your accountsid and accesstoken below.
   public static final String accountsid = "YOUR_ACCOUNTSID";
   public static final String accesstoken = "YOUR_ACCESSTOKEN";
-    
+
+  private static String urlString = "http://localhost";
+  private static String apiKey = "k2l1_0LeGKSo";
+  private static String apiSecret = "4FB5BC98lsKC3WNFHiY3";
+  
+  private static String oauth_consumer_key = "k2l1_0LeGKSo";
+  private static String oauth_consumer_secret = "4FB5BC98lsKC3WNFHiY3";
+  private static String oauth_token = "QkKpcz2Yvb2BA3w1";
+  private static String oauth_token_secret = "hcFlDBd8WtAY71lRBAQBuZCemmcdPI";
+  
+  
+  private HttpRequestSignerNaverAPI api;
+  
   @Override
   public String getMethodName() {
     return "oauth_naver_connect";
@@ -116,11 +144,19 @@ public class OAuthNaverConnect implements CustomCodeMethod {
     Header auth = new Header("Authorization","Basic " + encodedString);
     Header content = new Header("Content-Type", "application/x-www-form-urlencoded");
 
+	Header auth 
+	Authorization: 
+	
     Set<Header> set = new HashSet();
     set.add(accept);
     set.add(content);
     set.add(auth);*/
-      
+    
+   
+    
+    //Header auth = new Header("Authorization","OAuth realm=\"http://dev.apis.naver.com/apitest/nid/getUserId.xml\",oauth_token=\"8Be034_eE9fMAzhqL8Cxp7KRu3UBrb",oauth_consumer_key="k2l1_0LeGKSo",oauth_nonce="up_jv8fM",oauth_timestamp=\"1372131821\",oauth_version=\"1.0a\",oauth_signature_method=\"HMAC_SHA1\",oauth_signature=\"CndnfEhqG7xhJljRNzpNVQc0nac%3D\"";
+    	
+    
     try {
       HttpService http = serviceProvider.getHttpService();
       //PostRequest req = new PostRequest(url,set,body.toString());
@@ -129,10 +165,60 @@ public class OAuthNaverConnect implements CustomCodeMethod {
       HttpResponse resp = http.get(req);
       responseCode = resp.getCode();
       responseBody = resp.getBody();
+      
       logger.debug("resp.toString()"+ resp.toString());
       logger.debug("resp.getHeaders"+ resp.getHeaders());
       
       
+      /*
+      	{
+	  	  "response_body": "oauth_token=nvOBH0crjrw5EmC1TOnPiWW_vnhenQ&oauth_token_secret=3aq2lzse7qVNQ6CdzjdveC_g6FRLjW&userid=wmrXtANKuDkK",
+	  	  "response_code": 200  
+	  	}
+	  	*/
+	  
+      /*//config.log("obtaining access token from " + api.getAccessTokenEndpoint());
+      OAuthRequest oAuthRequest = new OAuthRequest(api.getAccessTokenVerb(), api.getAccessTokenEndpoint());
+      oAuthRequest.addOAuthParameter(OAuthConstants.TOKEN, oauth_token);
+      oAuthRequest.addOAuthParameter(OAuthConstants.VERIFIER, oauth_verifier);
+      */
+      
+      url = "https://nid.naver.com/naver.oauth?" +
+    		"mode=req_acc_token&" +
+        	"oauth_consumer_key=k2l1_0LeGKSo&" +
+    		"oauth_nonce=1CLEjo90&" +
+    		"oauth_signature_method=HAMC_SHA1&" +
+      		"oauth_timestamp=1372131694&" +
+      		"oauth_token=uGNocmbmLA1qXrh0&" +
+      		"oauth_verifier=yk8WQugXWTC_7852NTMuz1FsXdqc3D&" +
+      		"oauth_signature=QL1UwWxAhA1BwGn0qzX%2B9qb5woE%3D";
+      
+      String baseString = "GET&https%3A%2F%2Fnid.naver.com%2Fnaver.oauth&mode%3Dreq_acc_token%26oauth_consumer_key%3Dk2l1_0LeGKSo%26oauth_nonce%3Dyc02xvit%26oauth_signature_method%3DHAMC_SHA1%26oauth_timestamp%3D1372165318%26oauth_token%3DQkKpcz2Yvb2BA3w1%26oauth_verifier%3D0BG7FB3Qq4QxenYXp4lOVpIGR67PZN";
+      
+    	      
+      String oauth_timestamp = api.getTimestampService().getTimestampInSeconds();      
+      String oauth_nonce = api.getTimestampService().getNonce();
+      String oauth_signature = getSignature(baseString);
+      
+      logger.debug("oauth_timestamp="+oauth_timestamp);
+      logger.debug("oauth_nonce="+oauth_nonce);
+      
+      logger.debug("oauth_signature="+oauth_signature);
+      // IWDxwGUbTWAK%2ByfiGyflCUSAU94%3D
+      
+      
+      /*
+      
+      
+      logger.debug("setting token to: " + oauth_token + " and verifier to: " + oauth_verifier);
+        addOAuthParams(oAuthRequest, requestToken);
+        appendSignature(request);
+        Response response = request.send(tuner);
+        return api.getAccessTokenExtractor().extract(response.getBody());
+      }
+
+      
+      */
       
       
       
@@ -152,7 +238,10 @@ public class OAuthNaverConnect implements CustomCodeMethod {
       logger.error(e.getMessage(), e);
       responseCode = HttpURLConnection.HTTP_INTERNAL_ERROR;;
       responseBody = e.getMessage();
-    }
+    } catch (OAuthException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
       
     Map<String, Object> map = new HashMap<String, Object>();
     map.put("response_code", responseCode);
@@ -160,4 +249,41 @@ public class OAuthNaverConnect implements CustomCodeMethod {
      
     return new ResponseToProcess(responseCode, map);
   }
+
+  
+  protected String getSignature(String baseString) throws OAuthException {
+      try {
+          String signature = Base64.encodeBase64String(computeSignature(baseString));
+          return signature;
+      } catch (GeneralSecurityException e) {
+          throw new OAuthException(e);
+      } catch (UnsupportedEncodingException e) {
+          throw new OAuthException(e);
+      }
+  }
+
+ 
+  private byte[] computeSignature(String baseString)
+          throws GeneralSecurityException, UnsupportedEncodingException {
+      SecretKey key = null;
+      synchronized (this) {
+          if (this.key == null) {
+              String keyString = OAuth.percentEncode(oauth_consumer_secret)
+                      + '&' + OAuth.percentEncode(oauth_token_secret);
+              byte[] keyBytes = keyString.getBytes(ENCODING);
+              this.key = new SecretKeySpec(keyBytes, MAC_NAME);
+          }
+          key = this.key;
+      }
+      Mac mac = Mac.getInstance(MAC_NAME);
+      mac.init(key);
+      byte[] text = baseString.getBytes(ENCODING);
+      return mac.doFinal(text);
+  }
+  /** ISO-8859-1 or US-ASCII would work, too. */
+  private static final String ENCODING = OAuth.ENCODING;
+
+  private static final String MAC_NAME = "HmacSHA1";
+
+  private SecretKey key = null;
 }

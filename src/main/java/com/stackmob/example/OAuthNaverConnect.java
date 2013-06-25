@@ -129,6 +129,11 @@ public class OAuthNaverConnect implements CustomCodeMethod {
       HttpResponse resp = http.get(req);
       responseCode = resp.getCode();
       responseBody = resp.getBody();
+      logger.debug("resp.toString()"+ resp.toString());
+      logger.debug("resp.getHeaders"+ resp.getHeaders());
+      
+      
+      
       
       
     } catch(TimeoutException e) {
@@ -150,6 +155,7 @@ public class OAuthNaverConnect implements CustomCodeMethod {
     }
       
     Map<String, Object> map = new HashMap<String, Object>();
+    map.put("response_code", responseCode);
     map.put("response_body", responseBody);
      
     return new ResponseToProcess(responseCode, map);

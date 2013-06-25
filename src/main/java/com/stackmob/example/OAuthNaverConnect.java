@@ -174,7 +174,7 @@ public class OAuthNaverConnect implements CustomCodeMethod {
       
       Random rand = new Random();
       
-      String oauth_nonce = String.valueOf(getMilis()/1000 + rand.nextInt()); // api.getTimestampService().getNonce();
+      String oauth_nonce = OAuth.percentEncode(String.valueOf(getMilis()/1000 + rand.nextInt())); // api.getTimestampService().getNonce();
       logger.debug("oauth_nonce="+oauth_nonce);
       
       
@@ -240,7 +240,7 @@ public class OAuthNaverConnect implements CustomCodeMethod {
 		  
 	      
 	      oauth_timestamp = String.valueOf(getMilis()/1000);
-	      oauth_nonce = String.valueOf(getMilis()/1000 + rand.nextInt());
+	      oauth_nonce = OAuth.percentEncode(String.valueOf(getMilis()/1000 + rand.nextInt()));
 	      
 	      baseString = "GET&http%3A%2F%2Fdev.apis.naver.com%2Fapitest%2Fnid%2FgetUserId.xml&" +
 	        		"oauth_consumer_key%3D" + oauth_consumer_key + "" +

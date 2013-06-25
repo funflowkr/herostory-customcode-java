@@ -264,7 +264,7 @@ public class OAuthNaverConnect implements CustomCodeMethod {
   
   protected String getSignature(String baseString) throws OAuthException {
       try {
-          String signature = Base64.encodeBase64String(computeSignature(baseString));
+          String signature = OAuth.percentEncode(Base64.encodeBase64String(computeSignature(baseString)));
           return signature;
       } catch (GeneralSecurityException e) {
           throw new OAuthException(e);

@@ -85,7 +85,7 @@ public class OAuthNaverConnect implements CustomCodeMethod {
 
   @Override
   public List<String> getParams() {
-    return Arrays.asList("oauth_token","oauth_verifier");
+    return Arrays.asList("oauth_token","oauth_verifier","oauth_token_secret");
     
   }  
 
@@ -96,21 +96,18 @@ public class OAuthNaverConnect implements CustomCodeMethod {
 
 	LoggerService logger = serviceProvider.getLoggerService(OAuthNaverConnect.class);
       
-    // TO phonenumber should be YOUR cel phone
     String oauth_token = request.getParams().get("oauth_token");
-    
-    //  text message you want to send
     String oauth_verifier = request.getParams().get("oauth_verifier");
-    
-    
-    oauth_token = "J5U0cqcDgAyIV9R3";
-    oauth_verifier = "jmTCvj_0s2i2PXAtdOP1lSvLlkPJoi";
+    String oauth_token_secret = request.getParams().get("oauth_token_secret");
     
     if (oauth_token == null || oauth_token.isEmpty()) {
         logger.error("Missing oauth_token");
       }
     if (oauth_verifier == null || oauth_verifier.isEmpty()) {
         logger.error("Missing oauth_verifier");
+      }
+    if (oauth_token_secret == null || oauth_token_secret.isEmpty()) {
+        logger.error("Missing oauth_token_secret");
       }
 
     /*if (toPhoneNumber == null || toPhoneNumber.isEmpty()) {

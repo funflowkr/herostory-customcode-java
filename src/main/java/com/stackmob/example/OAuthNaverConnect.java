@@ -194,14 +194,16 @@ public class OAuthNaverConnect implements CustomCodeMethod {
       		"oauth_signature=QL1UwWxAhA1BwGn0qzX%2B9qb5woE%3D";
       
       String baseString = "GET&https%3A%2F%2Fnid.naver.com%2Fnaver.oauth&mode%3Dreq_acc_token%26oauth_consumer_key%3Dk2l1_0LeGKSo%26oauth_nonce%3Dyc02xvit%26oauth_signature_method%3DHAMC_SHA1%26oauth_timestamp%3D1372165318%26oauth_token%3DQkKpcz2Yvb2BA3w1%26oauth_verifier%3D0BG7FB3Qq4QxenYXp4lOVpIGR67PZN";
-      
+      logger.debug(baseString);
     	      
       String oauth_timestamp = api.getTimestampService().getTimestampInSeconds();      
+      logger.debug("oauth_timestamp="+oauth_timestamp);
+      
+      
       String oauth_nonce = api.getTimestampService().getNonce();
+      logger.debug("oauth_nonce="+oauth_nonce);
       String oauth_signature = getSignature(baseString);
       
-      logger.debug("oauth_timestamp="+oauth_timestamp);
-      logger.debug("oauth_nonce="+oauth_nonce);
       
       logger.debug("oauth_signature="+oauth_signature);
       // IWDxwGUbTWAK%2ByfiGyflCUSAU94%3D
@@ -240,7 +242,10 @@ public class OAuthNaverConnect implements CustomCodeMethod {
       responseBody = e.getMessage();
     } catch (OAuthException e) {
 		// TODO Auto-generated catch block
-		e.printStackTrace();
+    	logger.error(e.getMessage(), e);
+    	responseCode = HttpURLConnection.HTTP_INTERNAL_ERROR;;
+        responseBody = e.getMessage();
+		//e.printStackTrace();
 	}
       
     Map<String, Object> map = new HashMap<String, Object>();

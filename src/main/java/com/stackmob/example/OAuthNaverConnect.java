@@ -96,7 +96,7 @@ public class OAuthNaverConnect implements CustomCodeMethod {
 */
     String url = "https://api.twilio.com/2010-04-01/Accounts/" + accountsid + "/SMS/Messages.json";
     url = "https://nid.naver.com/naver.oauth?oauth_token=J5U0cqcDgAyIV9R3&oauth_consumer_key=k2l1_0LeGKSo&oauth_nonce=EcRLyhB0&oauth_timestamp=1372127884&oauth_verifier=jmTCvj_0s2i2PXAtdOP1lSvLlkPJoi&oauth_signature_method=HAMC_SHA1&mode=req_acc_token&oauth_signature=X12%2BcWHshMOxivyPHn6w6ltgf5I%3D";
-    url = "https://nid.naver.com/naver.oauth?oauth_token=J5U0cqcDgAyIV9R3&oauth_consumer_key=k2l1_0LeGKSo&oauth_nonce=_kBelOKH&oauth_timestamp=1372130006&oauth_verifier=jmTCvj_0s2i2PXAtdOP1lSvLlkPJoi&oauth_version=1.0a&oauth_signature_method=HMAC_SHA1&mode=req_acc_token&oauth_signature=Z8LFEOm%2F5WwS22qAAgxZap65%2FNE%3D";
+    url = "https://nid.naver.com/naver.oauth?oauth_token=uGNocmbmLA1qXrh0&oauth_consumer_key=k2l1_0LeGKSo&oauth_nonce=1CLEjo90&oauth_timestamp=1372131694&oauth_verifier=yk8WQugXWTC_7852NTMuz1FsXdqc3D&oauth_signature_method=HAMC_SHA1&mode=req_acc_token&oauth_signature=QL1UwWxAhA1BwGn0qzX%2B9qb5woE%3D";
     
     /*String pair = accountsid + ":" + accesstoken;
       

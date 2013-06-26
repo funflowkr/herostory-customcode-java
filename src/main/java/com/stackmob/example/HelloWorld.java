@@ -99,7 +99,7 @@ public class HelloWorld implements CustomCodeMethod {
       HttpService http = serviceProvider.getHttpService();
       GetRequest req = new GetRequest(url,set);
              
-      HttpResponse resp = http.post(req);
+      HttpResponse resp = http.get(req);
       responseCode = resp.getCode();
       responseBody = resp.getBody();
     } catch(TimeoutException e) {

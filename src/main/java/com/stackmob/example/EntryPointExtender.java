@@ -53,6 +53,7 @@ public class EntryPointExtender extends JarEntryObject {
     list.add(new UserEmailInfo());
     
     list.add(new OAuthNaverConnect());
+    list.add(new EventGetCoupon());
     
     
     return list;

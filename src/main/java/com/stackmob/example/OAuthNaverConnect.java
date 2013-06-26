@@ -238,7 +238,7 @@ public class OAuthNaverConnect implements CustomCodeMethod {
 	  	    	}
 	  	    }  
 		  */
-		  logger.debug("oauth_token=" +oauth_token + " oauth_token_secret=" + oauth_token_secret);
+		  logger.debug("oauth_token=" +oauth_token + ",oauth_token_secret=" + oauth_token_secret);
 		  
 	      String oauth_timestamp2 = String.valueOf(getMilis()/1000);
 	      String oauth_nonce2 = OAuth.percentEncode(String.valueOf(getMilis()/1000 + rand.nextInt()));

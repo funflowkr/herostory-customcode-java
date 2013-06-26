@@ -33,6 +33,7 @@ import com.stackmob.core.rest.ProcessedAPIRequest;
 import com.stackmob.core.rest.ResponseToProcess;
 import com.stackmob.sdkapi.DataService;
 import com.stackmob.sdkapi.LoggerService;
+import com.stackmob.sdkapi.ResultFilters;
 import com.stackmob.sdkapi.SDKServiceProvider;
 import com.stackmob.sdkapi.SMBoolean;
 import com.stackmob.sdkapi.SMCondition;
@@ -111,7 +112,7 @@ public class EventGetCoupon implements CustomCodeMethod {
 	   		m5 = result.get(0).getValue().get("m5_attend").toString();
 	   		m6 = result.get(0).getValue().get("m6_push").toString();
 	   		
-	   		logger.debug("m1"+m1+",m2"+m2+",m3"+m3+",m4"+m4+",m5"+m5+",m6"+m6);
+	   		logger.debug("m1="+m1+",m2="+m2+",m3="+m3+",m=4"+m4+",m5="+m5+",m6="+m6);
 	   		
 	   		if (m1.equalsIgnoreCase("true") || 
 	   				m2.equalsIgnoreCase("true")|| 
@@ -121,16 +122,22 @@ public class EventGetCoupon implements CustomCodeMethod {
 	   				Integer.parseInt(m6) >= 10 ) {
 	   			// event 조건 성공 
 	   			
-	   			
+	   			logger.debug("event condition pass");
 	   			
 	   			List<SMCondition> query_coupon  = new ArrayList<SMCondition>();
 	   	        query_coupon.add(new SMEquals("eventname", new SMString("start")));
 	   	        query_coupon.add(new SMIsNull("r_user", new SMBoolean(true)));
 	   	        
+	   	        // TOP 1 개만 가져오기
+	   	        ResultFilters filters = new ResultFilters(0, 0, null, null);
+	   	     
 	   	        // execute the query
 	   	        List<SMObject> result_coupon = null;
 	   	        result_coupon = dataService.readObjects("eventcoupon",query);
 	   	        
+	   	        logger.debug("result_coupon"+result_coupon);
+	   	     
+	   	     
 	   	        if (result_coupon != null) {
 	   	        	eventcoupon_id = result_coupon.get(0).getValue().get("eventcoupon_id").toString();
 	   	        	couponcode = result_coupon.get(0).getValue().get("couponcode").toString();

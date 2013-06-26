@@ -253,7 +253,7 @@ public class PostsWrite implements CustomCodeMethod {
 	    	    	logger.debug("WriterID="+WriterID+"/LoginName="+ loginname); 
 	    	    }
 	    	    
-	    	    if (WriterID.equalsIgnoreCase(loginname))
+	    	    if (WriterID.equalsIgnoreCase("user/"+loginname))
 	    	    {
 			    	// posts_id 를 가지고 posts 를 지운다. 
 			    	// share 를 한 원글이 있다면 그 글을 찾아가서 shares 에서 삭제하고 

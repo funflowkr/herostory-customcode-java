@@ -224,7 +224,7 @@ public class PostsComment implements CustomCodeMethod {
 	    	    		
 	    	    	logger.debug("WriterID="+WriterID+"/LoginName="+ loginname); 
 	    	    }
-	    	    if (WriterID.equalsIgnoreCase(loginname))
+	    	    if (WriterID.equalsIgnoreCase("user/"+loginname))
 	    	    {
 	    	    	// comment 한 사람 delete 
 			    	List<SMString> valuesToRemove = Arrays.asList(new SMString(comments_id));

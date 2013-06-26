@@ -114,11 +114,11 @@ public class EventGetCoupon implements CustomCodeMethod {
 	   		
 	   		logger.debug("m1="+m1+",m2="+m2+",m3="+m3+",m=4"+m4+",m5="+m5+",m6="+m6);
 	   		
-	   		if (m1.equalsIgnoreCase("true") || 
-	   				m2.equalsIgnoreCase("true")|| 
-	   				m3.equalsIgnoreCase("true")|| 
-	   				m4.equalsIgnoreCase("true")|| 
-	   				Integer.parseInt(m5) >= 3 ||
+	   		if (m1.equalsIgnoreCase("true") && 
+	   				m2.equalsIgnoreCase("true")&& 
+	   				m3.equalsIgnoreCase("true")&& 
+	   				m4.equalsIgnoreCase("true")&& 
+	   				Integer.parseInt(m5) >= 3 &&
 	   				Integer.parseInt(m6) >= 10 ) {
 	   			// event 조건 성공 
 	   			
@@ -130,7 +130,7 @@ public class EventGetCoupon implements CustomCodeMethod {
 	   	        query2.add(new SMEquals("sm_owner", new SMString("user/"+loginname)));
 	   	        result2 = dataService.readObjects("eventcoupon",query2);
 	   	        
-	   	        if (result2 != null && result2.size() == 1)
+	   	        if (result2 != null && result2.size() >= 1)
 	   	        {
 	   	        	Map<String, Object> returnMap = new HashMap<String, Object>();
 		  	   	    returnMap.put("code", 601);

@@ -188,7 +188,7 @@ public class SendGrid implements CustomCodeMethod {
       HttpResponse resp = http.post(req);
       responseCode = resp.getCode();
       responseBody = resp.getBody();
-                  catch(TimeoutException e) {
+    } catch(TimeoutException e) {
       logger.error(e.getMessage(), e);
       responseCode = -1;
       responseBody = e.getMessage();

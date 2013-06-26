@@ -124,6 +124,24 @@ public class EventGetCoupon implements CustomCodeMethod {
 	   			
 	   			logger.debug("event condition pass");
 	   			
+	   			List<SMObject> result2 = null;
+	   			
+	   			List<SMCondition> query2  = new ArrayList<SMCondition>();
+	   	        query2.add(new SMEquals("sm_owner", new SMString("user/"+loginname)));
+	   	        result2 = dataService.readObjects("eventcoupon",query2);
+	   	        
+	   	        if (result2 != null && result2.size() == 1)
+	   	        {
+	   	        	Map<String, Object> returnMap = new HashMap<String, Object>();
+		  	   	    returnMap.put("code", 601);
+		  	   	    returnMap.put("error", "ALREADY GET");
+		  	   	    logger.error("code=604");
+		  	   	    return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, returnMap);
+	   	        	
+	   	        }
+	   	        
+	   			
+	   			
 	   			List<SMCondition> query_coupon  = new ArrayList<SMCondition>();
 	   	        query_coupon.add(new SMEquals("eventname", new SMString("start")));
 	   	        query_coupon.add(new SMIsNull("r_user", new SMBoolean(true)));

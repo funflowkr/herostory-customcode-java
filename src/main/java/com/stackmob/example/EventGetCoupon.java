@@ -104,7 +104,7 @@ public class EventGetCoupon implements CustomCodeMethod {
         String couponcode = null;
         String eventcoupon_id = null;
 		
-        if (result != null) {
+        if (result != null && result.size() == 1) {
 	   		m1 = result.get(0).getValue().get("m1_follow").toString();
 	   		m2 = result.get(0).getValue().get("m2_post").toString();
 	   		m3 = result.get(0).getValue().get("m3_comment").toString();
@@ -133,12 +133,12 @@ public class EventGetCoupon implements CustomCodeMethod {
 	   	     
 	   	        // execute the query
 	   	        List<SMObject> result_coupon = null;
-	   	        result_coupon = dataService.readObjects("eventcoupon",query);
+	   	        result_coupon = dataService.readObjects("eventcoupon",query_coupon);
 	   	        
 	   	        logger.debug("result_coupon"+result_coupon);
 	   	     
 	   	     
-	   	        if (result_coupon != null) {
+	   	        if (result_coupon != null && result_coupon.size() >= 1) {
 	   	        	eventcoupon_id = result_coupon.get(0).getValue().get("eventcoupon_id").toString();
 	   	        	couponcode = result_coupon.get(0).getValue().get("couponcode").toString();
 	   	        	

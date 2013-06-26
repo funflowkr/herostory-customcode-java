@@ -26,6 +26,13 @@ import com.stackmob.core.rest.ResponseToProcess;
 import com.stackmob.sdkapi.LoggerService;
 import com.stackmob.sdkapi.SDKServiceProvider;
 import com.stackmob.sdkapi.SMString;
+import com.stackmob.sdkapi.http.Header;
+import com.stackmob.sdkapi.http.HttpService;
+import com.stackmob.sdkapi.http.exceptions.AccessDeniedException;
+import com.stackmob.sdkapi.http.exceptions.TimeoutException;
+import com.stackmob.sdkapi.http.request.GetRequest;
+import com.stackmob.sdkapi.http.request.PostRequest;
+import com.stackmob.sdkapi.http.response.HttpResponse;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -34,8 +41,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.OAuthProvider;
@@ -75,109 +84,46 @@ public class HelloWorld implements CustomCodeMethod {
     
 	LoggerService logger = serviceProvider.getLoggerService(HelloWorld.class);
 	   
-	Map<String, Object> map = new HashMap<String, Object>();
-    String username = "sohnkh@gmail.com";
-    String characters_id = "asdfasdlfja;sdfjkasd;f";
-    String codeName = "F_USER";
-    List<SMString> args = Arrays.asList(new SMString("aasdf"),new SMString("as"),new SMString("vvvv"));
+	String url =  "http://www.whatismyip.com/";
+	 
+    Header accept = new Header("Accept-Charset", "utf-8");
+    Header content = new Header("Content-Type", "application/x-www-form-urlencoded");
     
+    Set<Header> set = new HashSet();
+    set.add(accept);
+    set.add(content);
     
-    OAuthConsumer consumer = new DefaultOAuthConsumer(CONSUMER_KEY, CONSUMER_SECRET);
-    
-    /*OAuthConsumer consumer = new DefaultOAuthConsumer(
-            "iIlNngv1KdV6XzNYkoLA",
-            "exQ94pBpLXFcyttvLoxU2nrktThrlsj580zjYzmoM",
-            SignatureMethod.HMAC_SHA1);
-*/
-    OAuthProvider provider = new DefaultOAuthProvider(
-            REQUEST_TOKEN_ENDPOINT_URL, ACCESS_TOKEN_ENDPOINT_URL,
-            AUTHORIZE_WEBSITE_URL);
-    
-    try {
-		provider.retrieveAccessToken(consumer, "8tcgvBbIYS1EhOpVkgYvk_VHPLxTcY");
-		logger.debug("retrieve Access Token Success");
-	} catch (OAuthMessageSignerException e2) {
-		// TODO Auto-generated catch block
-		e2.printStackTrace();
-	} catch (OAuthNotAuthorizedException e2) {
-		// TODO Auto-generated catch block
-		e2.printStackTrace();
-	} catch (OAuthExpectationFailedException e2) {
-		// TODO Auto-generated catch block
-		e2.printStackTrace();
-	} catch (OAuthCommunicationException e2) {
-		// TODO Auto-generated catch block
-		e2.printStackTrace();
-	}
-    
-    AccessToken = consumer.getToken();
-    AccessSecret = consumer.getTokenSecret();
-    
-    logger.debug("Access token: " + consumer.getToken());
-    logger.debug("Token secret: " + consumer.getTokenSecret());
-    
-    
-    // fetches a request token from the service provider and builds
-    // a url based on AUTHORIZE_WEBSITE_URL and CALLBACK_URL to
-    // which your app must now send the user
-    //String url = provider.retrieveRequestToken(consumer, CALLBACK_URL);
-    
-    // create a consumer object and configure it with the access
-    // token and token secret obtained from the service provider
-    
-    consumer.setTokenWithSecret(AccessToken, AccessSecret);
-
-    // create an HTTP request to a protected resource
-    URL url2;
+    String responseBody = "";
+    int responseCode;
 	try {
-		url2 = new URL("http://example.com/protected");
-		HttpURLConnection request2 = (HttpURLConnection) url2.openConnection();
-		// sign the request
-	    consumer.sign(request2);
-	 // send the request
-	    request2.connect();
-	    
-	} catch (MalformedURLException e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (OAuthMessageSignerException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (OAuthExpectationFailedException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (OAuthCommunicationException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-    
-    try {
-    	 logger.debug("start push");
-		UtilPush.sendPush(username, characters_id, codeName, args, serviceProvider);
-	} catch (ServiceNotActivatedException e) {
-		// TODO Auto-generated catch block
-		logger.debug(e.toString());
-	} catch (JSONException e) {
-		// TODO Auto-generated catch block
-		logger.debug(e.toString());
-	} catch (InvalidSchemaException e) {
-		// TODO Auto-generated catch block
-		logger.debug(e.toString());
-	} catch (DatastoreException e) {
-		// TODO Auto-generated catch block
-		logger.debug(e.toString());
-	} catch (PushServiceException e) {
-		// TODO Auto-generated catch block
-		logger.debug(e.toString());
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		logger.debug(e.toString());
-	}
-    map.put("msg", "Hello, world!!!");
-    return new ResponseToProcess(HttpURLConnection.HTTP_OK, map);
+      HttpService http = serviceProvider.getHttpService();
+      GetRequest req = new GetRequest(url,set);
+             
+      HttpResponse resp = http.post(req);
+      responseCode = resp.getCode();
+      responseBody = resp.getBody();
+    } catch(TimeoutException e) {
+      logger.error(e.getMessage(), e);
+      responseCode = HttpURLConnection.HTTP_BAD_GATEWAY;;
+      responseBody = e.getMessage();
+    } catch(AccessDeniedException e) {
+      logger.error(e.getMessage(), e);
+      responseCode = HttpURLConnection.HTTP_INTERNAL_ERROR;;
+      responseBody = e.getMessage();
+    } catch(MalformedURLException e) {
+      logger.error(e.getMessage(), e);
+      responseCode = HttpURLConnection.HTTP_INTERNAL_ERROR;;
+      responseBody = e.getMessage();
+    } catch(ServiceNotActivatedException e) {
+      logger.error(e.getMessage(), e);
+      responseCode = HttpURLConnection.HTTP_INTERNAL_ERROR;;
+      responseBody = e.getMessage();
+    }
+      
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("response_body", responseBody);
+     
+    return new ResponseToProcess(responseCode, map);
   }
 
 }

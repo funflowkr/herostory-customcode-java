@@ -84,7 +84,7 @@ public class HelloWorld implements CustomCodeMethod {
     
 	LoggerService logger = serviceProvider.getLoggerService(HelloWorld.class);
 	   
-	String url =  "http://www.whatismyip.com/";
+	String url =  "http://www.findip.kr/";
 	 
     Header accept = new Header("Accept-Charset", "utf-8");
     Header content = new Header("Content-Type", "application/x-www-form-urlencoded");

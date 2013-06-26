@@ -111,6 +111,8 @@ public class EventGetCoupon implements CustomCodeMethod {
 	   		m5 = result.get(0).getValue().get("m5_attend").toString();
 	   		m6 = result.get(0).getValue().get("m6_push").toString();
 	   		
+	   		logger.debug("m1"+m1+",m2"+m2+",m3"+m3+",m4"+m4+",m5"+m5+",m6"+m6);
+	   		
 	   		if (m1.equalsIgnoreCase("true") || 
 	   				m2.equalsIgnoreCase("true")|| 
 	   				m3.equalsIgnoreCase("true")|| 
@@ -132,6 +134,9 @@ public class EventGetCoupon implements CustomCodeMethod {
 	   	        if (result_coupon != null) {
 	   	        	eventcoupon_id = result_coupon.get(0).getValue().get("eventcoupon_id").toString();
 	   	        	couponcode = result_coupon.get(0).getValue().get("couponcode").toString();
+	   	        	
+	   	        	logger.debug("eventcoupon_id="+eventcoupon_id+",couponcode="+couponcode);
+	   	        	
 	   	        	
 		   	        List<SMUpdate> update = new ArrayList<SMUpdate>();
 		   	        update.add(new SMSet("r_user", new SMString(loginname)));
